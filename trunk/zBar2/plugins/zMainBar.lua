@@ -1,3 +1,4 @@
+if zBar2.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zMainBar", UIParent, "SecureStateHeaderTemplate")
@@ -95,10 +96,6 @@ local stances = {
     ["WARRIOR"] = { [1] = 7, [2] = 8, [3] = 9 },
 }
 
-local reverse = {
-	["DRUID"] = { [3] = {"stealth", 8} },
-}
-
 function zMainBar:UpdateStateHeader()
     UnregisterStateDriver(zMainBar, "state")
 	
@@ -112,13 +109,6 @@ function zMainBar:UpdateStateHeader()
 		end
 	end
 	
---~ 	if reverse[class] then
---~ 		for k,v in pairs(reverse[class]) do
---~ 			state = format("[actionbar:1,stance:%d,%s]%d;", k, v[1], v[2])
---~ 			header = header .. state
---~ 		end
---~ 	end
-	
     if stances[class] then
         for k,v in pairs(stances[class]) do
             state = format("[actionbar:1,stance:%d]%d;", k, v)
@@ -131,11 +121,6 @@ function zMainBar:UpdateStateHeader()
 		header = header .. state
 	end
 	
---[[
-"[modifier:alt]2; [help]2; [actionbar:1, stance:1]9; [actionbar:1, stance:3]7; [actionbar:1, stance:5]8;
-[actionbar:1]1; [actionbar:2]2; [actionbar:3]3; [actionbar:4]4; [actionbar:5]5; [actionbar:6]6; 0"
---]]
---~ 		DEFAULT_CHAT_FRAME:AddMessage(header.."0")
 	RegisterStateDriver(zMainBar, "state", header .. "0")
 end
 
@@ -161,7 +146,7 @@ function zMainBar:StateChanged(newstate)
 		button.action = i + (tonumber(newstate)-1)*12
 		_this = this
 		this = button
-		securecall(ActionButton_Update)
+		ActionButton_Update()
 		this = _this
 	end
 end

@@ -5,7 +5,8 @@
 	loc.Labels = {
 		zMultiR1 = "右1", zMultiR2 = "右2", zMultiBR = "右下", zMultiBL = "左下",
 		zMainBar = "主1", zPetBar = "宠物", zStanceBar = "姿态", zBagBar = "背包",
-		zMicroBar = "帮助", zXPBar = "经验", zCastBar = "施法", zExBar1 = "扩展1",
+		zMicroBar = "帮助", zXPBar = "经验", zCastBar = "施法", All = "全部",
+		zExBar1 = "扩展1", zShadow1 = "影射1", zExBar2 = "扩展2", zShadow2 = "影射2",
 	}
 
 	loc.Option = {
@@ -68,7 +69,7 @@
 
 	--[[ Bindings ]]--
 	BINDING_HEADER_ZEXBUTTON = "炽火动作条绑定"
-	for i = 1, 12 do
+	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "扩展按钮"..i)
 	end
 

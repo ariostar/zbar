@@ -1,3 +1,4 @@
+if zBar2.lite then return end
 CreateFrame("Frame", "zMicroBar", UIParent, "SecureFrameTemplate")
 zBar2:RegisterPlugin(zMicroBar)
 zBar2:RegisterBar(zMicroBar)

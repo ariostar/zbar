@@ -12,6 +12,9 @@ zBar2.plugins	= {}
 zBar2.bars		= {}
 zBar2.buttons	= {}
 
+--[[ Ex mode state ]]
+zBar2.lite = select(4, GetAddOnInfo("zBar2Lite"))
+
 --[[ Common functions ]]
 function zBar2:print(msg, r, g, b)
 	DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b)
@@ -81,18 +84,20 @@ function zBar2:Hook()
 		if bar:GetID() <= 10 then 
 			for id = 1, NUM_ACTIONBAR_BUTTONS do
 				button = _G[self.buttons[bar:GetName()..id]]
-				-- set button scripts
-				button:SetScript("OnEnter",function()
-					this:GetParent():SetAlpha(1)
-					if zBar2Saves.hideTip then return end
-					ActionButton_SetTooltip(this)
-				end)
-				button:SetScript("OnLeave",function()
-					local bar = this:GetParent()
-					bar:SetAlpha(zBar2Saves[bar:GetName()].alpha)
-					if zBar2Saves.hideTip then return end
-					GameTooltip:Hide()
-				end)
+				if button then
+					-- set button scripts
+					button:SetScript("OnEnter",function()
+						this:GetParent():SetAlpha(1)
+						if zBar2Saves.hideTip then return end
+						ActionButton_SetTooltip(this)
+					end)
+					button:SetScript("OnLeave",function()
+						local bar = this:GetParent()
+						bar:SetAlpha(zBar2Saves[bar:GetName()].alpha)
+						if zBar2Saves.hideTip then return end
+						GameTooltip:Hide()
+					end)
+				end
 			end
 		end
 	end

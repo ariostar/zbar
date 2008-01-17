@@ -5,7 +5,8 @@ if not zBar2.loc then
 	loc.Labels = {
 		zMultiR1 = "Right", zMultiR2 = "Left", zMultiBR = "BRight", zMultiBL = "BLeft",
 		zMainBar = "Main", zPetBar = "Pet", zStanceBar = "Stance", zBagBar = "Bag",
-		zMicroBar = "Micro", zXPBar = "XP", zCastBar = "Cast", zExBar1 = "Extra1",
+		zMicroBar = "Micro", zXPBar = "XP", zCastBar = "Cast", All = "All",
+		zExBar1 = "Extra1", zShadow1 = "Shadow1", zExBar2 = "Extra2", zShadow2 = "Shadow2",
 	}
 
 	loc.Option = {
@@ -67,7 +68,7 @@ if not zBar2.loc then
 
 	--[[ Bindings ]]--
 	BINDING_HEADER_ZEXBUTTON = "zBar Bindings"
-	for i = 1, 12 do
+	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "zExButton"..i)
 	end
 end

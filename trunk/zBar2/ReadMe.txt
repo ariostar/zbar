@@ -9,7 +9,6 @@ Templates.xml -- needed
 zBarT.lua -- needed
 
 zBar.lua -- needed
-zButton.lua -- needed
 arrange.lua -- needed
 defaults.lua -- needed
 

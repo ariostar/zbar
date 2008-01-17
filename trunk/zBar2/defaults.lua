@@ -40,6 +40,7 @@ function zBar2:GetDefault(name, key, subkey)
 end
 
 function zBar2:SetGameDefaults()
+	if zBar2.lite then return end
 	-- game default positions
 	UIPARENT_MANAGED_FRAME_POSITIONS["ItemRefTooltip"] = {baseY = 150, pet =35,};
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootFrame1"] = {baseY = 135, pet =35,};
@@ -87,14 +88,19 @@ end
 
 -- zBar2 defaults
 zBar2.defaults = {
-	["*"] = {saves = {num = 12, inset = 0, arrangement = "line", linenum = 2, alpha = 1,},},
-	["zExBar1"] = {
-		saves = {},
+	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},
+	["zExBar1"] = { saves = {},
 		pos = {"CENTER",0,0}, 
 	},
-	["zExBar2"] = {},
-	["zExBar3"] = {},
-	["zExBar4"] = {},
+	["zShadow1"] = { saves = {num=0, max=0,},
+		pos = {"CENTER",72,0}, 
+	},
+	["zExBar2"] = { saves = {},
+		pos = {"CENTER",-72,0}, 
+	},
+	["zShadow2"] = { saves = {num=0, max=0,},
+		pos = {"CENTER",-144,0}, 
+	},
 	
 	["zMainBar"] = {
 		saves = {linenum = 12, hideTab=true,},

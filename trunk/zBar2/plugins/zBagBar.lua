@@ -1,3 +1,4 @@
+if zBar2.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zBagBar", UIParent, "SecureFrameTemplate")

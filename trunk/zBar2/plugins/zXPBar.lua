@@ -1,3 +1,4 @@
+if zBar2.lite then return end
 local XPHeight = 20
 
 CreateFrame("Frame","zXPBar",UIParent,"SecureFrameTemplate")

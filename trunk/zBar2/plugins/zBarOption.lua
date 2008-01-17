@@ -127,7 +127,11 @@ function zBarOption:CheckReady()
 			if value.common then
 				zBar2Saves[value.var] = checked
 			elseif value.var then
-				zBar2Saves[zBarOption.bar:GetName()][value.var] = checked
+				if value.value then
+					zBar2Saves[zBarOption.bar:GetName()][value.var] = value.value
+				else
+					zBar2Saves[zBarOption.bar:GetName()][value.var] = checked
+				end
 			end
 			if checked then
 				value.OnChecked()
@@ -183,14 +187,16 @@ function zBarOption:LoadOptions()
 	-- read check buttons value
 	for id, value in ipairs(zBarOption.buttons) do
 		obj = _G["zBarOption"..value.name]
-		if value.var then
+		if value.IsChecked then -- system attributes
+			obj:SetChecked(value.IsChecked())
+		elseif value.var then
 			if value.common then -- common attributes
 				obj:SetChecked(zBar2Saves[value.var])
+			elseif value.value then
+				obj:SetChecked(zBar2Saves[zBarOption.bar:GetName()][value.var] == value.value)
 			else -- bar attributes
 				obj:SetChecked(zBar2Saves[zBarOption.bar:GetName()][value.var])
 			end
-		elseif value.IsChecked then -- system attributes
-			obj:SetChecked(value.IsChecked())
 		end
 	end
 	-- read sliders value
@@ -231,7 +237,7 @@ end
 zBarOption.labels = {
 	-- font, color-red, color-green, color-blue, pos, offset-x, offset-y
 	["Title"] = {"GameFontNormalLarge",0.12,0.66,1,"TOP",0,-10},
-	["SelectBar"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-40},
+	["SelectBar"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-30},
 	["Attribute"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-120},
 	["Layout"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",90,-120},
 	["Commons"] = {"GameFontNormalLarge",1.0,0.82,0.1,"BOTTOMLEFT",10,130},
@@ -239,7 +245,8 @@ zBarOption.labels = {
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR",	"zMultiR2", "zMultiR1",
 	"zMainBar", "zPetBar", "zStanceBar", "zBagBar",
-	"zMicroBar", "zXPBar",  "zCastBar", "zExBar1",
+	"zMicroBar", "zXPBar",  "zCastBar", "All",
+	"zExBar1", "zShadow1", "zExBar2", "zShadow2",
 }
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- show / hide bar
@@ -268,16 +275,22 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		UnChecked=function() end,
 	},
 	{
-		name="Suit1",var="suit1",pos={"TOPLEFT","zBarOptionLayout","BOTTOMLEFT",0,-5},
-		radio = true,notReady = true,
-		OnChecked=function() end,
-		UnChecked=function() end,
+		name="Suit1",var="layout",value="suit1",radio = true,
+		pos={"TOPLEFT","zBarOptionLayout","BOTTOMLEFT",0,-5},
+		OnChecked=function() 
+			zBarOptionSuit2:SetChecked(false)
+			zBarOption.bar:UpdateLayouts()
+		end,
+		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
-		name="Suit2",var="suit2",pos={"TOP","zBarOptionSuit1","BOTTOM",0,-2},
-		radio = true,notReady = true,
-		OnChecked=function() end,
-		UnChecked=function() end,
+		name="Suit2",var="layout",value="suit2",radio = true,
+		pos={"TOP","zBarOptionSuit1","BOTTOM",0,-2},
+		OnChecked=function()
+			zBarOptionSuit1:SetChecked(false)
+			zBarOption.bar:UpdateLayouts()
+		end,
+		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
 		name="Trigon1",var="trigon1",pos={"TOP","zBarOptionSuit2","BOTTOM",0,-2},
@@ -348,8 +361,8 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		name="PageTrigger",var="pageTrigger",common=true,
 		pos={"TOP","zBarOptionHideGrid","BOTTOM",0,0},
 		IsEnabled=function() return (zMainBar and true) end,
-		OnChecked=zMainBar.UpdateStateHeader,
-		UnChecked=zMainBar.UpdateStateHeader,
+		OnChecked=function() if zMainBar then zMainBar:UpdateStateHeader() end end,
+		UnChecked=function() if zMainBar then zMainBar:UpdateStateHeader() end end,
 	},
 }
 zBarOption.sliders = { --[[ Sliders ]]
@@ -368,20 +381,27 @@ zBarOption.sliders = { --[[ Sliders ]]
 		var="linenum", min=1, max=12, step=1,
 		pos={"TOP","zBarOptionSlider1","BOTTOM",0,-25},
 		setFunc = function()
---~ 			zBarOptionAttr5:SetChecked(false)
---~ 			zBarOptionAttr6:SetChecked(false)
-			
-			_G[this:GetName().."Thumb"]:Show()
-		
+			-- return if not layout in line, hide thumb
 			local name = zBarOption.bar:GetName()
+			if zBar2Saves[name].layout ~= "line" then
+				return
+			end
+			
+			-- uncheck layout radio buttons
+			zBarOptionSuit1:SetChecked(false)
+			zBarOptionSuit2:SetChecked(false)
+			zBarOptionTrigon1:SetChecked(false)
+			zBarOptionTrigon2:SetChecked(false)
+			zBarOptionCircle:SetChecked(false)
+						
 			-- linenum can't be greater than num
 			local num = this:GetValue()
 			if num > zBar2Saves[name].num then
 				this:SetValue(zBar2Saves[name].num)
-				return
+				return -- return to prevent dead loop
 			end
-		
-			zBar2Saves[name].arrangement = "line"
+			-- update
+			zBar2Saves[name].layout = "line"
 			zBar2Saves[name].linenum = this:GetValue()
 			zBarOption.bar:UpdateLayouts()
 		end

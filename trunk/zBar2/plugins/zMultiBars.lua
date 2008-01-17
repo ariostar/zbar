@@ -1,4 +1,5 @@
-﻿local _G = getfenv(0)
+﻿if zBar2.lite then return end
+local _G = getfenv(0)
 
 zMultiBars = {}
 function zMultiBars:GetName() return "zMultiBars" end

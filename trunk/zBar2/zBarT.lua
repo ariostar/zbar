@@ -55,22 +55,24 @@ function zBarT:UpdateButtons()
 	local button
 	local value = zBar2Saves[self:GetName()]
 
-	for i = 1, value.max or NUM_ACTIONBAR_BUTTONS do
+	for i =  1, value.max or NUM_ACTIONBAR_BUTTONS do
 		button = _G[zBar2.buttons[self:GetName()..i]]
-		if i <= (value.num or 1) then
-			if _G[button:GetName().."AutoCast"] then
-				if PetActionBarFrame.showgrid > 0 or GetPetActionInfo(i) then
+		if button then
+			if i <= (value.num or 1) then
+				if _G[button:GetName().."AutoCast"] then
+					if PetActionBarFrame.showgrid > 0 or GetPetActionInfo(i) then
+						button:Show()
+					end
+				elseif not button.action or (button.showgrid > 0 or HasAction(button.action)) then
 					button:Show()
 				end
-			elseif not button.action or (button.showgrid > 0 or HasAction(button.action)) then
-				button:Show()
+				button:SetAttribute("showstates", nil)
+				button:SetAttribute("statehidden", nil)
+			else
+				button:Hide()
+				button:SetAttribute("showstates", "!*")
+				button:SetAttribute("statehidden", true)
 			end
-			button:SetAttribute("showstates", nil)
-			button:SetAttribute("statehidden", nil)
-		else
-			button:Hide()
-			button:SetAttribute("showstates", "!*")
-			button:SetAttribute("statehidden", true)
 		end
 	end
 end
@@ -78,9 +80,9 @@ end
 --[[ enable / disable hotkey text shown for bar ]]
 function zBarT:UpdateHotkeys()
 	local hotkey
-	
+
 	for i = 1 , zBar2Saves[self:GetName()].max or NUM_ACTIONBAR_BUTTONS do
-		hotkey = _G[zBar2.buttons[self:GetName()..i].."HotKey"]
+		hotkey = _G[ (zBar2.buttons[self:GetName()..i] or "?? ").."HotKey"]
 		if hotkey then
 			if zBar2Saves.hideHotkey then
 				hotkey:Hide()
@@ -145,7 +147,7 @@ local function zTab_OnDragStop()
 		-- check if drop on a button
 		for key, name in pairs(zBar2.buttons) do
 			local button = _G[name]
-			if this.bar ~= button:GetParent() and
+			if button and this.bar ~= button:GetParent() and
 			button:IsVisible() and MouseIsOver(button) then
 				local offsetX, offsetY = button:GetParent():GetChildSizeAdjust(attachPoint)
 				offsetX = offsetX / this.bar:GetScale()
@@ -155,7 +157,7 @@ local function zTab_OnDragStop()
 			end
 		end
 	end
-	MultiActionBar_UpdateGridVisibility()
+	MultiActionBar_HideAllGrids()
 end
 -- get tab of bar, create if not exist
 function zBarT:GetTab()
