@@ -12,33 +12,33 @@ function zBagBar:Init()
 	self:SetWidth(37); self:SetHeight(37);
 
 	-- bag packs
+	MainMenuBarBackpackButton:SetParent(self)
+	zBar2.buttons["zBagBar1"] = "MainMenuBarBackpackButton"
+	MainMenuBarBackpackButtonNormalTexture:SetWidth(60)
+	MainMenuBarBackpackButtonNormalTexture:SetHeight(60)
+	MainMenuBarBackpackButton:ClearAllPoints()
+	MainMenuBarBackpackButton:SetPoint("CENTER")
+	
 	for i=0,3 do
 		_G["CharacterBag"..i.."Slot"]:SetParent(self)
-		zBar2.buttons["zBagBar"..(4-i)] = "CharacterBag"..i.."Slot"
+		zBar2.buttons["zBagBar"..(2+i)] = "CharacterBag"..i.."Slot"
 		_G["CharacterBag"..i.."SlotNormalTexture"]:SetWidth(60)
 		_G["CharacterBag"..i.."SlotNormalTexture"]:SetHeight(60)
 	end
-	CharacterBag3Slot:ClearAllPoints()
-	CharacterBag3Slot:SetPoint("CENTER")
-	
-	MainMenuBarBackpackButton:SetParent(self)
-	zBar2.buttons["zBagBar5"] = "MainMenuBarBackpackButton"
-	MainMenuBarBackpackButtonNormalTexture:SetWidth(60)
-	MainMenuBarBackpackButtonNormalTexture:SetHeight(60)
 
     -- keyring and performance bar
 	CreateFrame("Frame","zBagBarButton6",self)
 	zBagBarButton6:SetWidth(37); zBagBarButton6:SetHeight(37);
-	zBagBarButton6:SetPoint("LEFT",MainMenuBarBackpackButton,"RIGHT")
+	zBagBarButton6:SetPoint("RIGHT",zBar2.buttons["zBagBar5"],"LEFT")
 	zBar2.buttons["zBagBar6"] = "zBagBarButton6"
 
 	KeyRingButton:SetParent(zBagBarButton6)
 	KeyRingButton:ClearAllPoints()
-	KeyRingButton:SetPoint("TOPLEFT",zBagBarButton6,"TOPLEFT",2,1)
+	KeyRingButton:SetPoint("TOPRIGHT",zBagBarButton6,"TOPRIGHT",0,1)
 
 	MainMenuBarPerformanceBarFrame:SetParent(zBagBarButton6)
 	MainMenuBarPerformanceBarFrame:ClearAllPoints()
-	MainMenuBarPerformanceBarFrame:SetPoint("LEFT",KeyRingButton,"RIGHT",2,2)
+	MainMenuBarPerformanceBarFrame:SetPoint("RIGHT",KeyRingButton,"LEFT",2,2)
 
 	self:Hook()
 	
@@ -50,7 +50,18 @@ function zBagBar:Hook()
 	hooksecurefunc("MainMenuBar_UpdateKeyRing", function()
 		if ( SHOW_KEYRING == 1 ) then
 			MainMenuBarPerformanceBarFrame:ClearAllPoints()
-			MainMenuBarPerformanceBarFrame:SetPoint("LEFT",KeyRingButton,"RIGHT",2,2)
+			MainMenuBarPerformanceBarFrame:SetPoint("Right",KeyRingButton,"Left",2,2)
 		end
 	end)
+end
+
+function zBagBar:UpdateButtons()
+	zBarT.UpdateButtons(self)
+	if zBar2Saves[self:GetName()].num == 1 then
+		zBagBarButton6:Show()
+		zBagBarButton6:SetAttribute("showstates", nil)
+		zBagBarButton6:SetAttribute("statehidden", nil)
+		zBagBarButton6:ClearAllPoints()
+		zBagBarButton6:SetPoint("RIGHT",zBar2.buttons["zBagBar1"],"LEFT")
+	end
 end

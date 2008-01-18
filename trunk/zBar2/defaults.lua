@@ -86,7 +86,7 @@ zBar2.defaults = {
 	},
 	["zBagBar"] = {
 		saves = {num=6, linenum=6, max=6, scale=0.72,},
-		pos = {"BOTTOMRIGHT",-190,78},
+		pos = {"BOTTOMRIGHT",-6,78},
 	},
 	["zMicroBar"] = {
 		saves = {num=8, linenum=8, max=8, scale=0.75,},

@@ -8,7 +8,7 @@
 ## Notes-zhCN: 让你感受燃烧的快感！|n 作者：炽火 Zero ℃
 ## Author-zhCN: 炽火 Zero ℃
 
-## Version: 2.0.4
+## Version: 2.0.5
 ## eMail: zero.flamy@gmail.com
 ## Url: http://bbs.cwowaddon.com/viewthread.php?tid=334
 

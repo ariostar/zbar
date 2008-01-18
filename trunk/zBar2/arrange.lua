@@ -60,7 +60,11 @@ function zBarT:SetLineNum()
 						SetButtonPoint( self, cur_id, "TOP", cur_id - value.linenum, "BOTTOM", 0, -inset)
 					end
 				else -- siblings goes my right side
-					SetButtonPoint( self, cur_id, "LEFT", cur_id - 1, "RIGHT", inset, 0)
+					if self == zBagBar then -- reverse if is bag bar
+						SetButtonPoint( self, cur_id, "RIGHT", cur_id - 1, "LEFT", -inset, 0)
+					else
+						SetButtonPoint( self, cur_id, "LEFT", cur_id - 1, "RIGHT", inset, 0)
+					end
 				end
 			end
 		end

@@ -56,6 +56,8 @@ function zBarT:UpdateAutoPop()
 	UnregisterStateDriver(header, "visibility")
 	if zBar2Saves[self:GetName()].autoPop then
 		RegisterStateDriver(header, "visibility", "[combat]show;[harm,nodead]show;hide")
+	else
+		header:Show()
 	end
 end
 
@@ -149,7 +151,7 @@ local function zTab_OnDragStop()
 	local attachPoint = nil
 	if IsControlKeyDown() then
 		attachPoint = "BOTTOMLEFT"
-	else
+	elseif IsShiftKeyDown() then
 		attachPoint = "TOPRIGHT"
 	end
 	if attachPoint then
