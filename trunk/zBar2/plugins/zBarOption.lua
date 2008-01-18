@@ -270,9 +270,8 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	},
 	{-- auto-pop mode
 		name="Pop",var="autoPop",pos={"TOP","zBarOptionLock","BOTTOM",0,0},
-		notReady = true,
-		OnChecked=function() end,
-		UnChecked=function() end,
+		OnChecked=function() zBarOption.bar:UpdateAutoPop() end,
+		UnChecked=function() zBarOption.bar:UpdateAutoPop() end,
 	},
 	{
 		name="Suit1",var="layout",value="suit1",radio = true,
@@ -344,17 +343,17 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		IsChecked=function() return ALWAYS_SHOW_MULTIBARS ~= "1" and ALWAYS_SHOW_MULTIBARS ~= 1 end,
 		OnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = nil
-			MultiActionBar_UpdateGridVisibility()
 			SetActionBarToggles(SHOW_MULTI_ACTIONBAR_1,
 			SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3,
 			SHOW_MULTI_ACTIONBAR_4, ALWAYS_SHOW_MULTIBARS);
+			MultiActionBar_UpdateGridVisibility()
 		end,
 		UnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = "1"
-			MultiActionBar_UpdateGridVisibility()
 			SetActionBarToggles(SHOW_MULTI_ACTIONBAR_1,
 			SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3,
 			SHOW_MULTI_ACTIONBAR_4, ALWAYS_SHOW_MULTIBARS);
+			MultiActionBar_UpdateGridVisibility()
 		end,
 	},
 	{-- auto page

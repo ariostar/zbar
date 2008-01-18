@@ -53,7 +53,7 @@ if not zBar2.loc then
 		Trigon2	= "Trigon2",
 		Circle		= "Circle",
 
-		HotKey			= "Show / Hide Hotkeys for all bar",
+		HotKey			= "Show / Hide Hotkeys for all buttons",
 		HideTip		= "Show / Hide Tooltips",
 		LockButtons	= "Lock All Buttons",
 		HideGrid		= "Hide Grid of Empty Buttons",
@@ -62,7 +62,7 @@ if not zBar2.loc then
 		Scale			= "Drag slider, Change Scale to appropriate size",
 		Inset			= "Adjust button spacing",
 		Num				= "Number of Buttons to show in bar",
-		NumPerLine	= "Set Number of Buttons per Line\nMake Arrangements of Vertical / Horizontal / Multi Line",
+		NumPerLine	= "Set Number of Buttons per Line\nSort Buttons Vertical / Horizontal / Multi Line",
 		Alpha			= "Transparent when mouse leave\nNormal when enter",
 	}
 

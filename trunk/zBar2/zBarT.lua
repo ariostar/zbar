@@ -22,6 +22,7 @@ function zBarT:Reset(resetsaves)
 	self:UpdateButtons()
 	self:UpdateLayouts()
 	self:UpdateHotkeys()
+	self:UpdateAutoPop()
 	
 	-- reset scale
 	self:SetScale(zBar2Saves[name]["scale"] or 1)
@@ -48,6 +49,14 @@ function zBarT:UpdateVisibility()
 	end
 	if zBar2Saves[self:GetName()].hideTab then state = state + 2 end
 	self:GetHeader():SetAttribute("state", state)
+end
+
+function zBarT:UpdateAutoPop()
+	local header = self:GetHeader()
+	UnregisterStateDriver(header, "visibility")
+	if zBar2Saves[self:GetName()].autoPop then
+		RegisterStateDriver(header, "visibility", "[combat]show;[harm,nodead]show;hide")
+	end
 end
 
 --[[ update buttons, hide unwanted buttons ]]

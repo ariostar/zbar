@@ -12,7 +12,7 @@ zBar2.plugins	= {}
 zBar2.bars		= {}
 zBar2.buttons	= {}
 
---[[ Ex mode state ]]
+--[[ Lite mode state ]]
 zBar2.lite = select(4, GetAddOnInfo("zBar2Lite"))
 
 --[[ Common functions ]]
@@ -30,7 +30,6 @@ function zBar2:OnEvent()
 		end
 		self:Init()
 	elseif event == "PLAYER_LOGIN" then
-		self:SetGameDefaults()
 		self:print("zBar2 written by "..self.author.." Version: "..self.version.." Loaded, type /zbar",0.0,1.0,0.0)
 	end
 end

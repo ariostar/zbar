@@ -24,12 +24,6 @@ function zBarT:UpdateLayouts()
 end
 -- local func, for points settings
 local function SetButtonPoint(bar,index,point,referIndex,relativePoint,offx,offy)
---~ 	local value = zBar2Saves[bar:GetName()]
---~ 	if(value.from) then
---~ 		index = index + value.from - 1
---~ 		referIndex = referIndex + value.from - 1
---~ 	end
-
 	local button = _G[zBar2.buttons[bar:GetName()..index]]
 	button:ClearAllPoints()
 	button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)

@@ -39,53 +39,6 @@ function zBar2:GetDefault(name, key, subkey)
 	return set
 end
 
-function zBar2:SetGameDefaults()
-	if zBar2.lite then return end
-	-- game default positions
-	UIPARENT_MANAGED_FRAME_POSITIONS["ItemRefTooltip"] = {baseY = 150, pet =35,};
-	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootFrame1"] = {baseY = 135, pet =35,};
-	UIPARENT_MANAGED_FRAME_POSITIONS["TutorialFrameParent"] = {baseY = 135, pet = 35,};
-	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_Y"] = {baseY = 135, isVar = "yAxis",};
-	UIPARENT_MANAGED_FRAME_POSITIONS["CONTAINER_OFFSET_X"] = {baseX = 85, isVar = "xAxis"};
-	UIPARENT_MANAGED_FRAME_POSITIONS["ChatFrame1"] = 
-		{baseY = 30, point = "BOTTOMLEFT", rpoint = "BOTTOMLEFT", xOffset = 32};
-	UIPARENT_MANAGED_FRAME_POSITIONS["ChatFrame2"] = 
-		{baseY = 135, rightLeft = -90, rightRight = -45, point = "BOTTOMRIGHT", rpoint = "BOTTOMRIGHT", xOffset = -32};
-	
-	if self.firstime then
-		ChatFrame1:SetWidth(360)
-		ChatFrame1:SetUserPlaced(false)
-		ItemRefTooltip:SetUserPlaced(false)
-		UIParent_ManageFramePositions()
-	end
-
-	-- disable Jostle to refresh some frames
---~ 	if AceLibrary and AceLibrary:HasInstance("Jostle-2.0") then
---~ 		self.JostleXXX = {
---~ 			DEFAULT_CHAT_FRAME = true,
---~ 			ChatFrame2 = true,
---~ 			GroupLootFrame1 = true,
---~ 			TutorialFrameParent = true,
---~ 			FramerateLabel = true,
---~ 			CastingBarFrame = true,
---~ 		}
---~ 		local jostle = AceLibrary("Jostle-2.0")
---~ 		local orig = jostle.Refresh
---~ 		jostle.Refresh = function(self, ...)
---~ 			if select('#', ...) < 1 then
---~ 				for name,value in pairs(zBar2.JostleXXX) do
---~ 					zBar2.JostleXXX[name] = _G[name]
---~ 					_G[name] = nil
---~ 				end
---~ 				orig(self, ...)
---~ 				for name, value in pairs(zBar2.JostleXXX) do
---~ 					_G[name] = value
---~ 				end
---~ 			end
---~ 		end
---~ 	end
-end
-
 -- zBar2 defaults
 zBar2.defaults = {
 	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},

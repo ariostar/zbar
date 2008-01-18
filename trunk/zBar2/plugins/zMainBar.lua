@@ -15,7 +15,7 @@ function zMainBar:Init()
 	self:SetWidth(36) self:SetHeight(36)
 	
 --~ 	self:SetAttribute("unit2","player")
-	self:SetAttribute("statemap-state", "$input")
+	self:SetAttribute("statemap-actionpage", "$input")
 	self:SetAttribute("statebutton", "1:p1;2:p2;3:p3;4:p4;5:p5;6:p6;7:p7;8:p8;9:p9;10:p10;")
 --~ 	self:SetAttribute("statebutton2", "RightButton")
 	self:UpdateStateHeader()
@@ -33,7 +33,7 @@ function zMainBar:Init()
 	
 	BonusActionBarFrame:Hide()
 	BonusActionBarFrame:UnregisterAllEvents()
-	BonusActionBarFrame:SetScript("OnShow",BonusActionBarFrame.Hide)
+	BonusActionBarFrame.Show = BonusActionBarFrame.Hide
 
 	self:Hook()
 	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
@@ -59,13 +59,13 @@ end
 function zMainBar:UpdateHotkey()
 	if this:GetParent() == zMainBar then
 		local hotkey = _G[this:GetName().."HotKey"]
-		local key = GetBindingText(GetBindingKey(this:GetName()), "KEY_", 1)
-		if ( key == "" ) then
+		local text = GetBindingText(GetBindingKey(this:GetName()), "KEY_", 1)
+		if ( text == "" ) then
 			hotkey:SetText(RANGE_INDICATOR)
 			hotkey:SetPoint("TOPLEFT", this, "TOPLEFT", -12, -2);
 			hotkey:Hide()
 		else
-			hotkey:SetText(key)
+			hotkey:SetText(text)
 			hotkey:SetPoint("TOPLEFT", this, "TOPLEFT", -2, -2)
 			hotkey:Show()
 		end
@@ -75,11 +75,11 @@ end
 function zMainBar:UpdateGrid(show)
 	-- in combat we can't let it be shown or hidden
 --~ 	if InCombatLockdown() then return end
-	for i=1, NUM_MULTIBAR_BUTTONS do
+	for i=1, 12 do
 		if ( show ) then
-			ActionButton_ShowGrid(_G[zBar2.buttons["zMainBar"..i]])
+			ActionButton_ShowGrid(_G["ActionButton"..i])
 		else
-			ActionButton_HideGrid(_G[zBar2.buttons["zMainBar"..i]])
+			ActionButton_HideGrid(_G["ActionButton"..i])
 		end
 	end
 end
@@ -97,7 +97,7 @@ local stances = {
 }
 
 function zMainBar:UpdateStateHeader()
-    UnregisterStateDriver(zMainBar, "state")
+    UnregisterStateDriver(zMainBar, "actionpage")
 	
 	local class = select(2, UnitClass("player"))
     local header, state = "", ""
@@ -121,32 +121,20 @@ function zMainBar:UpdateStateHeader()
 		header = header .. state
 	end
 	
-	RegisterStateDriver(zMainBar, "state", header .. "0")
+	RegisterStateDriver(zMainBar, "actionpage", header .. "0")
 end
 
 function zMainBar:RegisterButton(button, id)
 	self:SetAttribute("addchild", button)
 	
 	button:SetID(-id)
-	button:SetAttribute("stateheader", zMainBar)
+	button:SetAttribute("stateheader", self)
     button:SetAttribute("useparent-statebutton", true)
-	
+
 	for p=1,10 do
         button:SetAttribute("*action-p"..p, id + (p-1)*12 )
     end
 	button:Show()
-	button.Show = function(self) self:SetAlpha(1) end
 	button.Hide = function(self) self:SetAlpha(0) end
-end
-
-function zMainBar:StateChanged(newstate)
-	local button
-	for i = 1,12 do
-		button = _G["ActionButton"..i]
-		button.action = i + (tonumber(newstate)-1)*12
-		_this = this
-		this = button
-		ActionButton_Update()
-		this = _this
-	end
+	button.Show = function(self) self:SetAlpha(1) end
 end
