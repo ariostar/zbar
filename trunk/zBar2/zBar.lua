@@ -30,7 +30,7 @@ function zBar2:OnEvent()
 		end
 		self:Init()
 	elseif event == "PLAYER_LOGIN" then
-		self:print("zBar2 written by "..self.author.." Version: "..self.version.." Loaded, type /zbar",0.0,1.0,0.0)
+		self:print("zBar2 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
 	end
 end
 zBar2:SetScript("OnEvent", zBar2.OnEvent)

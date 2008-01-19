@@ -25,7 +25,7 @@ function zMultiBars:Init()
 		bar:SetFrameStrata("MEDIUM")
 		bar:SetClampedToScreen(true)
 		bar:SetWidth(36); bar:SetHeight(36);
-		bar:SetAttribute("unit2","player")
+--~ 		bar:SetAttribute("unit2","player")
 		bar:SetAttribute("actionpage",k)
 		
 		for i = 1, 12 do

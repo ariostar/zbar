@@ -23,6 +23,10 @@ function zBarOption:Init()
 end
 
 function zBarOption:Openfor(bar)
+	if InCombatLockdown() then
+		zBar2:print("zBar2Option: DO NOT SETTLE IN COMBAT !!!",1,0,0)
+		return
+	end
 	self:CheckReady()
 	self:Select(bar)
 	self:LoadOptions()
@@ -77,7 +81,7 @@ function zBarOption:CheckReady()
 		
 		button = CreateFrame("CheckButton", "zBarOptionBar"..name,self,"zBarOptionRadioButtonTemplate")
 		button.bar = bar
-		if not bar then button:Disable() end
+		if not bar or not bar.Reset then button:Disable() end
 		
 		if id == 1 then
 			button:SetPoint("TOPLEFT",zBarOptionSelectBar,"BOTTOMLEFT",0,-5)
@@ -245,7 +249,7 @@ zBarOption.labels = {
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR",	"zMultiR2", "zMultiR1",
 	"zMainBar", "zPetBar", "zStanceBar", "zBagBar",
-	"zMicroBar", "zXPBar",  "zCastBar", "All",
+	"zMicroBar", "zXPBar",  "zCastBar", "zPossessBar",
 	"zExBar1", "zShadow1", "zExBar2", "zShadow2",
 }
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]

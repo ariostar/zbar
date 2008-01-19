@@ -18,12 +18,6 @@ function zBarT:Reset(resetsaves)
 		end
 	end
 	
-	self:UpdateVisibility()
-	self:UpdateButtons()
-	self:UpdateLayouts()
-	self:UpdateHotkeys()
-	self:UpdateAutoPop()
-	
 	-- reset scale
 	self:SetScale(zBar2Saves[name]["scale"] or 1)
 	self:GetTab():SetScale(self:GetScale())
@@ -38,6 +32,12 @@ function zBarT:Reset(resetsaves)
 	self:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+30)
 	self:ClearAllPoints()
 	self:SetPoint("TOP",self:GetTab(),"BOTTOM",0,0)
+	
+	self:UpdateVisibility()
+	self:UpdateButtons()
+	self:UpdateLayouts()
+	self:UpdateHotkeys()
+	self:UpdateAutoPop()
 end
 
 function zBarT:UpdateVisibility()
@@ -144,20 +144,31 @@ end
 --[[ Tab functions ]]
 local function zTab_OnDragStart()
 	this:StartMoving()
-	MultiActionBar_ShowAllGrids()
+	
+	if InCombatLockdown() then return end
+	
+	for key, name in pairs(zBar2.buttons) do
+		if _G[name]:GetParent():GetID() <= 10 then
+			_G[name]:Show()
+			_G[name.."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
+		end
+	end
 end
 local function zTab_OnDragStop()
 	this:StopMovingOrSizing()
+	
+	if InCombatLockdown() then return end
+	
 	local attachPoint = nil
 	if IsControlKeyDown() then
 		attachPoint = "BOTTOMLEFT"
 	elseif IsShiftKeyDown() then
 		attachPoint = "TOPRIGHT"
 	end
-	if attachPoint then
 		-- check if drop on a button
-		for key, name in pairs(zBar2.buttons) do
-			local button = _G[name]
+	for key, name in pairs(zBar2.buttons) do
+		local button = _G[name]
+		if attachPoint then
 			if button and this.bar ~= button:GetParent() and
 			button:IsVisible() and MouseIsOver(button) then
 				local offsetX, offsetY = button:GetParent():GetChildSizeAdjust(attachPoint)
@@ -167,8 +178,12 @@ local function zTab_OnDragStop()
 				this:SetPoint("BOTTOMLEFT", button, attachPoint, offsetX, offsetY)
 			end
 		end
+		if button:GetParent():GetID() <= 10 then
+			if (button.showgrid == 0 and not HasAction(button.action)) then
+				button:Hide()
+			end
+		end
 	end
-	MultiActionBar_HideAllGrids()
 end
 -- get tab of bar, create if not exist
 function zBarT:GetTab()

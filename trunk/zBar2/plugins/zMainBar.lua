@@ -16,7 +16,7 @@ function zMainBar:Init()
 	
 --~ 	self:SetAttribute("unit2","player")
 	self:SetAttribute("statemap-actionpage", "$input")
-	self:SetAttribute("statebutton", "1:p1;2:p2;3:p3;4:p4;5:p5;6:p6;7:p7;8:p8;9:p9;10:p10;")
+	self:SetAttribute("statebutton", "1:p1;2:p2;3:p3;4:p4;5:p5;6:p6;7:p7;8:p8;9:p9;10:p10;11:p11")
 --~ 	self:SetAttribute("statebutton2", "RightButton")
 	self:UpdateStateHeader()
 	
@@ -131,7 +131,7 @@ function zMainBar:RegisterButton(button, id)
 	button:SetAttribute("stateheader", self)
     button:SetAttribute("useparent-statebutton", true)
 
-	for p=1,10 do
+	for p=1,11 do
         button:SetAttribute("*action-p"..p, id + (p-1)*12 )
     end
 	button:Show()

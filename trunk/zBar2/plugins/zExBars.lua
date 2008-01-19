@@ -14,7 +14,7 @@ function zExBars:New(prefix,id,page)
 	bar:SetFrameStrata("MEDIUM")
 	bar:SetClampedToScreen(true)
 	bar:SetWidth(36); bar:SetHeight(36);
-	bar:SetAttribute("unit2","player")
+--~ 	bar:SetAttribute("unit2","player")
 	bar:SetAttribute("actionpage", page)
 	
 	bar.GetButton = self.GetButton
@@ -44,7 +44,7 @@ function zExBars:Init()
 	-- create buttons
 	local button
 	for id = 1, NUM_ZEXBAR_BUTTONS do
-		button = CreateFrame("CheckButton", "zExButton"..id,UIParent,"ActionBarButtonTemplate")
+		button = CreateFrame("CheckButton", "zExButton"..id,UIParent,"SecureFrameTemplate,ActionBarButtonTemplate")
 		_G[button:GetName().."NormalTexture"]:SetWidth(60)
 		_G[button:GetName().."NormalTexture"]:SetHeight(60)
 		button.buttonType = "ZEXBUTTON"
@@ -118,12 +118,15 @@ function zExBars:UpdateButtons()
 		end
 	end
 end
+
 function zExBars:UpdateLayouts()
 	if self.isShadow then
 		if zBar2Saves[self:GetName()].num == 0 then return end
 		local button = self:GetButton(1)
 		if button and select(2, button:GetPoint("CENTER")) ~= self then
-			local _this = this this = button ActionButton_Update() this = _this
+			if (button.showgrid > 0 or HasAction(button.action)) then
+				button:Show()
+			end
 			button:SetAttribute("showstates", nil)
 			button:SetAttribute("statehidden", nil)
 			button:ClearAllPoints()
@@ -143,10 +146,15 @@ function zExBars:UpdateGrid(show)
 	-- in combat we can't let it be shown or hidden
 	if InCombatLockdown() then return end
 	for i=1, NUM_ZEXBAR_BUTTONS do
-		if ( show ) then
-			ActionButton_ShowGrid(_G["zExButton"..i])
+		local button = _G["zExButton"..i]
+		if show then
+			if ( not button:GetAttribute("statehidden") ) then
+				button:Show();
+			end
 		else
-			ActionButton_HideGrid(_G["zExButton"..i])
+			if ( button.showgrid == 0 and not HasAction(button.action) ) then
+				button:Hide();
+			end
 		end
 	end
 end
@@ -166,28 +174,3 @@ function zExBars:OnBindingKey(id)
 		end
 	end
 end
-
---[[ Button Functions ]]
---~ zExButton = {}
-
--- drag, change position when ctrl down,
--- the position is relative to prev button
---~ function zExButton:DragStart()
---~ 	if IsControlKeyDown() then
---~ 		this:StartMoving()
---~ 		
---~ 	elseif LOCK_ACTIONBAR ~= "1" or IsModifiedClick("PICKUPACTION") then
---~ 		PickupAction(this.action);
---~ 		ActionButton_UpdateState();
---~ 		ActionButton_UpdateFlash();
---~ 	end
---~ end
-
---~ function zExButton:DragStop()
---~ 	if this.moving then
---~ 		this.moving = nil
---~ 		
---~ 		
---~ 		this:StopMovingOrSizing()
---~ 	end
---~ end
