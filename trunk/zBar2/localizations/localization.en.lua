@@ -67,9 +67,9 @@ if not zBar2.loc then
 	}
 
 	--[[ Bindings ]]--
-	BINDING_HEADER_ZPOSSESS = "Possessive Switch"
-	setglobal("BINDING_NAME_CLICK zPossessButton1:LeftButton", BINDING_HEADER_ZPOSSESS)
-	BINDING_HEADER_ZEXBUTTON = "zBar Bindings"
+	BINDING_HEADER_ZPOSSESS = "zBar2 - Possessive Switch"
+	setglobal("BINDING_NAME_CLICK zPossessButton1:LeftButton", "Possessive Switch")
+	BINDING_HEADER_ZEXBUTTON = "zBar2 - Extra Buttons"
 	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "zExButton"..i)
 	end
