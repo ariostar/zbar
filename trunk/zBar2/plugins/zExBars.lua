@@ -87,6 +87,7 @@ function zExBars:UpdateButtons()
 			-- back to mine
 			if button:GetParent() ~= self then
 				button:SetParent(self)
+				_G[button:GetName().."Cooldown"]:SetFrameLevel(button:GetFrameLevel() + 1)
 				zBar2.buttons[self:GetName()..i] = button:GetName()
 				zBar2.buttons["zShadow"..id..zBar2Saves["zShadow"..id].max] = nil
 				zBar2Saves["zShadow"..id].max = 12- zBar2Saves[self:GetName()].num
@@ -110,6 +111,7 @@ function zExBars:UpdateButtons()
 			zBar2Saves["zShadow"..id].max = 13 - i
 			zBar2.buttons["zShadow"..id..zBar2Saves["zShadow"..id].max] = button:GetName()
 			button:SetParent("zShadow"..id)
+			_G[button:GetName().."Cooldown"]:SetFrameLevel(button:GetFrameLevel() + 1)
 			if zBar2Saves["zShadow"..id].num == 0 or zBar2Saves["zShadow"..id].linenum == 0 then
 				zBar2Saves["zShadow"..id].num = 1
 				zBar2Saves["zShadow"..id].linenum = 1
