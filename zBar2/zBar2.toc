@@ -1,0 +1,43 @@
+﻿## Interface: 20300
+
+## Title: zBar2
+## Notes: ZeroFire's ActionBar Mod. |n Second Edition.
+## Author: Zero Fire
+
+## Title-zhCN: zBar2 - |cffFF3300炽火|r|cff33AAFF动作条|r
+## Notes-zhCN: 让你感受燃烧的快感！|n 作者：炽火 Zero ℃
+## Author-zhCN: 炽火 Zero ℃
+
+## Version: 2.0.7
+## eMail: zero.flamy@gmail.com
+## Url: http://bbs.cwowaddon.com/viewthread.php?tid=334
+
+## SavedVariablesPerCharacter: zBar2Saves
+
+Templates.xml
+zBarT.lua
+
+zBar.lua
+arrange.lua
+defaults.lua
+
+localizations\localization.cn.lua
+localizations\localization.tw.lua
+localizations\localization.en.lua
+
+plugins\zExBars.lua
+
+plugins\zMultiBars.lua
+plugins\zPetBar.lua
+plugins\zStanceBar.lua
+
+plugins\zBagBar.lua
+plugins\zMicroBar.lua
+plugins\zXPBar.lua
+
+plugins\zMainBar.lua
+plugins\zPossessBar.lua
+
+plugins\zCastBar.lua
+
+plugins\zBarOption.lua
