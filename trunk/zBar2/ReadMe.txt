@@ -7,6 +7,7 @@ or just delete that line)
 
 Templates.xml -- needed
 zBarT.lua -- needed
+zTab.lua -- needed
 
 zBar.lua -- needed
 arrange.lua -- needed
@@ -27,6 +28,7 @@ plugins\zMicroBar.lua	-- Micro Help Buttons 帮助
 plugins\zXPBar.lua	-- Lite XP Bar 经验
 
 plugins\zMainBar.lua	-- MainMenuBar 主动作条
+plugins\zPossessBar.lua	-- PossessBar 控制条
 
 plugins\zCastBar.lua	-- Spell Casting Bar 施法条
 

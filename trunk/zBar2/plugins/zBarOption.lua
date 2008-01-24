@@ -11,11 +11,15 @@ function zBarOption:Init()
 	self:SetToplevel(true)
 	self:SetFrameStrata("DIALOG")
 	self:SetClampedToScreen(true)
-	
+
 	SlashCmdList["ZBAR"] = function(msg)
 		for name,bar in pairs(zBar2.bars) do
 			zBarOption:Openfor(bar)
-			return
+			if msg == "resetall" then
+				bar:Reset(true)
+			else
+				return
+			end
 		end
 	end
 	SLASH_ZBAR1 = "/zbar"
@@ -23,7 +27,7 @@ end
 
 function zBarOption:Openfor(bar)
 	if InCombatLockdown() then
-		zBar2:print("zBar2Option: DO NOT SETTLE IN COMBAT !!!",1,0,0)
+		UIErrorsFrame:AddMessage("zBar2Option: DO NOT SETUP IN COMBAT !!!",1.0,0.1,0.1,1.0)
 		return
 	end
 	self:CheckReady()
@@ -42,25 +46,25 @@ function zBarOption:CheckReady()
 	-- run once
 	if self.ready then return true end
 	self.ready = true
-	
+
 	--[[ Create at first time ]]
-	
+
 	-- background
-	self:SetBackdrop( { 
-	  bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", 
-	  edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", 
-	  tile = true, tileSize = 16, edgeSize = 16, 
+	self:SetBackdrop( {
+	  bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+	  edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+	  tile = true, tileSize = 16, edgeSize = 16,
 	  insets = { left = 5, right = 5, top = 5, bottom = 5 }
 	});
 	self:SetBackdropColor(0,0,0)
 	self:SetBackdropBorderColor(0.5,0.5,0.5)
-	
+
 	-- drag
 	self:EnableMouse(true)
 	self:RegisterForDrag("LeftButton")
 	self:SetScript("OnDragStart",function() this:StartMoving() end)
 	self:SetScript("OnDragStop",function() this:StopMovingOrSizing() end)
-	
+
 	-- label texts
 	local name, args, label
 	for name, args in pairs(self.labels) do
@@ -69,19 +73,19 @@ function zBarOption:CheckReady()
 		label:SetPoint(args[5],args[6],args[7])
 		label:SetText(zBar2.loc.Option[name])
 	end
-	
+
 	-- close button
 	CreateFrame("Button","zBarOptionCloseButton",self,"UIPanelCloseButton"):SetPoint("TOPRIGHT")
-	
+
 	-- choose bar
 	local id, bar, button
 	for id, name in ipairs(self.bars) do
 		bar = _G[name]
-		
+
 		button = CreateFrame("CheckButton", "zBarOptionBar"..name,self,"zBarOptionRadioButtonTemplate")
 		button.bar = bar
 		if not bar or not bar.Reset then button:Disable() end
-		
+
 		if id == 1 then
 			button:SetPoint("TOPLEFT",zBarOptionSelectBar,"BOTTOMLEFT",0,-5)
 		elseif mod(id, 4) == 1 then
@@ -89,23 +93,23 @@ function zBarOption:CheckReady()
 		else
 			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",55,0)
 		end
-		
+
 		button:SetText(zBar2.loc.Labels[name])
-		
+
 		button:SetScript("OnClick", function()
 			PlayClickSound()
 			zBarOption:Openfor(this.bar)
 		end)
 		button:SetScript("OnEnter",nil)
 	end
-	
+
 	-- reset button
 	button = CreateFrame("Button","zBarOptionResetButton",self,"UIPanelButtonTemplate2")
 	button:SetWidth(110); button:SetHeight(20);
 	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-120)
 	button:SetText(zBar2.loc.Option.Reset)
 	button:SetScript("OnClick", function() zBarOption.bar:Reset(true) zBarOption:LoadOptions() end)
-	
+
 	-- check buttons
 	for id, value in ipairs(self.buttons) do
 		local template
@@ -119,9 +123,9 @@ function zBarOption:CheckReady()
 		button:SetText(zBar2.loc.Option[value.name])
 		button.tooltipText = zBar2.loc.Tips[value.name]
 		button:SetID(id)
-		
+
 		if value.notReady or (value.IsEnabled and not value.IsEnabled()) then button:Disable() end
-		
+
 		button:SetScript("OnClick",function()
 			PlayClickSound()
 			local value = zBarOption.buttons[this:GetID()]
@@ -142,9 +146,9 @@ function zBarOption:CheckReady()
 				value.UnChecked()
 			end
 		end)
-		
+
 	end
-	
+
 	-- sliders
 	local slider, value
 	for id, value in ipairs(zBarOption.sliders) do
@@ -153,10 +157,10 @@ function zBarOption:CheckReady()
 		slider:SetMinMaxValues(value.min,value.max)
 		slider:SetValueStep(value.step)
 		slider:SetScript("OnValueChanged", value.setFunc)
-		
+
 		_G["zBarOptionSlider"..id.."Text"]:SetText(zBar2.loc.Option[value.name])
 		slider.tooltipText = zBar2.loc.Tips[value.name]
-		
+
 		if value.factor then
 			_G["zBarOptionSlider"..id.."Low"]:SetText(value.min * value.factor .. "%")
 			_G["zBarOptionSlider"..id.."High"]:SetText(value.max * value.factor .. "%")
@@ -172,7 +176,7 @@ function zBarOption:CheckReady()
 	zBarOptionSlider3EditBox:SetMaxLetters(3)
 	zBarOptionSlider3EditBox:SetFocus(true)
 	zBarOptionSlider3EditBox:SetPoint("LEFT",zBarOptionSlider3Text,"RIGHT",6,0)
-	
+
 	zBarOptionSlider3EditBox:SetScript("OnEnterPressed", function()
 		zBarOptionSlider3:SetValue(this:GetNumber()*0.01)
 	end)
@@ -256,7 +260,7 @@ zBarOption.bars = { --[[ bar name and order ]]
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- show / hide bar
 		name="Hide",var="hide",pos={"TOPLEFT","zBarOptionAttribute","BOTTOMLEFT",0,-5},
-		OnChecked=function() zBarOption.bar:UpdateVisibility() end, 
+		OnChecked=function() zBarOption.bar:UpdateVisibility() end,
 		UnChecked=function()
 			zBarOption.bar:UpdateVisibility()
 			zBarOption.bar:UpdateButtons()
@@ -270,7 +274,7 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	},
 	{-- show / hide tab
 		name="Lock",var="hideTab",pos={"TOP","zBarOptionLabel","BOTTOM",0,0},
-		OnChecked=function() zBarOption.bar:UpdateVisibility() end, 
+		OnChecked=function() zBarOption.bar:UpdateVisibility() end,
 		UnChecked=function() zBarOption.bar:UpdateVisibility() end,
 	},
 	{-- auto-pop mode
@@ -279,48 +283,54 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		UnChecked=function() zBarOption.bar:UpdateAutoPop() end,
 	},
 	{
-		name="Suit1",var="layout",value="suit1",radio = true,
+		name="Suite1",var="layout",value="suite1",radio = true,
 		pos={"TOPLEFT","zBarOptionLayout","BOTTOMLEFT",0,-5},
-		OnChecked=function() 
-			zBarOptionSuit2:SetChecked(false)
+		OnChecked=function()
+			zBarOptionSuite2:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
+			zBarOptionFree:SetChecked(false)
 			zBarOption.bar:UpdateLayouts()
 		end,
 		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
-		name="Suit2",var="layout",value="suit2",radio = true,
-		pos={"TOP","zBarOptionSuit1","BOTTOM",0,-2},
+		name="Suite2",var="layout",value="suite2",radio = true,
+		pos={"TOP","zBarOptionSuite1","BOTTOM",0,-2},
 		OnChecked=function()
-			zBarOptionSuit1:SetChecked(false)
+			zBarOptionSuite1:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
+			zBarOptionFree:SetChecked(false)
 			zBarOption.bar:UpdateLayouts()
 		end,
 		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
 		name="Circle",var="layout",value="circle",radio = true,
-		pos={"TOP","zBarOptionSuit2","BOTTOM",0,-2},
+		pos={"TOP","zBarOptionSuite2","BOTTOM",0,-2},
 		OnChecked=function()
-			zBarOptionSuit1:SetChecked(false)
-			zBarOptionSuit2:SetChecked(false)
+			zBarOptionSuite1:SetChecked(false)
+			zBarOptionSuite2:SetChecked(false)
+			zBarOptionFree:SetChecked(false)
 			zBarOption.bar:UpdateLayouts()
 		end,
 		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
-		name="Trigon1",var="layout",value="trigon1",radio = true,
+		name="Free",var="layout",value="free",radio = true,
 		pos={"TOP","zBarOptionCircle","BOTTOM",0,-2},
-		notReady = true,
-		OnChecked=function() end,
-		UnChecked=function() end,
+		OnChecked=function()
+			zBarOptionSuite1:SetChecked(false)
+			zBarOptionSuite2:SetChecked(false)
+			zBarOptionCircle:SetChecked(false)
+			zTab:SaveAllPoints(zBarOption.bar)
+		end,
+		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
 	},
 	{
-		name="Trigon2",var="layout",value="trigon2",radio = true,
-		pos={"TOP","zBarOptionTrigon1","BOTTOM",0,-2},
-		notReady = true,
-		OnChecked=function() end,
-		UnChecked=function() end,
+		name="Invert",var="invert",
+		pos={"TOP","zBarOptionFree","BOTTOM",0,-2},
+		OnChecked=function() zBarOption.bar:UpdateLayouts() end,
+		UnChecked=function() zBarOption.bar:UpdateLayouts() end,
 	},
 	--[[ commons ]]
 	{-- show / hide hotkeys
@@ -394,16 +404,15 @@ zBarOption.sliders = { --[[ Sliders ]]
 		pos={"TOP","zBarOptionSlider1","BOTTOM",0,-25},
 		setFunc = function()
 			local saves = zBar2Saves[zBarOption.bar:GetName()]
-			
+
 			if zBarOption.loading and saves.layout ~= "line" then return end
-			
+
 			-- uncheck layout radio buttons
-			zBarOptionSuit1:SetChecked(false)
-			zBarOptionSuit2:SetChecked(false)
+			zBarOptionSuite1:SetChecked(false)
+			zBarOptionSuite2:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
-			zBarOptionTrigon1:SetChecked(false)
-			zBarOptionTrigon2:SetChecked(false)
-						
+			zBarOptionFree:SetChecked(false)
+
 			-- linenum can't be greater than num
 			local num = this:GetValue()
 			if num > saves.num then

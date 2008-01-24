@@ -4,7 +4,7 @@ local _G = getfenv(0)
 zPossessBar = {}
 function zPossessBar:GetName() return "zPossessBar" end
 zBar2:RegisterPlugin(zPossessBar)
---
+
 function zPossessBar:Init()
 	-- create and add buttons
 	for i = 1, 2 do
@@ -14,7 +14,7 @@ function zPossessBar:Init()
 
 	local button = self:GetButton(1)
 	local PageReturn = 1
-	if select(2, UnitClass("player")) == "WARRIOR" then PageReturn = 7 end
+	if zBar2.class == "WARRIOR" then PageReturn = 7 end
 	button:SetAttribute("newstate", "1-10:11;11:"..PageReturn)
 
 	button = self:GetButton(2)

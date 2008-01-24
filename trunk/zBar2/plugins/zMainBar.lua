@@ -34,7 +34,7 @@ function zMainBar:Init()
 	BonusActionBarFrame:Hide()
 	BonusActionBarFrame:UnregisterAllEvents()
 	BonusActionBarFrame.Show = BonusActionBarFrame.Hide
-
+	
 	self:Hook()
 	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
 		self:UpdateGrid(1)
@@ -54,6 +54,11 @@ function zMainBar:Hook()
 	
 	hooksecurefunc("MultiActionBar_ShowAllGrids",function() zMainBar:UpdateGrid(1) end)
 	hooksecurefunc("MultiActionBar_HideAllGrids",function() zMainBar:UpdateGrid() end)
+	
+	-- hook stance rescan for priest or druid
+	if zBar2.class == "PRIEST" or zBar2.class == "DRUID" then
+		hooksecurefunc("ShapeshiftBar_UpdateState", zMainBar.UpdateStanceMap)
+	end
 end
 
 function zMainBar:UpdateHotkey()
@@ -90,16 +95,63 @@ local triggers = {
 	[2] = "[help]2",
 }
 local stances = {
-    ["PRIEST"] = { [1] = 7, [2] = 8, },
     ["ROGUE"] = { [1] = 7 },
-    ["DRUID"] = { [1] = 9, [3] = 7, [5] = 8 },	-- moonkin/tree-of-life
     ["WARRIOR"] = { [1] = 7, [2] = 8, [3] = 9 },
 }
+local stanceTextureMap = {
+	["PRIEST"] = {
+		["Shadowform"] = 7,
+	},
+	["DRUID"] = {
+		["BearForm"] = 9,
+		["CatForm"] = 7,
+		["TreeofLife"] = 8,
+		["ForceOfNature"] = 8,	-- moonkin
+	},
+}
+
+--[[
+	rescan stances for Priest or Druid
+--]]
+zMainBar.numForms = 0
+function zMainBar:UpdateStanceMap()
+	local numForms = GetNumShapeshiftForms()
+	-- return if no changes
+	if numForms == zMainBar.numForms then return end
+	zMainBar.numForms = numForms
+	-- rescan stance map
+	stances[zBar2.class] = {} -- clear stances
+	for i = 1, numForms do
+		local texture, name, isActive = GetShapeshiftFormInfo(i)
+		if isActive then
+			local j = 1
+			local buffName, rank, buffTexture = UnitBuff("player", j)
+			while buffName do
+				if buffName == name then
+					texture = buffTexture
+				end
+				j = j + 1
+				buffName, rank, buffTexture = UnitBuff("player", j)
+			end
+		end
+		for str, page in pairs(stanceTextureMap[zBar2.class]) do
+			if string.find(string.lower(texture), string.lower(str)) then
+				stances[zBar2.class][i] = page
+			end
+		end
+	end
+	-- update
+	if not InCombatLockdown() then -- for secure
+		zMainBar:UpdateStateHeader()
+		zBar2:print("zBar2 - Detecting Stances for "..UnitClass("player"), 1,1,0)
+	else
+		zMainBar.numForms = 0 -- rescan on next stance change
+	end
+end
 
 function zMainBar:UpdateStateHeader()
     UnregisterStateDriver(zMainBar, "actionpage")
 	
-	local class = select(2, UnitClass("player"))
     local header, state = "", ""
 	
 	if zBar2Saves["pageTrigger"] then
@@ -109,8 +161,8 @@ function zMainBar:UpdateStateHeader()
 		end
 	end
 	
-    if stances[class] then
-        for k,v in pairs(stances[class]) do
+    if stances[zBar2.class] then
+        for k,v in pairs(stances[zBar2.class]) do
             state = format("[actionbar:1,stance:%d]%d;", k, v)
 			header = header .. state
         end

@@ -13,15 +13,28 @@ function zBarT:UpdateLayouts()
 	end
 	local value = zBar2Saves[name]
 	if not value.num or value.num < 2 then return end
+	-- check free style first
+	if value.layout == "free" then
+		self:SetFree()
+		return
+	end
+	-- if not free style then reset and release
+	zBar2Saves[self:GetName()].buttons = {}
+	self:ResetButtonScales(value.num)
 	-- call function for arrangement changing
 	if value.layout == "line" then
 		self:SetLineNum()
-	elseif value.layout == "suit1" then
-		self:SetSuit(value.layout)
-	elseif value.layout == "suit2" then
-		self:SetSuit(value.layout)
+	elseif value.layout == "suite1" then
+		self:SetSuite(value.layout)
+	elseif value.layout == "suite2" then
+		self:SetSuite(value.layout)
 	elseif value.layout == "circle" then
 		self:SetCircle()
+	end
+end
+function zBarT:ResetButtonScales(num)
+	for i = 2, num do
+		_G[zBar2.buttons[self:GetName()..i]]:SetScale(1)
 	end
 end
 -- local func, for points settings
@@ -35,7 +48,7 @@ end
 function zBarT:SetLineNum()
 	local value = zBar2Saves[self:GetName()]
 	local inset = value.inset
-	
+
 	if not value.linenum or value.linenum == 0 then
 		zBar2Saves[self:GetName()].linenum = 1
 	end
@@ -63,7 +76,7 @@ function zBarT:SetLineNum()
 						SetButtonPoint( self, cur_id, "TOP", cur_id - value.linenum, "BOTTOM", 0, -inset)
 					end
 				else -- siblings goes my right side
-					if self == zBagBar then -- reverse if is bag bar
+					if value.invert then -- reverse if is bag bar
 						SetButtonPoint( self, cur_id, "RIGHT", cur_id - 1, "LEFT", -inset, 0)
 					else
 						SetButtonPoint( self, cur_id, "LEFT", cur_id - 1, "RIGHT", inset, 0)
@@ -74,7 +87,7 @@ function zBarT:SetLineNum()
 	end
 end
 
-function zBarT:SetCircle()	
+function zBarT:SetCircle()
 	local r = 6*zBar2Saves[self:GetName()].num + 5*zBar2Saves[self:GetName()].inset
 	if self:GetID() > 10 then r = r - 16 end
 	local n = zBar2Saves[self:GetName()].num
@@ -87,28 +100,55 @@ function zBarT:SetCircle()
 	end
 end
 
-function zBarT:SetSuit(suitname)
+function zBarT:SetFree()
+	local saves = zBar2Saves[self:GetName()]
+	local name
+	for i = 2, saves.num do
+		name = zBar2.buttons[self:GetName()..i]
+		if saves.buttons and saves.buttons[name] then
+			_G[name]:SetScale(saves.buttons[name].scale or 1)
+			if saves.buttons[name].pos then
+				_G[name]:ClearAllPoints()
+				_G[name]:SetPoint("CENTER", zBar2.buttons[self:GetName().."1"],
+				"CENTER", saves.buttons[name].pos[1],saves.buttons[name].pos[2])
+			end
+		end
+	end
+end
+
+-- invert a point(for suites)
+local function Invert(point, k)
+	if k > 0 then return point end
+	local s = string.gsub(point,"LEFT","RIGHT")
+	if s == point then
+		s = string.gsub(point,"RIGHT","LEFT")
+	end
+	return s
+end
+function zBarT:SetSuite(suitename)
 	local inset = zBar2Saves[self:GetName()].inset
 	local num = zBar2Saves[self:GetName()].num
 	if num == 1 then return end
-	for id, pos in pairs(self[suitname][num]) do
-		SetButtonPoint(self, id, pos[1], pos[2], pos[3], inset*pos[4], inset*pos[5])
+	local k = 1
+	if zBar2Saves[self:GetName()].invert then k = -1 end
+	for id, pos in pairs(self[suitename][num]) do
+		SetButtonPoint(self, id, Invert(pos[1],k), pos[2], Invert(pos[3],k), k*inset*pos[4], inset*pos[5])
 	end
 end
 
 --[[ Data ]]
-zBarT.suit1 = {
+zBarT.suite1 = {
 	[2] = {
 		[2] = {"TOPLEFT", 1, "BOTTOMRIGHT", 1, -1},
 	},
 	[3] = {
 		[2] = {"TOPRIGHT", 1, "BOTTOM", -0.5, -1},
-		[3] = {"TOPLEFT", 1, "BOTTOM", 1, -1},
+		[3] = {"TOPLEFT", 1, "BOTTOM", 0.5, -1},
 	},
 	[4] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"TOP", 1, "BOTTOM", 0, -1},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0}
+		[2] = {"TOP", 1, "BOTTOM", 0, -1},
+		[3] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
+		[4] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5}
 	},
 	[5] = {
 		[2] = {"TOP", 1, "BOTTOM", 0, -1},
@@ -119,7 +159,7 @@ zBarT.suit1 = {
 	[6] = {
 		[2] = {"LEFT", 1, "RIGHT", 1, 0},
 		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"TOP", 1, "BOTTOM", 0, -1},
+		[4] = {"TOP", 1, "BOTTOMLEFT", -0.5, -1},
 		[5] = {"LEFT", 4, "RIGHT", 1, 0},
 		[6] = {"LEFT", 5, "RIGHT", 1, 0},
 	},
@@ -133,20 +173,20 @@ zBarT.suit1 = {
 	},
 	[8] = {
 		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0},
-		[5] = {"TOP", 1, "BOTTOM", 0, -1},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"LEFT", 6, "RIGHT", 1, 0},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
+		[3] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
+		[4] = {"TOP", 3, "BOTTOMLEFT", -0.5, -1},
+		[5] = {"TOPLEFT", 3, "BOTTOMRIGHT", 1, -1},
+		[6] = {"LEFT", 2, "BOTTOMRIGHT", 1, -0.5},
+		[7] = {"TOP", 6, "BOTTOMRIGHT", 0.5, -1},
+		[8] = {"TOPRIGHT", 6, "BOTTOMLEFT", -1, -1},
 	},
 	[9] = {
 		[2] = {"LEFT", 1, "RIGHT", 1, 0},
 		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"TOP", 1, "BOTTOM", 0, -1},
-		[5] = {"LEFT", 4, "RIGHT", 1, 0},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"TOP", 4, "BOTTOM", 0, -1},
+		[4] = {"TOP", 1, "BOTTOMLEFT", -0.5, -1},
+		[5] = {"TOP", 2, "BOTTOM", 0, -1},
+		[6] = {"TOP", 3, "BOTTOMRIGHT", 0.5, -1},
+		[7] = {"TOPRIGHT", 5, "BOTTOMLEFT", -1, -1},
 		[8] = {"LEFT", 7, "RIGHT", 1, 0},
 		[9] = {"LEFT", 8, "RIGHT", 1, 0},
 	},
@@ -173,46 +213,37 @@ zBarT.suit1 = {
 		[10] = {"LEFT", 9, "RIGHT", 1, 0},
 		[11] = {"LEFT", 10, "RIGHT", 1, 0},
 	},
-	[12] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"TOP", 1, "BOTTOM", 0, -1},
-		[5] = {"LEFT", 4, "RIGHT", 1, 0},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"TOP", 4, "BOTTOM", 0, -1},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
-		[9] = {"LEFT", 8, "RIGHT", 1, 0},
-		[10] = {"TOP", 7, "BOTTOM", 0, -1},
-		[11] = {"LEFT", 10, "RIGHT", 1, 0},
-		[12] = {"LEFT", 11, "RIGHT", 1, 0},
-	},
+	[12] = {},
 }
-zBarT.suit2 = {
+for i = 2, 12 do
+	table.insert(zBarT.suite1[12], i, {"LEFT",i-1,"RIGHT",0, i*0.1 * math.pow(1.05,i-1) })
+end
+zBarT.suite2 = {
 	[2] = {
 		[2] = {"TOPRIGHT", 1, "BOTTOMLEFT", -1, -1},
-	},	
+	},
 	[3] = {
-		[2] = {"TOPRIGHT", 1, "BOTTOM", -0.5, -1},
-		[3] = {"TOPLEFT", 1, "BOTTOM", 0.5, -1},
-	},	
+		[2] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
+		[3] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5},
+	},
 	[4] = {
-		[2] = {"TOPRIGHT", 1, "LEFT", -1, -0.5},
-		[3] = {"TOPLEFT", 1, "RIGHT", 1, -0.5},
-		[4] = {"TOP", 1, "BOTTOM", 0, -1},
-	},	
+		[2] = {"TOP", 1, "BOTTOM", 0, -1},
+		[3] = {"RIGHT", 2, "LEFT", -1, 0},
+		[4] = {"LEFT", 2, "RIGHT", 1, 0},
+	},
 	[5] = {
-		[3] = {"LEFT", 1, "RIGHT", 1, 0},
-		[2] = {"TOPLEFT", 1, "BOTTOM", 0.5, -1},
-		[4] = {"TOPRIGHT", 2, "BOTTOM", -0.5, -1},
-		[5] = {"TOPLEFT", 2, "BOTTOM", 0.5, -1},
-	},	
+		[3] = {"RIGHT", 1, "TOPLEFT", -1, 0.5},
+		[2] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
+		[4] = {"LEFT", 1, "TOPRIGHT", 1, 0.5},
+		[5] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5},
+	},
 	[6] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"TOP", 1, "BOTTOM", 0, -1},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0},
-		[5] = {"TOP", 3, "BOTTOM", 0, -1},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-	},	
+		[2] = {"TOP", 1, "BOTTOM", 0, -1},
+		[3] = {"TOP", 2, "BOTTOM", 0, -1},
+		[4] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5},
+		[5] = {"TOP", 4, "BOTTOM", 0, -1},
+		[6] = {"TOP", 5, "BOTTOM", 0, -1},
+	},
 	[7] = {
 		[2] = {"TOPRIGHT", 1, "LEFT", -1, -0.5},
 		[3] = {"TOPLEFT", 1, "RIGHT", 1, -0.5},
@@ -220,37 +251,37 @@ zBarT.suit2 = {
 		[5] = {"TOPRIGHT", 4, "LEFT", -1, -0.5},
 		[6] = {"TOPLEFT", 4, "RIGHT", 1, -0.5},
 		[7] = {"TOP", 4, "BOTTOM", 0, -1},
-	},	
+	},
 	[8] = {
 		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"TOP", 1, "BOTTOM", 0, -1},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0},
-		[5] = {"TOP", 3, "BOTTOM", 0, -1},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"TOP", 5, "BOTTOM", 0, -1},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
-	},	
+		[3] = {"RIGHT", 1, "TOPLEFT", -1, 0.5},
+		[4] = {"BOTTOM", 3, "TOPLEFT", -0.5, 1},
+		[5] = {"BOTTOMLEFT", 3, "TOPRIGHT", 1, 1},
+		[6] = {"LEFT", 2, "TOPRIGHT", 1, 0.5},
+		[7] = {"BOTTOM", 6, "TOPRIGHT", 0.5, 1},
+		[8] = {"BOTTOMRIGHT", 6, "TOPLEFT", -1, 1},
+	},
 	[9] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"TOP", 1, "BOTTOM", 0, -1},
-		[5] = {"LEFT", 4, "RIGHT", 1, 0},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"TOP", 4, "BOTTOM", 0, -1},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
-		[9] = {"LEFT", 8, "RIGHT", 1, 0},
-	},	
+		[2] = {"TOP", 1, "BOTTOM", 0, -1},
+		[3] = {"TOP", 2, "BOTTOM", 0, -1},
+		[4] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
+		[5] = {"TOP", 4, "BOTTOM", 0, -1},
+		[6] = {"RIGHT", 4, "BOTTOMLEFT", -1, -0.5},
+		[7] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5},
+		[8] = {"TOP", 7, "BOTTOM", 0, -1},
+		[9] = {"LEFT", 7, "BOTTOMRIGHT", 1, -0.5},
+	},
 	[10] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"TOP", 1, "BOTTOM", 0, -1},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0},
-		[5] = {"TOP", 3, "BOTTOM", 0, -1},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
+		[2] = {"RIGHT", 1, "LEFT", -1, 0},
+		[3] = {"LEFT", 1, "RIGHT", 1, 0},
+		[4] = {"TOP", 1, "BOTTOMLEFT", -0.5, -1},
+		[5] = {"TOP", 1, "BOTTOMRIGHT", 0.5, -1},
+		[6] = {"TOP", 4, "BOTTOM", 0, -1},
 		[7] = {"TOP", 5, "BOTTOM", 0, -1},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
-		[9] = {"TOP", 7, "BOTTOM", 0, -1},
+		[8] = {"TOPRIGHT", 6, "BOTTOM", -0.5, -1},
+		[9] = {"LEFT", 8, "RIGHT", 1, 0},
 		[10] = {"LEFT", 9, "RIGHT", 1, 0},
-	},	
+	},
 	[11] = {
 		[2] = {"BOTTOMRIGHT", 1, "LEFT", -1, 0.5},
 		[3] = {"BOTTOMRIGHT", 2, "LEFT", -1, 0.5},
@@ -262,18 +293,9 @@ zBarT.suit2 = {
 		[9] = {"BOTTOMLEFT", 8, "TOP", 0.5, 1},
 		[10] = {"BOTTOMLEFT", 9, "TOP", 0.5, 1},
 		[11] = {"BOTTOMRIGHT", 10, "TOP", -0.5, 1},
-	},	
-	[12] = {
-		[2] = {"LEFT", 1, "RIGHT", 1, 0},
-		[3] = {"LEFT", 2, "RIGHT", 1, 0},
-		[4] = {"LEFT", 3, "RIGHT", 1, 0},
-		[5] = {"LEFT", 4, "RIGHT", 1, 0},
-		[6] = {"LEFT", 5, "RIGHT", 1, 0},
-		[7] = {"TOP", 1, "BOTTOM", 0, -1},
-		[8] = {"LEFT", 7, "RIGHT", 1, 0},
-		[9] = {"LEFT", 8, "RIGHT", 1, 0},
-		[10] = {"LEFT", 9, "RIGHT", 1, 0},
-		[11] = {"LEFT", 10, "RIGHT", 1, 0},
-		[12] = {"LEFT", 11, "RIGHT", 1, 0},
-	},	
+	},
+	[12] = {},
 }
+for i = 2, 12 do
+	table.insert(zBarT.suite2[12], i, {"LEFT",i-1,"RIGHT",0, - i*0.1 * math.pow(1.05,i-1) })
+end

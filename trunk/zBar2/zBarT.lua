@@ -23,17 +23,32 @@ function zBarT:Reset(resetsaves)
 	-- name plate
 	if zBar2Saves[name].label then self:GetLabel():Show() end
 	
+	-- remove tab from master tab's cortege list
+	if self:GetTab().master then
+		tDeleteItem(self:GetTab().master.cortege, self:GetTab():GetName())
+		self:GetTab().master = nil
+	end
+	-- remove tab's corteges
+	if self:GetTab().cortege then
+		for n, name in ipairs(self:GetTab().cortege) do
+			_G[name]:ClearAllPoints()
+			table.remove(self:GetTab().cortege, n)
+			_G[name].master = nil
+		end
+	end
+	
 	-- reset position
 	local pos = zBar2Saves[name].pos or zBar2:GetDefault(self, "pos")
 	self:GetTab():ClearAllPoints()
 	if type(pos[2]) == "string" then
-		self:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+30)
+		self:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4])
 	else
-		self:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+30)
+		self:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3])
 	end
 	self:ClearAllPoints()
 	self:SetPoint("TOP",self:GetTab(),"BOTTOM",0,0)
 	
+	-- update all
 	self:UpdateVisibility()
 	self:UpdateButtons()
 	self:UpdateLayouts()
@@ -144,75 +159,7 @@ end
 function zBarT:GetChildSizeAdjust(attachPoint)
 	return 0, 0
 end
---[[ Tab functions ]]
-local function zTab_OnDragStart()
-	this:StartMoving()
-	
-	if InCombatLockdown() then return end
-	
-	for key, name in pairs(zBar2.buttons) do
-		if _G[name]:GetParent():GetID() <= 10 then
-			_G[name]:Show()
-			_G[name.."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
-		end
-	end
-end
-local SCREENCENTERYOFFSET = -30 -- hack for unknow reason
-local function zTab_SavePosition(tab)
-	local x, y = tab:GetCenter()
-	local cx, cy = UIParent:GetCenter()
-	cx = cx / tab:GetScale()
-	cy = cy / tab:GetScale()
-	zBar2Saves[tab.bar:GetName()].pos = {"CENTER",x-cx,y-cy+SCREENCENTERYOFFSET,}
-	tab:SetUserPlaced(false)
-end
-local function zTab_OnDragStop()
-	this:StopMovingOrSizing()
-	
-	zTab_SavePosition(this)
-	if this.master then -- remove this from master tab's cortege list
-		tDeleteItem(this.master.cortege, this:GetName())
-	end
-	if this.cortege then -- save my corteges' positions
-		for _, name in ipairs(this.cortege) do
-			zTab_SavePosition(_G[name])
-		end
-	end
-	
-	if InCombatLockdown() then return end
-	
-	local attachPoint = nil
-	if IsControlKeyDown() then
-		attachPoint = "BOTTOMLEFT"
-	elseif IsShiftKeyDown() then
-		attachPoint = "TOPRIGHT"
-	end
-		-- check if drop on a button
-	for key, name in pairs(zBar2.buttons) do
-		local button = _G[name]
-		if attachPoint then
-			if button and this.bar ~= button:GetParent() and
-			button:IsVisible() and MouseIsOver(button) then
-				local offsetX, offsetY = button:GetParent():GetChildSizeAdjust(attachPoint)
-				offsetX = offsetX / this.bar:GetScale()
-				offsetY = offsetY / this.bar:GetScale()
-				this:ClearAllPoints()
-				this:SetPoint("BOTTOMLEFT", button, attachPoint, offsetX, offsetY)
-				zTab_SavePosition(this)
-				-- master and cortege
-				local tab = _G[name]:GetParent():GetTab()
-				this.master = tab
-				tab.cortege = tab.cortege or {}
-				table.insert(tab.cortege, this:GetName())
-			end
-		end
-		if button:GetParent():GetID() <= 10 then
-			if (zExBars.showgrid == 0 and not HasAction(button.action)) then
-				button:Hide()
-			end
-		end
-	end
-end
+
 -- get tab of bar, create if not exist
 function zBarT:GetTab()
 	local id = self:GetID()
@@ -223,8 +170,8 @@ function zBarT:GetTab()
 	tab:SetID(id)
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	tab:SetScript("OnDragStart",zTab_OnDragStart)
-	tab:SetScript("OnDragStop",zTab_OnDragStop)
+	tab:SetScript("OnDragStart",zTab.OnDragStart)
+	tab:SetScript("OnDragStop",zTab.OnDragStop)
 	
 	tab:SetAttribute("type2", "OnMenu")
 	tab.OnMenu = function(self, unit, button)
