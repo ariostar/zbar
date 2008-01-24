@@ -22,11 +22,11 @@ if not zBar2.loc then
 		Lock = "Lock",
 		Pop = "Pop",
 
-		Suit1 = "Suit1",
-		Suit2 = "Suit2",
-		Trigon1 = "Trigon1",
-		Trigon2 = "Trigon2",
+		Suite1 = "Suite1",
+		Suite2 = "Suite2",
 		Circle = "Circle",
+		Free = "Free",
+		Invert = "Invert",
 
 		HotKey = "Hide HotKey",
 		HideTip = "Hide Tooltip",
@@ -47,11 +47,11 @@ if not zBar2.loc then
 		Lock		= "Lock bar and hide tab",
 		Pop		= "Pop up when Targeting Enemy or In Combat, Hide otherwise",
 
-		Suit1		= "Predefined Layout Suit 1",
-		Suit2		= "Predefined Layout Suit 2",
-		Circle		= "Circle",
-		Trigon1	= "Trigon1",
-		Trigon2	= "Trigon2",
+		Suite1		= "Classic Shapes\nTry addjust Button Spacing when num is 12",
+		Suite2		= "Fancy Shapes\nTry addjust Button Spacing when num is 12",
+		Circle		= "Ringed around. \nSet the Button Spacing to change radius",
+		Free			= "Moves when dragging and hold Ctrl+Alt+Shift\nScale on mouse wheel",
+		Invert		= "Mirror it horizontally, left to right, right to left",
 
 		HotKey			= "Show / Hide Hotkeys for all buttons",
 		HideTip		= "Show / Hide Tooltips",

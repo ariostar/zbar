@@ -35,14 +35,15 @@ function zExBars:New(prefix,id,page)
 		bar:GetButton(1):SetPoint("CENTER")
 	end
 	
+	if not zBar2Saves[prefix..id] then
+		zBar2Saves[prefix..id] = zBar2:GetDefault(bar,"saves")
+		zBar2Saves[prefix..id].pos = zBar2:GetDefault(bar,"pos")
+	end
+	
 	return bar
 end
 
 function zExBars:Init()
-	zExBars.showgrid = 0
-	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
-		zExBars.showgrid = 1
-	end
 	-- create buttons
 	local button
 	for id = 1, NUM_ZEXBAR_BUTTONS do
@@ -55,22 +56,23 @@ function zExBars:Init()
 	
 	-- create bars
 	local bar, page
-	local class = select(2, UnitClass("player"))
 	for id = 1, NUM_ZEXBAR_BAR do
 		page = 11 - id
 		if id == 2 then
-			if class == "DRUID" then page = 8 end
-			if class == "WARRIOR" then page = 1 end
+			if zBar2.class == "DRUID" then page = 8 end
+			if zBar2.class == "WARRIOR" then page = 1 end
 		end
 		-- create normal bar
 		self:New("zExBar", id, page)
 		-- create shadow bar
 		self:New("zShadow", id, page)
 		
-		self:UpdateShadows(id)
+		zExBars:UpdateShadows(id)
 	end
 	
-	self:Hook()
+	-- grid stuff
+	zBar2:RegisterGridUpdater(zExBars.UpdateGrid)
+	
 end
 
 function zExBars:GetButton(i)
@@ -119,74 +121,36 @@ function zExBars:UpdateShadows(index)
 	if zBar2Saves["zShadow"..id].linenum > 12 - num then
 		zBar2Saves["zShadow"..id].linenum = 12 - num
 	end
-	button = shadow:GetButton(1)
-	if button then
-		button:ClearAllPoints()
-		button:SetPoint("CENTER")
+	if shadow:GetButton(1) then
+		shadow:GetButton(1):ClearAllPoints()
+		shadow:GetButton(1):SetPoint("CENTER")
 		shadow:UpdateLayouts()
 	end
 	shadow:UpdateButtons()
-end
-
---[[ Hooks ]]
-function zExBars:Hook()
-	-- All those hooks is for extra buttons grid show or hide
-	hooksecurefunc("MultiActionBar_ShowAllGrids",function()
-		zExBars.showgrid = zExBars.showgrid + 1
-		zExBars:UpdateGrid()
-	end)
-	hooksecurefunc("MultiActionBar_HideAllGrids",function()
-		zExBars.showgrid = zExBars.showgrid - 1
-		zExBars:UpdateGrid()
-	end)
-	hooksecurefunc("ActionButton_HideGrid", function()
-		if this == zExButton24 then
-			zExBars:UpdateGrid()
-		end
-	end)
-	-- hook events on zExBar1
-	zExBar1:RegisterEvent("ACTIONBAR_SHOWGRID")
-	zExBar1:RegisterEvent("ACTIONBAR_HIDEGRID")
-	zExBar1:RegisterEvent("PLAYER_ENTERING_WORLD")
-	zExBar1:SetScript("OnEvent", function()
-		if event == "ACTIONBAR_SHOWGRID" then
-			zExBars.showgrid = zExBars.showgrid + 1
-			zExBars:UpdateGrid()
-		elseif event == "ACTIONBAR_HIDEGRID" then
-			zExBars.showgrid = zExBars.showgrid - 1
-			zExBars:UpdateGrid()
-		elseif event == "PLAYER_ENTERING_WORLD" then
-			if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
-				zExBars:UpdateGrid()
-			end
-		end
-	end)
 end
 
 function zExBars:UpdateGrid(bar)
 	-- in combat we can't let it be shown or hidden
 	if InCombatLockdown() then return end
 	
-	if bar then
+	if bar then -- update for bar
 		for i=1, zBar2Saves[bar:GetName()].num do
-			if zExBars.showgrid > 0 then
+			if zBar2.showgrid > 0 then
 				bar:GetButton(i):Show()
 			end
 		end
 		return
 	end
-	
-	local show = (zExBars.showgrid > 0)
+	-- update all buttons if not given a bar
+	local button
 	for i=1, NUM_ZEXBAR_BUTTONS do
-		local button = _G["zExButton"..i]
-		if show then
+		button = _G["zExButton"..i]
+		if zBar2.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
-				button:Show();
+				button:Show()
 			end
-		else
-			if not HasAction(button.action) then
-				button:Hide();
-			end
+		elseif not HasAction(button.action) then
+			button:Hide()
 		end
 	end
 end

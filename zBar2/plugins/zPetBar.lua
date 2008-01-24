@@ -25,7 +25,7 @@ function zPetBar:Init()
 	self:GetTab():GetNormalTexture():SetWidth(50)
 	self:GetTab():GetHighlightTexture():SetWidth(50)
 end
-
+-- override
 function zPetBar:UpdateVisibility()
 	if zBar2Saves[self:GetName()].hide then
 		UnregisterUnitWatch(self)
