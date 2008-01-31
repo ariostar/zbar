@@ -19,7 +19,7 @@ function zMicroBar:Init()
 	LFGMicroButton:SetParent(self)
 	MainMenuMicroButton:SetParent(self)
 	HelpMicroButton:SetParent(self)
-	
+
 	zBar2.buttons["zMicroBar1"]= "CharacterMicroButton"
 	zBar2.buttons["zMicroBar2"]= "SpellbookMicroButton"
 	zBar2.buttons["zMicroBar3"]= "TalentMicroButton"
@@ -28,10 +28,10 @@ function zMicroBar:Init()
 	zBar2.buttons["zMicroBar6"]= "LFGMicroButton"
 	zBar2.buttons["zMicroBar7"]= "MainMenuMicroButton"
 	zBar2.buttons["zMicroBar8"]= "HelpMicroButton"
-	
+
 	self:GetTab():GetNormalTexture():SetWidth(42)
 	self:GetTab():GetHighlightTexture():SetWidth(42)
-	
+
 	self:Hook()
 end
 
@@ -44,9 +44,19 @@ function zMicroBar:GetChildSizeAdjust(attachPoint)
 end
 
 function zMicroBar:Hook()
-	hooksecurefunc("UpdateTalentButton", function()
-		if not InCombatLockdown() then
-			zMicroBar:UpdateLayouts()
+	QuestLogMicroButton.zSetPoint = QuestLogMicroButton.SetPoint
+	QuestLogMicroButton.SetPoint = zBar2.NOOP
+end
+
+function zMicroBar:UpdateButtons()
+	zBarT.UpdateButtons(self)
+	local name = self:GetName()
+	for i = 2, zBar2Saves[name].max or NUM_ACTIONBAR_BUTTONS do
+		if _G[zBar2.buttons[name..i]]:GetAttribute("statehidden") then
+			_G[zBar2.buttons[name..i]]:SetParent(zBar2.hiddenFrame)
+		else
+			_G[zBar2.buttons[name..i]]:SetParent(self)
+			_G[zBar2.buttons[name..i]]:Show()
 		end
-	end)
+	end
 end

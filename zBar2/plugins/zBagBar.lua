@@ -18,7 +18,7 @@ function zBagBar:Init()
 	MainMenuBarBackpackButtonNormalTexture:SetHeight(60)
 	MainMenuBarBackpackButton:ClearAllPoints()
 	MainMenuBarBackpackButton:SetPoint("CENTER")
-	
+
 	for i=0,3 do
 		_G["CharacterBag"..i.."Slot"]:SetParent(self)
 		zBar2.buttons["zBagBar"..(2+i)] = "CharacterBag"..i.."Slot"
@@ -42,10 +42,10 @@ function zBagBar:Init()
 	MainMenuBarPerformanceBarFrame:SetFrameLevel(1)
 	MainMenuBarPerformanceBarFrame:SetScale(0.92)
 	MainMenuBarPerformanceBarFrame:ClearAllPoints()
-	MainMenuBarPerformanceBarFrame:SetPoint("RIGHT",KeyRingButton,"LEFT",5,1)
+	MainMenuBarPerformanceBarFrame:SetPoint("RIGHT",KeyRingButton,"LEFT",6,1)
 
 	self:Hook()
-	
+
 	self:GetTab():GetNormalTexture():SetWidth(60)
 	self:GetTab():GetHighlightTexture():SetWidth(60)
 end

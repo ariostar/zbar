@@ -5,7 +5,7 @@ zBar2:RegisterPlugin(zBarOption)
 
 --[[ functional ]]
 function zBarOption:Init()
-	self:SetWidth(310); self:SetHeight(380);
+	self:SetWidth(320); self:SetHeight(385);
 	self:SetPoint("CENTER")
 	self:SetMovable(true)
 	self:SetToplevel(true)
@@ -51,10 +51,10 @@ function zBarOption:CheckReady()
 
 	-- background
 	self:SetBackdrop( {
-	  bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-	  edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-	  tile = true, tileSize = 16, edgeSize = 16,
-	  insets = { left = 5, right = 5, top = 5, bottom = 5 }
+		bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+		tile = true, tileSize = 16, edgeSize = 16,
+		insets = { left = 5, right = 5, top = 5, bottom = 5 }
 	});
 	self:SetBackdropColor(0,0,0)
 	self:SetBackdropBorderColor(0.5,0.5,0.5)
@@ -106,7 +106,7 @@ function zBarOption:CheckReady()
 	-- reset button
 	button = CreateFrame("Button","zBarOptionResetButton",self,"UIPanelButtonTemplate2")
 	button:SetWidth(110); button:SetHeight(20);
-	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-120)
+	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-125)
 	button:SetText(zBar2.loc.Option.Reset)
 	button:SetScript("OnClick", function() zBarOption.bar:Reset(true) zBarOption:LoadOptions() end)
 
@@ -134,11 +134,10 @@ function zBarOption:CheckReady()
 			if value.common then
 				zBar2Saves[value.var] = checked
 			elseif value.var then
-				if value.value then
-					zBar2Saves[zBarOption.bar:GetName()][value.var] = value.value
-				else
-					zBar2Saves[zBarOption.bar:GetName()][value.var] = checked
+				if value.value and checked then
+					checked = value.value
 				end
+				zBar2Saves[zBarOption.bar:GetName()][value.var] = checked
 			end
 			if checked then
 				value.OnChecked()
@@ -248,8 +247,9 @@ zBarOption.labels = {
 	["Title"] = {"GameFontNormalLarge",0.12,0.66,1,"TOP",0,-10},
 	["SelectBar"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-30},
 	["Attribute"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-120},
-	["Layout"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",90,-120},
-	["Commons"] = {"GameFontNormalLarge",1.0,0.82,0.1,"BOTTOMLEFT",10,130},
+	["Layout"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",100,-120},
+	["InCombat"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-230},
+	["Commons"] = {"GameFontNormalLarge",1.0,0.82,0.1,"BOTTOMLEFT",10,100},
 }
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR",	"zMultiR2", "zMultiR1",
@@ -259,7 +259,7 @@ zBarOption.bars = { --[[ bar name and order ]]
 }
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- show / hide bar
-		name="Hide",var="hide",pos={"TOPLEFT","zBarOptionAttribute","BOTTOMLEFT",0,-5},
+		name="Hide",var="hide",pos={"TOPLEFT","zBarOptionAttribute","BOTTOMLEFT",0,0},
 		OnChecked=function() zBarOption.bar:UpdateVisibility() end,
 		UnChecked=function()
 			zBarOption.bar:UpdateVisibility()
@@ -277,14 +277,32 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		OnChecked=function() zBarOption.bar:UpdateVisibility() end,
 		UnChecked=function() zBarOption.bar:UpdateVisibility() end,
 	},
+	{-- show / hide hotkeys
+		name="HotKey",var="hideHotkey",pos={"TOP","zBarOptionLock","BOTTOM",0,0},
+		OnChecked=function() zBarOption.bar:UpdateHotkeys() end,
+		UnChecked=function() zBarOption.bar:UpdateHotkeys() end,
+	},
 	{-- auto-pop mode
-		name="Pop",var="autoPop",pos={"TOP","zBarOptionLock","BOTTOM",0,0},
-		OnChecked=function() zBarOption.bar:UpdateAutoPop() end,
+		name="AutoPop",var="inCombat",value="autoPop",radio = true,
+		pos={"TOPLEFT","zBarOptionInCombat","BOTTOMLEFT",0,0},
+		OnChecked=function()
+			zBarOptionAutoHide:SetChecked(false)
+			zBarOption.bar:UpdateAutoPop()
+		end,
+		UnChecked=function() zBarOption.bar:UpdateAutoPop() end,
+	},
+	{-- auto-hide mode
+		name="AutoHide",var="inCombat",value="autoHide",radio = true,
+		pos={"TOPLEFT","zBarOptionInCombat","BOTTOMLEFT",85,0},
+		OnChecked=function()
+			zBarOptionAutoPop:SetChecked(false)
+			zBarOption.bar:UpdateAutoPop()
+		end,
 		UnChecked=function() zBarOption.bar:UpdateAutoPop() end,
 	},
 	{
 		name="Suite1",var="layout",value="suite1",radio = true,
-		pos={"TOPLEFT","zBarOptionLayout","BOTTOMLEFT",0,-5},
+		pos={"TOPLEFT","zBarOptionLayout","BOTTOMLEFT",0,0},
 		OnChecked=function()
 			zBarOptionSuite2:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
@@ -322,6 +340,11 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 			zBarOptionSuite1:SetChecked(false)
 			zBarOptionSuite2:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
+			if not zBar2.buttons[zBarOption.bar:GetName().."1"] then return end
+			local saves = zBar2Saves[zBarOption.bar:GetName()]
+			for i = 1, saves.max or NUM_ACTIONBAR_BUTTONS do
+				_G[zBar2.buttons[zBarOption.bar:GetName()..i]]:SetMovable(true)
+			end
 			zTab:SaveAllPoints(zBarOption.bar)
 		end,
 		UnChecked=function() zBarOptionSlider2:SetValue(2) zBarOptionSlider2:SetValue(1) end,
@@ -333,23 +356,9 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		UnChecked=function() zBarOption.bar:UpdateLayouts() end,
 	},
 	--[[ commons ]]
-	{-- show / hide hotkeys
-		name="HotKey",var="hideHotkey",common=true,
-		pos={"TOPLEFT","zBarOptionCommons","BOTTOMLEFT",0,-5},
-		OnChecked=function()
-			for name, bar in pairs(zBar2.bars) do
-				bar:UpdateHotkeys()
-			end
-		end,
-		UnChecked=function()
-			for name, bar in pairs(zBar2.bars) do
-				bar:UpdateHotkeys()
-			end
-		end,
-	},
 	{-- show / hide button tips
 		name="HideTip",var="hideTip",common=true,
-		pos={"TOP","zBarOptionHotKey","BOTTOM",0,0},
+		pos={"TOPLEFT","zBarOptionCommons","BOTTOMLEFT",0,0},
 		OnChecked=function() end,
 		UnChecked=function() end,
 	},
@@ -391,7 +400,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 	[1] = {-- num of buttons
 		name="Num",
 		var="num", min=1, max=12, step=1,
-		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-160},
+		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-170},
 		setFunc = function()
 			zBar2Saves[zBarOption.bar:GetName()].num = this:GetValue()
 			zBarOption.bar:UpdateButtons()

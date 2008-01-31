@@ -14,13 +14,17 @@
 		SelectBar	= "选择动作条",
 		Attribute	= "属性",
 		Layout		= "排列",
+		InCombat = "战斗中",
 		Commons = "公共属性",
 		Reset    = "重置动作条",
 
 		Hide = "隐藏",
 		Label = "名字",
 		Lock = "锁定",
-		Pop = "弹出",
+		HotKey = "快捷键",
+
+		AutoPop = "自动弹出",
+		AutoHide = "自动隐藏",
 
 		Suite1 = "组合1",
 		Suite2 = "组合2",
@@ -28,7 +32,6 @@
 		Free = "随意",
 		Invert = "反向",
 
-		HotKey = "隐藏快捷键",
 		HideTip = "隐藏鼠标提示",
 		LockButtons = "锁定所有按钮",
 		HideGrid = "隐藏空按钮",
@@ -45,7 +48,10 @@
 		Hide		= "显示 / 隐藏 动作条",
 		Label	= "显示 / 隐藏 动作条的名字",
 		Lock		= "锁定动作条，并隐藏标签",
-		Pop		= "选择敌对目标或进入战斗状态时弹出，平时隐藏",
+		HotKey		= "显示 / 隐藏 动作条按钮的快捷键",
+
+		AutoPop	= "选择敌对目标或进入战斗状态时弹出，平时隐藏",
+		AutoHide	= "战斗中自动隐藏，平时显示",
 
 		Suite1		= "保守一些的排列方式\n12个按钮时请调整间距",
 		Suite2		= "较为新颖的排列方式\n12个按钮时请调整间距",
@@ -53,7 +59,6 @@
 		Free			= "Ctrl+Alt+Shift 移动按钮，鼠标滚轮进行缩放",
 		Invert		= "水平翻转，左右倒置",
 
-		HotKey			= "显示 / 隐藏 动作条按钮的快捷键",
 		HideTip		= "显示 / 隐藏按钮鼠标提示",
 		LockButtons	= "锁定所有动作条的按钮",
 		HideGrid		= "当按钮中无技能或物品时隐藏按钮",

@@ -1,4 +1,5 @@
 if zBar2.lite then return end
+local _G = getfenv(0)
 local XPHeight = 20
 
 CreateFrame("Frame","zXPBar",UIParent,"SecureFrameTemplate")
@@ -11,35 +12,15 @@ function zXPBar:Init()
 	zXPBar:SetClampedToScreen(true)
 	zXPBar:SetFrameStrata("BACKGROUND")
 	zXPBar:SetWidth(512); zXPBar:SetHeight(XPHeight)
-	
-	-- drag
---~ 	zXPBar:EnableMouse(true)
---~ 	zXPBar:RegisterForDrag("LeftButton")
---~ 	zXPBar:SetScript("OnDragStart", function() this:StartMoving() end)
---~ 	zXPBar:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
 
-	-- XP Bar
+	--[[ XP Bar ]]
 	MainMenuExpBar:SetParent(zXPBar)
 	MainMenuExpBar:ClearAllPoints()
 	MainMenuExpBar:SetPoint("CENTER")
 	MainMenuExpBar:SetWidth(512) MainMenuExpBar:SetHeight(XPHeight)
-	-- drag
---~ 	MainMenuExpBar:RegisterForDrag("LeftButton")
---~ 	MainMenuExpBar:SetScript("OnDragStart",function() if IsControlKeyDown() then zXPBar:StartMoving() end end)
---~ 	MainMenuExpBar:SetScript("OnDragStop",function() zXPBar:StopMovingOrSizing() end)
 
-	-- textures
-	MainMenuXPBarTexture1:Hide()
-	MainMenuXPBarTexture2:Hide()
-	MainMenuXPBarTexture0:SetHeight(XPHeight)
-	MainMenuXPBarTexture0:ClearAllPoints()
-	MainMenuXPBarTexture0:SetPoint("LEFT")
-	MainMenuXPBarTexture3:SetHeight(XPHeight)
-	MainMenuXPBarTexture3:ClearAllPoints()
-	MainMenuXPBarTexture3:SetPoint("RIGHT")
 	-- text
 	MainMenuBarExpText:SetPoint("CENTER",MainMenuExpBar,0,0)
-	--MainMenuBarExpText:SetTextHeight(XPHeight)
 	MainMenuBarExpText:SetFontObject(NumberFontNormalHuge)
 	-- ExhaustionTick
 	ExhaustionTick:SetParent(MainMenuExpBar)
@@ -48,59 +29,63 @@ function zXPBar:Init()
 	ExhaustionTickHighlight:SetPoint("BOTTOM",0,-4)
 	ExhaustionTickHighlight:SetPoint("TOP",0,-4)
 
-	-- max level bar
+	--[[ Max Level Bar ]]
 	MainMenuBarMaxLevelBar:SetParent(zXPBar)
 	MainMenuBarMaxLevelBar:EnableMouse(false)
 	MainMenuBarMaxLevelBar:SetWidth(512)
 	MainMenuBarMaxLevelBar:ClearAllPoints()
 	MainMenuBarMaxLevelBar:SetPoint("CENTER",MainMenuExpBar)
-	-- textures
-	MainMenuMaxLevelBar1:Hide()
-	MainMenuMaxLevelBar2:Hide()
-	MainMenuMaxLevelBar0:SetHeight(XPHeight)
-	MainMenuMaxLevelBar0:ClearAllPoints()
-	MainMenuMaxLevelBar0:SetPoint("LEFT")
-	MainMenuMaxLevelBar3:SetHeight(XPHeight)
-	MainMenuMaxLevelBar3:ClearAllPoints()
-	MainMenuMaxLevelBar3:SetPoint("RIGHT")
 
-	-- Reputation bar
+	--[[ Reputation Bar ]]
 	ReputationWatchBar:SetParent(zXPBar)
 	ReputationWatchBar:ClearAllPoints()
 	ReputationWatchBar:SetPoint("BOTTOM",MainMenuExpBar,"TOP",0,0)
 	ReputationWatchBar:SetWidth(512) ReputationWatchBar:SetHeight(XPHeight)
-	
-	-- drag
---~ 	ReputationWatchBar:RegisterForDrag("LeftButton")
---~ 	ReputationWatchBar:SetScript("OnDragStart",function() if IsControlKeyDown() then zXPBar:StartMoving() end end)
---~ 	ReputationWatchBar:SetScript("OnDragStop",function() zXPBar:StopMovingOrSizing() end)
 
 	ReputationWatchStatusBar:SetWidth(512)
---~ 	ReputationWatchStatusBar:SetHeight(XPHeight)
-
-	ReputationWatchBarTexture1:SetParent(MainMenuBar)
-	ReputationWatchBarTexture2:SetParent(MainMenuBar)
-	ReputationWatchBarTexture3:SetPoint("LEFT", ReputationWatchBarTexture0, "RIGHT")
-
-	ReputationXPBarTexture1:SetParent(MainMenuBar)
-	ReputationXPBarTexture2:SetParent(MainMenuBar)
-	ReputationXPBarTexture3:SetPoint("LEFT", ReputationXPBarTexture0, "RIGHT")
 
 	-- text
 	RaiseFrameLevel(ReputationWatchBarOverlayFrame)
 	ReputationWatchStatusBarText:SetFontObject(NumberFontNormalHuge)
 
+	--[[ Textures ]]
+	local list = {
+		"MainMenuXPBarTexture",
+		"MainMenuMaxLevelBar",
+		"ReputationWatchBarTexture",
+		"ReputationXPBarTexture",
+	}
+	for id, name in ipairs(list) do
+		for i = 0, 3 do
+			if name ~= "ReputationWatchBarTexture" then
+				_G[name..i]:SetHeight(XPHeight)
+			end
+			_G[name..i]:ClearAllPoints()
+		end
+		_G[name.."0"]:SetPoint("LEFT")
+		_G[name.."1"]:SetPoint("LEFT", name.."0","RIGHT")
+		_G[name.."2"]:SetPoint("RIGHT", name.."3","LEFT")
+		_G[name.."3"]:SetPoint("RIGHT")
+	end
+
 	self:Hook()
 end
 
-local function Noop() end
-
+local function OnEnter()
+	zXPBar:SetAlpha(1)
+end
+local function OnLeave()
+	zXPBar:SetAlpha(zBar2Saves["zXPBar"].alpha)
+end
 function zXPBar:Hook()
+	MainMenuExpBar:HookScript("OnEnter", OnEnter)
+	MainMenuExpBar:HookScript("OnLeave", OnLeave)
+	ReputationWatchBar:HookScript("OnEnter", OnEnter)
+	ReputationWatchBar:HookScript("OnLeave", OnLeave)
+
+	--[[ Override when ReputationWatchBar Updates ]]
 	ReputationWatchBar.zSetPoint = ReputationWatchBar.SetPoint
-	ReputationWatchBar.SetPoint = Noop
-	--[[
-		Override when ReputationWatchBar Updates
-	--]]
+	ReputationWatchBar.SetPoint = zBar2.NOOP
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
 		if ( not newLevel ) then
 			newLevel = UnitLevel("player");
@@ -112,10 +97,39 @@ function zXPBar:Hook()
 
 			ReputationWatchStatusBar:SetHeight(XPHeight)
 
-			ReputationXPBarTexture0:SetHeight(XPHeight)
-			ReputationXPBarTexture3:SetHeight(XPHeight)
-
 			ReputationWatchStatusBarText:SetPoint("CENTER", ReputationWatchBarOverlayFrame, "CENTER", 0, 0)
 		end
 	end)
+end
+
+function zXPBar:UpdateButtons()
+	local value = zBar2Saves[self:GetName()]
+	if not value.num or value.num < 1 then value.num = 1 end
+	local width = 512 + 256*(value.num-1)
+	MainMenuExpBar:SetWidth(width)
+	MainMenuBarMaxLevelBar:SetWidth(width)
+	ReputationWatchBar:SetWidth(width)
+	ReputationWatchStatusBar:SetWidth(width)
+
+	for i = 1, 2 do
+		local alpha = 0
+		if i < value.num then alpha = 1 end
+		_G["MainMenuXPBarTexture"..i]:SetAlpha(alpha)
+		_G["MainMenuMaxLevelBar"..i]:SetAlpha(alpha)
+		_G["ReputationWatchBarTexture"..i]:SetAlpha(alpha)
+		_G["ReputationXPBarTexture"..i]:SetAlpha(alpha)
+	end
+end
+
+function zXPBar:UpdateLayouts()
+end
+
+function zXPBar:Test()
+	if self.sig then
+		ReputationWatchBar_Update(MAX_PLAYER_LEVEL)
+		self.sig = nil
+	else
+		ReputationWatchBar_Update(UnitLevel("player"))
+		self.sig = 1
+	end
 end
