@@ -8,7 +8,7 @@ function zBar2:GetDefault(name, key, subkey)
 	if type(name) == "table" then
 		name = name:GetName()
 	end
-	
+
 	-- copy
 	local set = {}
 	for k,v in pairs(zBar2.defaults[name]) do
@@ -21,7 +21,7 @@ function zBar2:GetDefault(name, key, subkey)
 			set[k] = v
 		end
 	end
-	
+
 	-- common values
 	for k,v in pairs(zBar2.defaults["*"]) do
 		if set[k] then
@@ -43,21 +43,21 @@ end
 zBar2.defaults = {
 	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},
 	["zExBar1"] = { saves = { num=6,},
-		pos = {"CENTER",0,0}, 
+		pos = {"CENTER",0,0},
 	},
 	["zShadow1"] = { saves = {num=6, max=6,},
-		pos = {"CENTER",72,0}, 
+		pos = {"CENTER",72,0},
 	},
 	["zExBar2"] = { saves = { num=6,},
-		pos = {"CENTER",-72,0}, 
+		pos = {"CENTER",-72,0},
 	},
 	["zShadow2"] = { saves = {num=6, max=6,},
-		pos = {"CENTER",-144,0}, 
+		pos = {"CENTER",-144,0},
 	},
-	
+
 	["zMainBar"] = {
 		saves = {linenum = 12, hideTab=true,},
-		pos = {"BOTTOM",-100,60}, 
+		pos = {"BOTTOM",-100,60},
 	},
 	["zMultiR2"] = {
 		saves = {linenum = 1,},
@@ -77,12 +77,14 @@ zBar2.defaults = {
 	},
 
 	["zPetBar"] = {
-		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8, hideTab=true,},
-		pos = {"BOTTOM",-100,210},
+		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,
+			hideTab=true,hideHotkey=true,},
+		pos = {"BOTTOM",-100,220},
 	},
 	["zStanceBar"] = {
-		saves = {num=10, inset = 10, linenum = 10, max = 10, scale = 0.8, hideTab=true,},
-		pos = {"BOTTOM",-100,210},
+		saves = {num=10, inset = 10, linenum = 10, max = 10, scale = 0.8,
+			hideTab=true,hideHotkey=true,},
+		pos = {"BOTTOM",-100,220},
 	},
 	["zBagBar"] = {
 		saves = {num=6, linenum=6, max=6, scale=0.75, hideTab=true, invert=true},
@@ -93,11 +95,11 @@ zBar2.defaults = {
 		pos = {"BOTTOMRIGHT",-190,68},
 	},
 	["zXPBar"] = {
-		saves = {num = 0, max = 0, scale=0.5,},
-		pos = {"TOP",0,-230},
+		saves = {num = 3, max = 3, scale=0.42,},
+		pos = {"BOTTOM",230, 335},
 	},
 	["zCastBar"] = {
-		saves = {num = 0, max = 0, hideTab=true,},
+		saves = {num = 2, max = 2, hideTab=true,},
 		pos={"BOTTOM",0,200},
 	},
 }

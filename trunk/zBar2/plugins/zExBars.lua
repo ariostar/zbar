@@ -10,14 +10,14 @@ zBar2:RegisterPlugin(zExBars)
 function zExBars:New(prefix,id,page)
 	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureStateHeaderTemplate")
 	zBar2:RegisterBar(bar)
-	
+
 	bar:SetFrameStrata("MEDIUM")
 	bar:SetClampedToScreen(true)
 	bar:SetWidth(36); bar:SetHeight(36);
 	bar:SetAttribute("actionpage", page)
-	
+
 	bar.GetButton = self.GetButton
-	
+
 	if prefix == "zShadow" then
 		bar:SetID(-id)
 		bar.isShadow = true
@@ -34,12 +34,12 @@ function zExBars:New(prefix,id,page)
 		bar:GetButton(1):ClearAllPoints()
 		bar:GetButton(1):SetPoint("CENTER")
 	end
-	
+
 	if not zBar2Saves[prefix..id] then
 		zBar2Saves[prefix..id] = zBar2:GetDefault(bar,"saves")
 		zBar2Saves[prefix..id].pos = zBar2:GetDefault(bar,"pos")
 	end
-	
+
 	return bar
 end
 
@@ -53,7 +53,7 @@ function zExBars:Init()
 		_G["zExButton"..id.."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 		button.buttonType = "ZEXBUTTON"
 	end
-	
+
 	-- create bars
 	local bar, page
 	for id = 1, NUM_ZEXBAR_BAR do
@@ -66,13 +66,13 @@ function zExBars:Init()
 		self:New("zExBar", id, page)
 		-- create shadow bar
 		self:New("zShadow", id, page)
-		
+
 		zExBars:UpdateShadows(id)
 	end
-	
+
 	-- grid stuff
 	zBar2:RegisterGridUpdater(zExBars.UpdateGrid)
-	
+
 end
 
 function zExBars:GetButton(i)
@@ -83,12 +83,20 @@ end
 --[[ override functions ]]
 function zExBars:UpdateExBarButtons() -- for ex bars
 	local bar = self
-	zBarT.UpdateButtons(bar)
 	zExBars:UpdateShadows(bar:GetID())
+	zBarT.UpdateButtons(_G["zShadow"..bar:GetID()])
+	zBarT.UpdateLayouts(_G["zShadow"..bar:GetID()])
+
+	zBarT.UpdateButtons(bar)
 	zExBars:UpdateGrid(bar)
 end
 function zExBars:UpdateShadowButtons()
 	local bar = self
+	zExBars:UpdateShadows(bar:GetID())
+	-- since we may changed buttons' parent, need update layouts
+	zBarT.UpdateButtons(_G["zExBar"..-bar:GetID()])
+	zBarT.UpdateLayouts(_G["zExBar"..-bar:GetID()])
+
 	zBarT.UpdateButtons(bar)
 	zExBars:UpdateGrid(bar)
 end
@@ -124,15 +132,13 @@ function zExBars:UpdateShadows(index)
 	if shadow:GetButton(1) then
 		shadow:GetButton(1):ClearAllPoints()
 		shadow:GetButton(1):SetPoint("CENTER")
-		shadow:UpdateLayouts()
 	end
-	shadow:UpdateButtons()
 end
 
 function zExBars:UpdateGrid(bar)
 	-- in combat we can't let it be shown or hidden
 	if InCombatLockdown() then return end
-	
+
 	if bar then -- update for bar
 		for i=1, zBar2Saves[bar:GetName()].num do
 			if zBar2.showgrid > 0 then

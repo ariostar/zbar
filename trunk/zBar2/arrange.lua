@@ -40,9 +40,12 @@ end
 -- local func, for points settings
 local function SetButtonPoint(bar,index,point,referIndex,relativePoint,offx,offy)
 	local button = _G[zBar2.buttons[bar:GetName()..index]]
-	if not button then zBar2:print(bar:GetName()..index) end
 	button:ClearAllPoints()
-	button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	if button.zSetPoint then
+		button:zSetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	else
+		button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	end
 end
 --~ line arrangement
 function zBarT:SetLineNum()
@@ -108,9 +111,7 @@ function zBarT:SetFree()
 		if saves.buttons and saves.buttons[name] then
 			_G[name]:SetScale(saves.buttons[name].scale or 1)
 			if saves.buttons[name].pos then
-				_G[name]:ClearAllPoints()
-				_G[name]:SetPoint("CENTER", zBar2.buttons[self:GetName().."1"],
-				"CENTER", saves.buttons[name].pos[1],saves.buttons[name].pos[2])
+				SetButtonPoint(self,i,"CENTER",1,"CENTER",saves.buttons[name].pos[1],saves.buttons[name].pos[2])
 			end
 		end
 	end
@@ -147,8 +148,8 @@ zBarT.suite1 = {
 	},
 	[4] = {
 		[2] = {"TOP", 1, "BOTTOM", 0, -1},
-		[3] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
-		[4] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5}
+		[3] = {"RIGHT", 2, "LEFT", -1, 0},
+		[4] = {"LEFT", 2, "RIGHT", 1, 0}
 	},
 	[5] = {
 		[2] = {"TOP", 1, "BOTTOM", 0, -1},
@@ -223,13 +224,13 @@ zBarT.suite2 = {
 		[2] = {"TOPRIGHT", 1, "BOTTOMLEFT", -1, -1},
 	},
 	[3] = {
-		[2] = {"RIGHT", 1, "BOTTOMLEFT", -1, -0.5},
-		[3] = {"LEFT", 1, "BOTTOMRIGHT", 1, -0.5},
+		[2] = {"LEFT", 1, "RIGHT", 1, 0},
+		[3] = {"TOP", 1, "BOTTOMRIGHT", 0.5, -1},
 	},
 	[4] = {
 		[2] = {"TOP", 1, "BOTTOM", 0, -1},
-		[3] = {"RIGHT", 2, "LEFT", -1, 0},
-		[4] = {"LEFT", 2, "RIGHT", 1, 0},
+		[3] = {"RIGHT", 1, "LEFT", -1, 0},
+		[4] = {"LEFT", 1, "RIGHT", 1, 0},
 	},
 	[5] = {
 		[3] = {"RIGHT", 1, "TOPLEFT", -1, 0.5},

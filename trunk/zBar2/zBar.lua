@@ -11,6 +11,9 @@ zBar2.plugins	= {}
 zBar2.bars		= {}
 zBar2.buttons	= {}
 
+zBar2.hiddenFrame = CreateFrame("Frame")
+zBar2.hiddenFrame:Hide()
+
 --[[ Lite mode state ]]
 zBar2.lite = select(4, GetAddOnInfo("zBar2Lite"))
 

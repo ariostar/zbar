@@ -90,10 +90,10 @@ function zTab:GetFreeTab()
 	if zFreeTab then return zFreeTab end
 	local tab = CreateFrame("Frame","zFreeTab",UIParent)
 	tab:SetBackdrop( {
-	  bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-	  edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-	  tile = true, tileSize = 16, edgeSize = 16,
-	  insets = { left = 5, right = 5, top = 5, bottom = 5 }
+		bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+		tile = true, tileSize = 16, edgeSize = 16,
+		insets = { left = 5, right = 5, top = 5, bottom = 5 }
 	});
 	tab:SetBackdropColor(0.2,0.2,0.2)
 	tab:EnableMouse(true)
@@ -106,6 +106,7 @@ function zTab:GetFreeTab()
 	return tab
 end
 
+-- called by zBarOption, when free style is selected
 function zTab:SaveAllPoints(bar)
 	for i = 2, zBar2Saves[bar:GetName()].num do
 		zTab:SaveFreePosition(_G[zBar2.buttons[bar:GetName()..i]])
@@ -115,16 +116,21 @@ end
 function zTab:SaveFreePosition(button)
 	local button = button or zTab:GetFreeTab().button
 	local target = _G[zBar2.buttons[button:GetParent():GetName().."1"]]
+
+	if button == target then return end
+
 	local x,y = button:GetCenter()
 	local x1, y1 = target:GetCenter()
 	x = x - x1 / button:GetScale()
 	y = y - y1 / button:GetScale()
+
 	local saves = zBar2Saves[button:GetParent():GetName()]
 	if not saves.buttons then saves.buttons = {} end
 	if not saves.buttons[button:GetName()] then
 		saves.buttons[button:GetName()] = {}
 	end
 	saves.buttons[button:GetName()].pos = {x, y,}
+
 	button:SetUserPlaced(false)
 	button:ClearAllPoints()
 	button:SetPoint("CENTER", target, "CENTER", x, y)
@@ -132,8 +138,11 @@ end
 
 function zTab:FreeOnDragStart()
 	local button = zTab:GetFreeTab().button
-	if button:GetName() ~= zBar2.buttons[button:GetParent():GetName()..1] then
-		button:ClearAllPoints()
+	local bar = button:GetParent()
+
+	if zBar2Saves[bar:GetName()].num > 1
+		and button:GetName() ~= zBar2.buttons[bar:GetName()..1] then
+		--button:ClearAllPoints()
 		button:StartMoving()
 	end
 end
@@ -146,6 +155,7 @@ end
 function zTab:FreeOnWheel()
 	local target = zTab:GetFreeTab().button
 	local scale = target:GetScale() + arg1/10
+
 	if target:GetName() == zBar2.buttons[target:GetParent():GetName()..1] then
 		target = target:GetParent()
 		scale = target:GetScale() + arg1/10
@@ -155,12 +165,14 @@ function zTab:FreeOnWheel()
 		target:SetScale(scale)
 		return
 	end
+
 	local saves = zBar2Saves[target:GetParent():GetName()]
 	if not saves.buttons then saves.buttons = {} end
 	if not saves.buttons[target:GetName()] then
 		saves.buttons[target:GetName()] = {}
 	end
 	saves.buttons[target:GetName()].scale = scale
+
 	target:SetScale(scale)
 	zTab:SaveFreePosition()
 end
@@ -183,6 +195,7 @@ end
 function zTab:FreeOnLeave()
 	local tab = zTab:GetFreeTab()
 	tab.button:StopMovingOrSizing()
+	zTab:SaveFreePosition()
 	tab:SetFrameLevel(0)
 	tab.button = nil
 	tab:Hide()

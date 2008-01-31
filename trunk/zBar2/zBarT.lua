@@ -14,7 +14,7 @@ function zBarT:Reset(resetsaves)
 		zBar2Saves[name] = zBar2:GetDefault(self,"saves")
 		zBar2Saves[name].pos = zBar2:GetDefault(self,"pos")
 	end
-	
+
 	-- reset scale
 	self:SetScale(zBar2Saves[name]["scale"] or 1)
 	self:GetTab():SetScale(self:GetScale())
@@ -22,7 +22,7 @@ function zBarT:Reset(resetsaves)
 	self:SetAlpha(zBar2Saves[name].alpha or 1)
 	-- name plate
 	if zBar2Saves[name].label then self:GetLabel():Show() end
-	
+
 	-- remove tab from master tab's cortege list
 	if self:GetTab().master then
 		tDeleteItem(self:GetTab().master.cortege, self:GetTab():GetName())
@@ -36,7 +36,7 @@ function zBarT:Reset(resetsaves)
 			_G[name].master = nil
 		end
 	end
-	
+
 	-- reset position
 	local pos = zBar2Saves[name].pos or zBar2:GetDefault(self, "pos")
 	self:GetTab():ClearAllPoints()
@@ -47,7 +47,7 @@ function zBarT:Reset(resetsaves)
 	end
 	self:ClearAllPoints()
 	self:SetPoint("TOP",self:GetTab(),"BOTTOM",0,0)
-	
+
 	-- update all
 	self:UpdateVisibility()
 	self:UpdateButtons()
@@ -70,8 +70,12 @@ end
 function zBarT:UpdateAutoPop()
 	local header = self:GetHeader()
 	UnregisterStateDriver(header, "visibility")
-	if zBar2Saves[self:GetName()].autoPop then
-		RegisterStateDriver(header, "visibility", "[combat]show;[harm,nodead]show;hide")
+	if zBar2Saves[self:GetName()].inCombat then
+		if "autoPop" == zBar2Saves[self:GetName()].inCombat then
+			RegisterStateDriver(header, "visibility", "[combat][harm,nodead]show;hide")
+		elseif "autoHide" == zBar2Saves[self:GetName()].inCombat then
+			RegisterStateDriver(header, "visibility", "[combat][harm,nodead]hide;show")
+		end
 	else
 		header:Show()
 	end
@@ -81,7 +85,7 @@ end
 function zBarT:UpdateButtons()
 	local button
 	local value = zBar2Saves[self:GetName()]
-	
+
 	if value.max == 0 then return end
 
 	for i =  1, value.max or NUM_ACTIONBAR_BUTTONS do
@@ -113,7 +117,7 @@ function zBarT:UpdateHotkeys()
 	for i = 1 , zBar2Saves[self:GetName()].max or NUM_ACTIONBAR_BUTTONS do
 		hotkey = _G[ (zBar2.buttons[self:GetName()..i] or "?? ").."HotKey"]
 		if hotkey then
-			if zBar2Saves.hideHotkey then
+			if zBar2Saves[self:GetName()].hideHotkey then
 				hotkey:Hide()
 				hotkey.zShow = hotkey.Show
 				hotkey.Show = zBar2.NOOP
@@ -131,27 +135,27 @@ function zBarT:GetHeader()
 	local id = self:GetID()
 	local header = _G["zBar2Header"..id]
 	if header then return header end
-	
+
 	header = CreateFrame("Frame", "zBar2Header"..id, UIParent, "SecureStateHeaderTemplate")
 	header:SetID(id)
-	
+
 	self:SetAttribute("showstates","1,3")
 	header:SetAttribute("addchild", self)
 	header:SetAttribute("addchild", self:GetTab())
-	
+
 	return header
 end
 
 --[[ get localized bar name as label ]]
 function zBarT:GetLabel()
 	local label = _G[self:GetName().."Label"]
-	
+
 	if not label then
 		label = self:GetHeader():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
 		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 0)
 		label:SetText( zBar2.loc.Labels[self:GetName()] or self:GetName() )
 	end
-	
+
 	return label
 end
 
@@ -165,28 +169,28 @@ function zBarT:GetTab()
 	local id = self:GetID()
 	local tab = _G["zTab"..id]
 	if tab then return tab end
-	
+
 	tab = CreateFrame("Button", "zTab"..id, UIParent, "zBarTabTemplate")
 	tab:SetID(id)
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	tab:SetScript("OnDragStart",zTab.OnDragStart)
 	tab:SetScript("OnDragStop",zTab.OnDragStop)
-	
+
 	tab:SetAttribute("type2", "OnMenu")
 	tab.OnMenu = function(self, unit, button)
 		if not zBarOption then zBar2:print("Option not been loaded") return end
 		zBarOption:Openfor(this.bar)
 	end
-	
+
 	tab:SetAttribute("newstate1","0,1")
 	tab:SetAttribute("showstates","0,1")
-	
+
 	tab:SetScale(self:GetScale())
 	tab:SetFrameLevel(self:GetFrameLevel() + 5)
-	
+
 	tab:SetWidth(self:GetWidth())
-	
+
 	tab.bar = self
 
 	return tab

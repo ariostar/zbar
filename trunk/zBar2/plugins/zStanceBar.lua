@@ -10,18 +10,24 @@ function zStanceBar:Init()
 	self:SetFrameStrata("LOW")
 	self:SetClampedToScreen(true)
 	self:SetWidth(30); self:SetHeight(30)
-	
+
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		zBar2.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
 		_G["ShapeshiftButton"..i]:SetParent(self)
+		_G["ShapeshiftButton"..i]:RegisterEvent("UPDATE_BINDINGS")
+		_G["ShapeshiftButton"..i]:RegisterEvent("PLAYER_ENTERING_WORLD")
+		_G["ShapeshiftButton"..i]:SetScript("OnEvent", function()
+			local key = GetBindingKey(this:GetName())
+			_G[this:GetName().."HotKey"]:SetText(GetBindingText(key,1,1))
+		end)
 	end
 	ShapeshiftButton1:ClearAllPoints()
 	ShapeshiftButton1:SetPoint("CENTER")
 	ShapeshiftButton1.SetPoint = zBar2.NOOP
-	
+
 	self:GetTab():GetNormalTexture():SetWidth(50)
 	self:GetTab():GetHighlightTexture():SetWidth(50)
-	
+
 	self:Hook()
 end
 
@@ -37,6 +43,14 @@ function zStanceBar:UpdateNums()
 end
 
 function zStanceBar:Hook()
+	for i = 1, NUM_SHAPESHIFT_SLOTS do
+		_G["ShapeshiftButton"..i]:HookScript("OnEnter",function()
+			zStanceBar:SetAlpha(1)
+		end)
+		_G["ShapeshiftButton"..i]:HookScript("OnLeave",function()
+			zStanceBar:SetAlpha(zBar2Saves["zStanceBar"].alpha)
+		end)
+	end
 	hooksecurefunc("ShapeshiftBar_UpdateState", zStanceBar.UpdateNums)
 	MultiBarBottomLeft.Hide = MultiBarBottomLeft.Show
 	MultiBarBottomLeft:Show()

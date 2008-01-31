@@ -21,7 +21,7 @@ function zCastBar:Init()
 	CastingBarFrameIcon:SetWidth(24)
 	CastingBarFrameIcon:SetHeight(24)
 	CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
-	
+
 	-- text
 	CastingBarFrameText:ClearAllPoints()
 	CastingBarFrameText:SetPoint("CENTER",0,3)
@@ -36,5 +36,23 @@ function zCastBar:Init()
 			v:SetPoint("BOTTOMLEFT",0,2)
 			v:SetPoint("BOTTOMRIGHT",0,2)
 		end
+	end
+end
+
+function zCastBar:UpdateButtons()
+	if zBar2Saves["zCastBar"].num > 1 then
+		CastingBarFrameIcon:Show()
+	else
+		CastingBarFrameIcon:Hide()
+	end
+end
+
+function zCastBar:UpdateLayouts()
+	if zBar2Saves["zCastBar"].invert then
+		CastingBarFrameIcon:ClearAllPoints()
+		CastingBarFrameIcon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
+	else
+		CastingBarFrameIcon:ClearAllPoints()
+		CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
 	end
 end
