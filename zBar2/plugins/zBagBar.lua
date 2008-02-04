@@ -34,15 +34,21 @@ function zBagBar:Init()
 
 	KeyRingButton:SetParent(zBagBarButton6)
 	KeyRingButton:SetFrameLevel(1)
-	KeyRingButton:SetScale(0.96)
+	KeyRingButton:SetHeight(37)
 	KeyRingButton:ClearAllPoints()
 	KeyRingButton:SetPoint("RIGHT",zBagBarButton6)
+	KeyRingButton:Show()
 
 	MainMenuBarPerformanceBarFrame:SetParent(zBagBarButton6)
 	MainMenuBarPerformanceBarFrame:SetFrameLevel(1)
-	MainMenuBarPerformanceBarFrame:SetScale(0.92)
 	MainMenuBarPerformanceBarFrame:ClearAllPoints()
-	MainMenuBarPerformanceBarFrame:SetPoint("RIGHT",KeyRingButton,"LEFT",6,1)
+	MainMenuBarPerformanceBarFrame:SetPoint("RIGHT",KeyRingButton,"LEFT")
+	MainMenuBarPerformanceBarFrame:SetWidth(6)
+	MainMenuBarPerformanceBarFrame:SetHeight(37)
+	MainMenuBarPerformanceBar:SetWidth(14)
+	MainMenuBarPerformanceBar:SetHeight(62)
+	MainMenuBarPerformanceBar:ClearAllPoints()
+	MainMenuBarPerformanceBar:SetPoint("CENTER",1,0.5)
 
 	self:Hook()
 
@@ -54,7 +60,7 @@ function zBagBar:Hook()
 	hooksecurefunc("MainMenuBar_UpdateKeyRing", function()
 		if ( SHOW_KEYRING == 1 ) then
 			MainMenuBarPerformanceBarFrame:ClearAllPoints()
-			MainMenuBarPerformanceBarFrame:SetPoint("Right",KeyRingButton,"Left",5,1)
+			MainMenuBarPerformanceBarFrame:SetPoint("Right",KeyRingButton,"Left")
 		end
 	end)
 end

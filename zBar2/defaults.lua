@@ -88,14 +88,14 @@ zBar2.defaults = {
 	},
 	["zBagBar"] = {
 		saves = {num=6, linenum=6, max=6, scale=0.75, hideTab=true, invert=true},
-		pos = {"BOTTOMRIGHT",-4,108},
+		pos = {"BOTTOMRIGHT",-3,106},
 	},
 	["zMicroBar"] = {
-		saves = {num=8, linenum=8, max=8, scale=0.75, hideTab=true,},
+		saves = {num=8, linenum=8, max=8, scale=0.73, hideTab=true,},
 		pos = {"BOTTOMRIGHT",-190,68},
 	},
 	["zXPBar"] = {
-		saves = {num = 3, max = 3, scale=0.42,},
+		saves = {num = 3, max = 3, scale=0.422,},
 		pos = {"BOTTOM",230, 335},
 	},
 	["zCastBar"] = {

@@ -73,9 +73,15 @@ end
 
 local function OnEnter()
 	zXPBar:SetAlpha(1)
+	if this == ReputationWatchBar then
+		GameTooltip:SetOwner(this,"ANCHOR_CURSOR")
+		GameTooltip:SetText(ReputationWatchStatusBarText:GetText())
+		GameTooltip:Show()
+	end
 end
 local function OnLeave()
 	zXPBar:SetAlpha(zBar2Saves["zXPBar"].alpha)
+	GameTooltip:Hide()
 end
 function zXPBar:Hook()
 	MainMenuExpBar:HookScript("OnEnter", OnEnter)
@@ -87,17 +93,22 @@ function zXPBar:Hook()
 	ReputationWatchBar.zSetPoint = ReputationWatchBar.SetPoint
 	ReputationWatchBar.SetPoint = zBar2.NOOP
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
+		local name, reaction = GetWatchedFactionInfo()
 		if ( not newLevel ) then
 			newLevel = UnitLevel("player");
 		end
-		if newLevel < MAX_PLAYER_LEVEL then
-			ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"TOP",0,-2)
-		else
-			ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"BOTTOM",0,0)
-
-			ReputationWatchStatusBar:SetHeight(XPHeight)
-
-			ReputationWatchStatusBarText:SetPoint("CENTER", ReputationWatchBarOverlayFrame, "CENTER", 0, 0)
+		if name then
+			if newLevel < MAX_PLAYER_LEVEL then
+				local r,g,b = 0,0,0
+				if reaction < 5 then r = 1 end
+				if reaction == 3 then g = 0.5 end
+				if reaction > 3 then g = 1 end
+				ReputationWatchStatusBar:SetStatusBarColor(r, g, b);
+				ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"TOP",0,-2)
+			else
+				ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"BOTTOM",0,0)
+				ReputationWatchStatusBar:SetHeight(XPHeight)
+			end
 		end
 	end)
 end

@@ -112,9 +112,7 @@ local stances = {
 	["WARRIOR"] = { [1] = 7, [2] = 8, [3] = 9 },
 }
 
-function zMainBar:UpdateStateHeader()
-	UnregisterStateDriver(zMainBar, "actionpage")
-
+function zMainBar:GetStateCommand()
 	local header, state = "", ""
 
 	if zBar2Saves["pageTrigger"] then
@@ -136,7 +134,12 @@ function zMainBar:UpdateStateHeader()
 		header = header .. state
 	end
 
-	RegisterStateDriver(zMainBar, "actionpage", header .. "0")
+	return header .. "0"
+end
+
+function zMainBar:UpdateStateHeader()
+	UnregisterStateDriver(zMainBar, "actionpage")
+	RegisterStateDriver(zMainBar, "actionpage", zMainBar:GetStateCommand())
 end
 
 --[[ Stance Map Update- for Priest ]]

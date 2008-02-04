@@ -12,13 +12,15 @@ function zPossessBar:Init()
 		zMainBar:SetAttribute("addchild", self:GetButton(i))
 	end
 
-	local button = self:GetButton(1)
 	local PageReturn = 1
 	if zBar2.class == "WARRIOR" then PageReturn = 7 end
+
+	local button = self:GetButton(1)
 	button:SetAttribute("newstate", "1-10:11;11:"..PageReturn)
 
 	button = self:GetButton(2)
 	button:SetAttribute("type", "OnClick")
+	button:SetAttribute("newstate", "*:"..PageReturn)
 	button.OnClick = function(self, unit, button)
 		self:SetChecked(0)
 		CancelPlayerBuff(select(2, GetPossessInfo(1)))
@@ -35,7 +37,7 @@ function zPossessBar:GetButton(i)
 
 	button:SetID(i) button:SetWidth(30) button:SetHeight(30)
 	button:SetScript("OnEnter", function()
-		if self.shown then
+		if zPossessBar.shown then
 			PossessBar_OnEnter(this:GetID())
 		end
 	end)
@@ -54,28 +56,34 @@ function zPossessBar:Hook()
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		_G["ShapeshiftButton"..i]:SetFrameLevel(2)
 	end
-	zPossessButton1:SetFrameLevel(0)
-	zPossessButton2:SetFrameLevel(0)
-	zPossessButton1:SetAlpha(0)
-	zPossessButton2:SetAlpha(0)
+	for i = 1, 2 do
+		zPossessBar:GetButton(i):SetFrameLevel(0)
+		zPossessBar:GetButton(i):SetAlpha(0)
+	end
 
 	hooksecurefunc(PossessBarFrame, "Show", function(self)
 		if zPossessBar.shown then return end
 		zPossessBar.shown = 1
-		zPossessButton1:SetFrameLevel(5)
-		zPossessButton2:SetFrameLevel(5)
-		zPossessButton1:SetAlpha(1)
-		zPossessButton2:SetAlpha(1)
+		local scale = ShapeshiftButton1:GetEffectiveScale()/zMainBar:GetScale()
+		for i = 1, 2 do
+			zPossessBar:GetButton(i):SetFrameLevel(5)
+			zPossessBar:GetButton(i):SetAlpha(1)
+			zPossessBar:GetButton(i):SetScale(scale)
+		end
 		zStanceBar:SetAlpha(0)
+		zPetBar:SetAlpha(0)
+		zPossessBar:UpdateState()
 	end)
 	hooksecurefunc(PossessBarFrame, "Hide", function(self)
 		if not zPossessBar.shown then return end
 		zPossessBar.shown = nil
-		zPossessButton1:SetFrameLevel(0)
-		zPossessButton2:SetFrameLevel(0)
-		zPossessButton1:SetAlpha(0)
-		zPossessButton2:SetAlpha(0)
-		zStanceBar:SetAlpha(1)
+		for i = 1, 2 do
+			zPossessBar:GetButton(i):SetFrameLevel(0)
+			zPossessBar:GetButton(i):SetAlpha(0)
+		end
+		zStanceBar:SetAlpha(zBar2Saves["zStanceBar"].alpha)
+		zPetBar:SetAlpha(zBar2Saves["zPetBar"].alpha)
+		zPossessBar:UpdateState()
 	end)
 	hooksecurefunc("PossessBar_UpdateState", function()
 		for i = 1, 2 do
@@ -86,6 +94,17 @@ function zPossessBar:Hook()
 			Icon:SetVertexColor(1.0, 1.0, 1.0);
 		end
 	end)
+end
+
+function zPossessBar:UpdateState()
+	if not InCombatLockdown() then
+		if self.shown then
+			zMainBar:SetAttribute("state",11)
+		else
+			local values = zMainBar:GetStateCommand()
+			zMainBar:SetAttribute("state",SecureCmdOptionParse(values))
+		end
+	end
 end
 
 function zPossessBar:OnBindingKey()

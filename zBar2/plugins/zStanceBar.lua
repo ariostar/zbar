@@ -34,6 +34,9 @@ end
 function zStanceBar:UpdateNums()
 	local num = GetNumShapeshiftForms()
 	if num ~= zBar2Saves["zStanceBar"].num then
+		if zBar2Saves["zStanceBar"].linenum == zBar2Saves["zStanceBar"].num then
+			zBar2Saves["zStanceBar"].linenum = num
+		end
 		zBar2Saves["zStanceBar"].num = num
 		zBar2Saves["zStanceBar"].max = num
 		if not InCombatLockdown() then
@@ -45,9 +48,11 @@ end
 function zStanceBar:Hook()
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		_G["ShapeshiftButton"..i]:HookScript("OnEnter",function()
+			if zPossessBar and zPossessBar.shown then return end
 			zStanceBar:SetAlpha(1)
 		end)
 		_G["ShapeshiftButton"..i]:HookScript("OnLeave",function()
+			if zPossessBar and zPossessBar.shown then return end
 			zStanceBar:SetAlpha(zBar2Saves["zStanceBar"].alpha)
 		end)
 	end
