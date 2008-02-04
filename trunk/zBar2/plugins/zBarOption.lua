@@ -14,10 +14,10 @@ function zBarOption:Init()
 
 	SlashCmdList["ZBAR"] = function(msg)
 		for name,bar in pairs(zBar2.bars) do
-			zBarOption:Openfor(bar)
 			if msg == "resetall" then
 				bar:Reset(true)
 			else
+				zBarOption:Openfor(bar)
 				return
 			end
 		end
@@ -245,11 +245,11 @@ end
 zBarOption.labels = {
 	-- font, color-red, color-green, color-blue, pos, offset-x, offset-y
 	["Title"] = {"GameFontNormalLarge",0.12,0.66,1,"TOP",0,-10},
-	["SelectBar"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-30},
-	["Attribute"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-120},
-	["Layout"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",100,-120},
-	["InCombat"] = {"GameFontNormalLarge",1.0,0.82,0.1,"TOPLEFT",10,-230},
-	["Commons"] = {"GameFontNormalLarge",1.0,0.82,0.1,"BOTTOMLEFT",10,100},
+	["SelectBar"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-30},
+	["Attribute"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-120},
+	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",100,-120},
+	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-230},
+	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"BOTTOMLEFT",10,100},
 }
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR",	"zMultiR2", "zMultiR1",
