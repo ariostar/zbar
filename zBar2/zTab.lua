@@ -11,6 +11,12 @@ function zTab:SavePosition(tab)
 	cy = cy / tab:GetScale()
 	zBar2Saves[tab.bar:GetName()].pos = {"CENTER",x-cx,y-cy,}
 	tab:SetUserPlaced(false)
+	-- save my corteges' positions
+	if tab.cortege then
+		for _, name in ipairs(tab.cortege) do
+			zTab:SavePosition(_G[name])
+		end
+	end
 end
 
 -- drag start
@@ -36,11 +42,6 @@ function zTab:OnDragStop()
 	if this.master then -- remove this from master tab's cortege list
 		tDeleteItem(this.master.cortege, this:GetName())
 		this.master = nil
-	end
-	if this.cortege then -- save my corteges' positions
-		for _, name in ipairs(this.cortege) do
-			zTab:SavePosition(_G[name])
-		end
 	end
 
 	if InCombatLockdown() then return end
