@@ -79,12 +79,12 @@ zBar2.defaults = {
 	["zPetBar"] = {
 		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,
 			hideTab=true,hideHotkey=true,},
-		pos = {"BOTTOM",-100,220},
+		pos = {"BOTTOM",-100,222},
 	},
 	["zStanceBar"] = {
 		saves = {num=10, inset = 10, linenum = 10, max = 10, scale = 0.8,
 			hideTab=true,hideHotkey=true,},
-		pos = {"BOTTOM",-100,220},
+		pos = {"BOTTOM",-100,222},
 	},
 	["zBagBar"] = {
 		saves = {num=6, linenum=6, max=6, scale=0.75, hideTab=true, invert=true},
@@ -96,7 +96,7 @@ zBar2.defaults = {
 	},
 	["zXPBar"] = {
 		saves = {num = 3, max = 3, scale=0.422,},
-		pos = {"BOTTOM",230, 335},
+		pos = {"BOTTOM",230, 333},
 	},
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},

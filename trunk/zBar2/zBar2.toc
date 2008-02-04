@@ -40,5 +40,6 @@ plugins\zMainBar.lua
 plugins\zPossessBar.lua
 
 plugins\zCastBar.lua
+plugins\zChat.lua
 
 plugins\zBarOption.lua
