@@ -23,7 +23,6 @@ function zStanceBar:Init()
 	end
 	ShapeshiftButton1:ClearAllPoints()
 	ShapeshiftButton1:SetPoint("CENTER")
-	ShapeshiftButton1.SetPoint = zBar2.NOOP
 
 	self:GetTab():GetNormalTexture():SetWidth(50)
 	self:GetTab():GetHighlightTexture():SetWidth(50)
@@ -46,6 +45,8 @@ function zStanceBar:UpdateNums()
 end
 
 function zStanceBar:Hook()
+	ShapeshiftButton1.SetPoint = zBar2.NOOP
+
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		_G["ShapeshiftButton"..i]:HookScript("OnEnter",function()
 			if zPossessBar and zPossessBar.shown then return end
@@ -56,9 +57,15 @@ function zStanceBar:Hook()
 			zStanceBar:SetAlpha(zBar2Saves["zStanceBar"].alpha)
 		end)
 	end
-	hooksecurefunc("ShapeshiftBar_UpdateState", zStanceBar.UpdateNums)
-	MultiBarBottomLeft.Hide = MultiBarBottomLeft.Show
-	MultiBarBottomLeft:Show()
+	hooksecurefunc("ShapeshiftBar_Update", zStanceBar.UpdateNums)
+	hooksecurefunc("UIParent_ManageFramePositions", function()
+		if 50 ~= ShapeshiftButton1NormalTexture:GetWidth() then
+			for i = 1, GetNumShapeshiftForms() do
+				_G["ShapeshiftButton"..i.."NormalTexture"]:SetWidth(50)
+				_G["ShapeshiftButton"..i.."NormalTexture"]:SetHeight(50)
+			end
+		end
+	end)
 end
 
 function zStanceBar:UpdateButtons()

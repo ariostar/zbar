@@ -100,6 +100,6 @@ zBar2.defaults = {
 	},
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},
-		pos={"BOTTOM",0,200},
+		pos={"BOTTOM",0,205},
 	},
 }

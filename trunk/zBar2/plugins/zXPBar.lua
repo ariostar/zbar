@@ -90,23 +90,24 @@ function zXPBar:Hook()
 	ReputationWatchBar:HookScript("OnLeave", OnLeave)
 
 	--[[ Override when ReputationWatchBar Updates ]]
-	ReputationWatchBar.zSetPoint = ReputationWatchBar.SetPoint
+	--ReputationWatchBar.zSetPoint = ReputationWatchBar.SetPoint
 	ReputationWatchBar.SetPoint = zBar2.NOOP
+
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
 		local name, reaction = GetWatchedFactionInfo()
-		if ( not newLevel ) then
-			newLevel = UnitLevel("player");
-		end
 		if name then
+			if ( not newLevel ) then
+				newLevel = UnitLevel("player");
+			end
 			if newLevel < MAX_PLAYER_LEVEL then
 				local r,g,b = 0,0,0
 				if reaction < 5 then r = 1 end
 				if reaction == 3 then g = 0.5 end
 				if reaction > 3 then g = 1 end
 				ReputationWatchStatusBar:SetStatusBarColor(r, g, b);
-				ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"TOP",0,-2)
+				zXPBar.SetPoint(ReputationWatchBar,"BOTTOM",MainMenuExpBar,"TOP",0,-2)
 			else
-				ReputationWatchBar:zSetPoint("BOTTOM",MainMenuExpBar,"BOTTOM",0,0)
+				zXPBar.SetPoint(ReputationWatchBar,"BOTTOM",MainMenuExpBar,"BOTTOM",0,0)
 				ReputationWatchStatusBar:SetHeight(XPHeight)
 			end
 		end
@@ -136,11 +137,11 @@ function zXPBar:UpdateLayouts()
 end
 
 function zXPBar:Test()
-	if self.sig then
+	if not self.sig then
 		ReputationWatchBar_Update(MAX_PLAYER_LEVEL)
-		self.sig = nil
+		self.sig = 1
 	else
 		ReputationWatchBar_Update(UnitLevel("player"))
-		self.sig = 1
+		self.sig = nil
 	end
 end
