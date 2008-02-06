@@ -92,6 +92,15 @@ function zBar2:Init()
 end
 
 function zBar2:Hook()
+	-- remove that '?' thing
+	for id, name in pairs(self.buttons) do
+		local hotkey = _G[name.."HotKey"]
+		if hotkey and hotkey:GetText() == RANGE_INDICATOR then
+			hotkey:SetText("  ")
+		end
+	end
+	RANGE_INDICATOR = "  "
+
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
@@ -100,7 +109,6 @@ function zBar2:Hook()
 				button = _G[self.buttons[bar:GetName()..id]]
 				if button then
 					button:SetMovable(true)
-					button:SetResizable(true)
 					-- set button scripts
 					button:SetScript("OnEnter",function()
 						if zTab:FreeOnEnter() then return end
@@ -118,6 +126,7 @@ function zBar2:Hook()
 			end
 		end
 	end
+
 	-- add events for grid, must after bars initial
 	self:RegisterEvent("ACTIONBAR_SHOWGRID")
 	self:RegisterEvent("ACTIONBAR_HIDEGRID")
