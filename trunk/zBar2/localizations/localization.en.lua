@@ -21,7 +21,7 @@ if not zBar2.loc then
 		Hide = "Hide",
 		Label = "Label",
 		Lock = "Lock",
-		HotKey = "HotKey",
+		HotKey = "noHotkey",
 
 		AutoPop = "AutoPop",
 		AutoHide = "AutoHide",

@@ -21,7 +21,7 @@
 		Hide = "隐藏",
 		Label = "名字",
 		Lock = "锁定",
-		HotKey = "快捷键",
+		HotKey = "隐藏绑定",
 
 		AutoPop = "自动弹出",
 		AutoHide = "自动隐藏",

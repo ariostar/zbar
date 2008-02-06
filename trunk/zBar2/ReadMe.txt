@@ -31,6 +31,7 @@ plugins\zMainBar.lua	-- MainMenuBar 主动作条
 plugins\zPossessBar.lua	-- PossessBar 控制条
 
 plugins\zCastBar.lua	-- Spell Casting Bar 施法条
+plugins\zChat.lua	-- Chat mod 聊天框修改
 
 plugins\zBarOption.lua	-- Option Window 设置窗口
 
