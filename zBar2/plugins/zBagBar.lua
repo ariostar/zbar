@@ -50,19 +50,14 @@ function zBagBar:Init()
 	MainMenuBarPerformanceBar:ClearAllPoints()
 	MainMenuBarPerformanceBar:SetPoint("CENTER",1,0.5)
 
-	self:Hook()
-
 	self:GetTab():GetNormalTexture():SetWidth(60)
 	self:GetTab():GetHighlightTexture():SetWidth(60)
+
+	self:Hook()
 end
 
 function zBagBar:Hook()
-	hooksecurefunc("MainMenuBar_UpdateKeyRing", function()
-		if ( SHOW_KEYRING == 1 ) then
-			MainMenuBarPerformanceBarFrame:ClearAllPoints()
-			MainMenuBarPerformanceBarFrame:SetPoint("Right",KeyRingButton,"Left")
-		end
-	end)
+	MainMenuBarPerformanceBarFrame.SetPoint = zBar2.NOOP
 end
 
 function zBagBar:UpdateButtons()

@@ -31,15 +31,9 @@ function zMainBar:Init()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
-	BonusActionBarFrame:Hide()
-	BonusActionBarFrame:UnregisterAllEvents()
-	BonusActionBarFrame.Show = BonusActionBarFrame.Hide
-
 	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
 		self:UpdateGrid(1)
 	end
-
-	MainMenuBar:Hide()
 
 	self:InitStanceMap()
 
@@ -71,6 +65,12 @@ function zMainBar:Hook()
 
 	hooksecurefunc("MultiActionBar_ShowAllGrids",function() zMainBar:UpdateGrid(1) end)
 	hooksecurefunc("MultiActionBar_HideAllGrids",function() zMainBar:UpdateGrid() end)
+
+	BonusActionBarFrame:Hide()
+	BonusActionBarFrame:UnregisterAllEvents()
+	BonusActionBarFrame.Show = zBar2.NOOP
+
+	MainMenuBar:Hide()
 end
 
 function zMainBar:UpdateHotkey()
@@ -108,7 +108,7 @@ local triggers = {
 }
 local stances = {
 	["ROGUE"] = { [1] = 7 },
-	["DRUID"] = { [1] = 9, [3] = 7, [5] = 8 },	-- moonkin/tree-of-life
+	--["DRUID"] = { [1] = 9, [3] = 7, [5] = 8 },	-- moonkin/tree-of-life
 	["WARRIOR"] = { [1] = 7, [2] = 8, [3] = 9 },
 }
 
@@ -142,7 +142,7 @@ function zMainBar:UpdateStateHeader()
 	RegisterStateDriver(zMainBar, "actionpage", zMainBar:GetStateCommand())
 end
 
---[[ Stance Map Update- for Priest ]]
+--[[ Stance Map Update- for Priest or Druid ]]
 
 --local StanceTexturePriest = "Interface\\Icons\\Spell_Shadow_Shadowform"
 
@@ -173,11 +173,15 @@ function zMainBar:InitStanceMap()
 		searchTalent("shadowform")
 		self:RegisterEvent("PLAYER_ALIVE")
 		self:RegisterEvent("CHARACTER_POINTS_CHANGED")
-		self:SetScript("OnEvent", zMainBar.OnEvent)
+		self:SetScript("OnEvent", zMainBar.UpdatePriestStanceMap)
+	elseif zBar2.class == "DRUID" then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
+		self:SetScript("OnEvent", zMainBar.UpdateDruidStanceMap)
 	end
 end
 
-function zMainBar:OnEvent()
+function zMainBar:UpdatePriestStanceMap()
 	if event == "PLAYER_ALIVE" then
 		searchTalent("shadowform")
 		zMainBar:UnregisterEvent("PLAYER_ALIVE")
@@ -204,3 +208,58 @@ function zMainBar:OnEvent()
 		zMainBar:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	end
 end
+
+-- [[ for Druid
+local DruidStanceTextureMap = {
+	["BearForm"] = 9,
+	["CatForm"] = 7,
+	["TreeofLife"] = 8,
+	["ForceOfNature"] = 8,	-- moonkin
+}
+zMainBar.numForms = 0
+function zMainBar:UpdateDruidStanceMap()
+	-- for secure
+	if InCombatLockdown() then
+		-- rescan after leaving combat
+		zMainBar:RegisterEvent("PLAYER_REGEN_ENABLED")
+		zMainBar.numForms = -1
+		return
+	end
+	if event == "PLAYER_REGEN_ENABLED" then
+		zMainBar:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	end
+
+	local numForms = GetNumShapeshiftForms()
+
+	-- return if no changes
+	if numForms == zMainBar.numForms then return end
+	zMainBar.numForms = numForms
+
+	-- rescan stance map
+	stances[zBar2.class] = {} -- clear stances
+	for i = 1, numForms do
+		local texture, name, isActive = GetShapeshiftFormInfo(i)
+		if isActive then -- if is active, the texture will not be the stance texture
+			local j = 1
+			local buffName, rank, buffTexture = UnitBuff("player", j)
+			while buffName do
+				if buffName == name then
+					texture = buffTexture -- so we use the buff texture
+					j = numForms -- escape when found
+				end
+				j = j + 1
+				buffName, rank, buffTexture = UnitBuff("player", j)
+			end
+		end
+		for str, page in pairs(DruidStanceTextureMap) do
+			if string.find(string.lower(texture), string.lower(str)) then
+				stances[zBar2.class][i] = page -- remapping the page
+			end
+		end
+	end
+
+	-- update
+	zMainBar:UpdateStateHeader()
+	zBar2:print("zBar2 - Detecting Stances for "..UnitClass("player"), 1,1,0)
+end
+--]]

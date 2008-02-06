@@ -7,10 +7,10 @@ function zCastBar:Init()
 	zCastBar:SetWidth(195); zCastBar:SetHeight(13)
 
 	-- positon of CastingBarFrame and FramerateLabel
-	UIPARENT_MANAGED_FRAME_POSITIONS["FramerateLabel"] = 	nil
-	UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"] = nil
-	FramerateLabel:ClearAllPoints() FramerateLabel:SetPoint("BOTTOM",zCastBar)
-	CastingBarFrame:ClearAllPoints() CastingBarFrame:SetPoint("BOTTOM",zCastBar)
+	CastingBarFrame:ClearAllPoints()
+	CastingBarFrame:SetPoint("TOP",zCastBar,0,-5)
+	FramerateLabel:ClearAllPoints()
+	FramerateLabel:SetPoint("BOTTOM",zCastBar,"TOP")
 
 	-- skin
 	CastingBarFrameBorder:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
@@ -37,6 +37,17 @@ function zCastBar:Init()
 			v:SetPoint("BOTTOMRIGHT",0,2)
 		end
 	end
+
+	self:Hook()
+end
+
+function zCastBar:Hook()
+	--UIPARENT_MANAGED_FRAME_POSITIONS["FramerateLabel"] = 	nil
+	--UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"] = nil
+	CastingBarFrame.ClearAllPoints = zBar2.NOOP
+	CastingBarFrame.SetPoint = zBar2.NOOP
+	FramerateLabel.ClearAllPoints = zBar2.NOOP
+	FramerateLabel.SetPoint = zBar2.NOOP
 end
 
 function zCastBar:UpdateButtons()
@@ -48,11 +59,10 @@ function zCastBar:UpdateButtons()
 end
 
 function zCastBar:UpdateLayouts()
+	CastingBarFrameIcon:ClearAllPoints()
 	if zBar2Saves["zCastBar"].invert then
-		CastingBarFrameIcon:ClearAllPoints()
 		CastingBarFrameIcon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
 	else
-		CastingBarFrameIcon:ClearAllPoints()
 		CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
 	end
 end
