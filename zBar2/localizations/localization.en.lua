@@ -78,4 +78,7 @@ if not zBar2.loc then
 	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "zExButton"..i)
 	end
+
+	loc.Possessed = SPELL_FAILED_POSSESSED .. " ! ?"
+
 end

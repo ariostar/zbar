@@ -90,7 +90,9 @@ function zXPBar:Hook()
 	ReputationWatchBar:HookScript("OnLeave", OnLeave)
 
 	--[[ Override when ReputationWatchBar Updates ]]
-	--ReputationWatchBar.zSetPoint = ReputationWatchBar.SetPoint
+	MainMenuExpBar.ClearAllPoints = zBar2.NOOP
+	MainMenuExpBar.SetPoint = zBar2.NOOP
+	ReputationWatchBar.ClearAllPoints = zBar2.NOOP
 	ReputationWatchBar.SetPoint = zBar2.NOOP
 
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)

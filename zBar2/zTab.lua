@@ -77,7 +77,7 @@ function zTab:OnDragStop()
 			end
 		end
 		-- update this button
-		if button:GetParent():GetID() <= 10 then
+		if button:GetParent():GetID() <= 10 and button.action then
 			if (zBar2.showgrid == 0 and not HasAction(button.action)) then
 				button:Hide()
 			end
@@ -99,9 +99,8 @@ function zTab:GetFreeTab()
 	tab:SetBackdropColor(0.2,0.2,0.2)
 	tab:EnableMouse(true)
 	tab:EnableMouseWheel(true)
-	tab:RegisterForDrag("LeftButton", "RightButton")
-	tab:SetScript("OnDragStart", zTab.FreeOnDragStart)
-	tab:SetScript("OnDragStop", zTab.FreeOnDragStop)
+	tab:SetScript("OnMouseDown", zTab.FreeOnDragStart)
+	tab:SetScript("OnMouseUp", zTab.FreeOnDragStop)
 	tab:SetScript("OnMouseWheel", zTab.FreeOnWheel)
 	tab:SetScript("OnLeave", zTab.FreeOnLeave)
 	return tab
@@ -143,7 +142,6 @@ function zTab:FreeOnDragStart()
 
 	if zBar2Saves[bar:GetName()].num > 1
 		and button:GetName() ~= zBar2.buttons[bar:GetName()..1] then
-		--button:ClearAllPoints()
 		button:StartMoving()
 	end
 end

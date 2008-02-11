@@ -78,4 +78,7 @@
 	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "擴展按鈕"..i)
 	end
+
+	loc.Possessed = SPELL_FAILED_POSSESSED .. " ! ?"
+
 end
