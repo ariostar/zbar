@@ -14,6 +14,7 @@ function zStanceBar:Init()
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		zBar2.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
 		_G["ShapeshiftButton"..i]:SetParent(self)
+		_G["ShapeshiftButton"..i.."NormalTexture"]:SetPoint("CENTER")
 		_G["ShapeshiftButton"..i]:RegisterEvent("UPDATE_BINDINGS")
 		_G["ShapeshiftButton"..i]:RegisterEvent("PLAYER_ENTERING_WORLD")
 		_G["ShapeshiftButton"..i]:SetScript("OnEvent", function()
@@ -40,11 +41,13 @@ function zStanceBar:UpdateNums()
 		zBar2Saves["zStanceBar"].max = num
 		if not InCombatLockdown() then
 			zStanceBar:UpdateLayouts()
+			zStanceBar:UpdateHotkeys()
 		end
 	end
 end
 
 function zStanceBar:Hook()
+	ShapeshiftButton1.ClearAllPoints = zBar2.NOOP
 	ShapeshiftButton1.SetPoint = zBar2.NOOP
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do

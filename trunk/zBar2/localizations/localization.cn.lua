@@ -80,4 +80,6 @@
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "扩展按钮"..i)
 	end
 
+	loc.Possessed = SPELL_FAILED_POSSESSED .. " ! ?"
+
 end

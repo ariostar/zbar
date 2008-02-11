@@ -42,8 +42,6 @@ function zCastBar:Init()
 end
 
 function zCastBar:Hook()
-	--UIPARENT_MANAGED_FRAME_POSITIONS["FramerateLabel"] = 	nil
-	--UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"] = nil
 	CastingBarFrame.ClearAllPoints = zBar2.NOOP
 	CastingBarFrame.SetPoint = zBar2.NOOP
 	FramerateLabel.ClearAllPoints = zBar2.NOOP
