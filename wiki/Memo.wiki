@@ -1,16 +1,21 @@
 #summary Things that in my plan. 草稿本
 
-= Introduction =
+= What's this? =
 
 Blueprint. Things that in my plan.
 This is a note book.
 
 
-= Details =
+= Notes =
 
   * 控制条可隐藏（可通过设置按钮数隐藏？？）
   * 可设置小德潜行是否翻页
   * 鼠标停留在移动标签上可以显示隐藏的动作条
+
+EN:
+  * Possess bar can be hide
+  * Add setting for page-changing when stealth of cat form for Druid
+  * Show hidden bar when mouse over tab
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
