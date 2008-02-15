@@ -1,0 +1,18 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Blueprint. Things that in my plan.
+This a note book,
+
+
+= Details =
+
+  * 控制条可隐藏（可通过设置按钮数隐藏？？）
+  * 可设置小德潜行是否翻页
+  * 鼠标停留在移动标签上可以显示隐藏的动作条
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
