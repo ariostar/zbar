@@ -17,7 +17,5 @@ EN:
   * Add setting for page-changing when stealth of cat form for Druid
   * Show hidden bar when mouse over tab
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+
+  * *bold* _italic_
