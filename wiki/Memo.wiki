@@ -1,9 +1,9 @@
-#summary Things that in my plan.
+#summary Things that in my plan. 草稿本
 
 = Introduction =
 
 Blueprint. Things that in my plan.
-This is a note book,
+This is a note book.
 
 
 = Details =
