@@ -72,13 +72,8 @@
 	}
 
 	--[[ Bindings ]]--
-	BINDING_HEADER_ZPOSSESS = "熾火控制切換"
-	setglobal("BINDING_NAME_CLICK zPossessButton1:LeftButton",  "控制切換")
 	BINDING_HEADER_ZEXBUTTON = "熾火動作條綁定"
 	for i = 1, 24 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "擴展按鈕"..i)
 	end
-
-	loc.Possessed = SPELL_FAILED_POSSESSED .. " ! ?"
-
 end
