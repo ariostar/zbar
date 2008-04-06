@@ -113,7 +113,7 @@ local stances = {
 }
 
 function zMainBar:GetStateCommand()
-	local header, state = "", ""
+	local header, state = "[bonusbar:5]11;", ""
 
 	if zBar2Saves["pageTrigger"] then
 		for k,v in pairs(triggers) do
@@ -121,7 +121,7 @@ function zMainBar:GetStateCommand()
 			header = header .. state
 		end
 	end
-
+	
 	if stances[zBar2.class] then
 		for k,v in pairs(stances[zBar2.class]) do
 			state = format("[actionbar:1,stance:%d]%d;", k, v)
@@ -183,11 +183,10 @@ end
 
 function zMainBar:UpdatePriestStanceMap()
 	if event == "PLAYER_ALIVE" then
-		searchTalent("shadowform")
+		searchTalent("shadowform") -- initial search
 		zMainBar:UnregisterEvent("PLAYER_ALIVE")
 	elseif event == "CHARACTER_POINTS_CHANGED" then
 		local currRank = select(5, GetTalentInfo(zMainBar.TabIndex,zMainBar.TalentIndex))
-		--zBar2:print("zBar2: "..zMainBar.TalentName.." Rank:"..currRank,1,1,0)
 		if zMainBar.ShadowFormRank ~= currRank then
 			zBar2:print("zBar2: "..zMainBar.TalentName.." Change Rank:"..currRank,1,1,0)
 			zMainBar.ShadowFormRank = currRank
@@ -245,7 +244,7 @@ function zMainBar:UpdateDruidStanceMap()
 			while buffName do
 				if buffName == name then
 					texture = buffTexture -- so we use the buff texture
-					j = numForms -- escape when found
+					break -- escape when found
 				end
 				j = j + 1
 				buffName, rank, buffTexture = UnitBuff("player", j)

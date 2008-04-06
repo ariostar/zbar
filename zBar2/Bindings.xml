@@ -1,8 +1,5 @@
 <Bindings>
 	<!-- zExBar bindings -->
-	<Binding name="CLICK zPossessButton1:LeftButton" runOnUp="true" header="ZPOSSESS">
-		zPossessBar:OnBindingKey()
-	</Binding>
 	<Binding name="CLICK zExButton1:LeftButton" runOnUp="true" header="ZEXBUTTON">
 		zExBars:OnBindingKey(1)
 	</Binding>

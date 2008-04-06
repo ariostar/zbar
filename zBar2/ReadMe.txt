@@ -17,7 +17,7 @@ localizations\localization.cn.lua -- needed
 localizations\localization.tw.lua -- needed
 localizations\localization.en.lua -- needed
 
-plugins\zExBars.lua -- Extra bars 扩展条
+plugins\zExBars.lua 	-- Extra bars 扩展条
 
 plugins\zMultiBars.lua	-- Multi Bars 系统动作条
 plugins\zPetBar.lua	-- Pet Bar 宠物
