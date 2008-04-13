@@ -376,25 +376,21 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		name="LockButtons",
 		pos={"TOP","zBarOptionHideTip","BOTTOM",0,0},
 		IsChecked=function() return LOCK_ACTIONBAR == "1" end,
-		OnChecked=function() LOCK_ACTIONBAR = "1" end,
-		UnChecked=function() LOCK_ACTIONBAR = nil end,
+		OnChecked=function() LOCK_ACTIONBAR = "1" SetCVar("lockActionBars", "1") end,
+		UnChecked=function() LOCK_ACTIONBAR = nil SetCVar("lockActionBars", nil) end,
 	},
 	{-- show / hide grid
 		name="HideGrid",
 		pos={"TOP","zBarOptionLockButtons","BOTTOM",0,0},
-		IsChecked=function() return ALWAYS_SHOW_MULTIBARS ~= "1" and ALWAYS_SHOW_MULTIBARS ~= 1 end,
+		IsChecked=function() return GetCVar("alwaysShowActionBars") == "0" end,
 		OnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = nil
-			SetActionBarToggles(SHOW_MULTI_ACTIONBAR_1,
-			SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3,
-			SHOW_MULTI_ACTIONBAR_4, ALWAYS_SHOW_MULTIBARS);
+			SetCVar("alwaysShowActionBars", nil)
 			MultiActionBar_UpdateGridVisibility()
 		end,
 		UnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = "1"
-			SetActionBarToggles(SHOW_MULTI_ACTIONBAR_1,
-			SHOW_MULTI_ACTIONBAR_2, SHOW_MULTI_ACTIONBAR_3,
-			SHOW_MULTI_ACTIONBAR_4, ALWAYS_SHOW_MULTIBARS);
+			SetCVar("alwaysShowActionBars", "1")
 			MultiActionBar_UpdateGridVisibility()
 		end,
 	},
