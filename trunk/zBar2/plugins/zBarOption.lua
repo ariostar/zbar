@@ -251,6 +251,35 @@ function zBarOption:Select(bar)
 	self.bar = bar
 end
 
+--[[ utilities ]]
+
+function zBarOption:Befor_ShowGrid()
+ 	if InCombatLockdown() then return end
+	for name,bar in pairs(zBar2.bars) do
+		if bar:GetID() >= 5 and bar:GetID() <= 8 then
+			for i=1,12 do
+				local button = _G[zBar2.buttons[name..i]]
+				button:SetAttribute("showgrid", button:GetAttribute("showgrid") + 1)
+			end
+		end
+	end
+end
+function zBarOption:Befor_HideGrid()
+ 	if InCombatLockdown() then return end
+	for name,bar in pairs(zBar2.bars) do
+		if bar:GetID() >= 5 and bar:GetID() <= 8 then
+			for i=1,12 do
+				local button = _G[zBar2.buttons[name..i]]
+				local showgrid = button:GetAttribute("showgrid")
+				if showgrid > 0 then
+					button:SetAttribute("showgrid", showgrid - 1)
+				end
+			end
+		end
+	end
+end
+
+
 --[[ Datas ]]
 zBarOption.labels = {
 	-- font, color-red, color-green, color-blue, pos, offset-x, offset-y
@@ -382,15 +411,19 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- show / hide grid
 		name="HideGrid",
 		pos={"TOP","zBarOptionLockButtons","BOTTOM",0,0},
-		IsChecked=function() return GetCVar("alwaysShowActionBars") == "0" end,
+		IsChecked=function()
+			return not (ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1)
+		end,
 		OnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = nil
 			SetCVar("alwaysShowActionBars", nil)
+			zBarOption:Befor_HideGrid()
 			MultiActionBar_UpdateGridVisibility()
 		end,
 		UnChecked=function()
 			ALWAYS_SHOW_MULTIBARS = "1"
 			SetCVar("alwaysShowActionBars", "1")
+			zBarOption:Befor_ShowGrid()
 			MultiActionBar_UpdateGridVisibility()
 		end,
 	},

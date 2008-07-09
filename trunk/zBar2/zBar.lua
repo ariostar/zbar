@@ -25,6 +25,7 @@ end
 function zBar2:NOOP() end
 
 --[[ Event ]]
+local entered = false
 function zBar2:OnEvent()
 	if event == "PLAYER_LOGIN" then
 		-- self init
@@ -42,6 +43,9 @@ function zBar2:OnEvent()
 		-- welcome message
 		zBar2:print("zBar2 v"..zBar2.version.." Loaded :: Author - "..zBar2.author.. " :: type /zbar",0.0,1.0,0.0)
 	else
+		if not entered then
+			entered = true
+		end
 		zBar2:Update(event)
 	end
 end
@@ -86,9 +90,10 @@ function zBar2:Init()
 
 	-- init grid signal
 	self.showgrid = 0
-	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
+	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1 ) then
 		self.showgrid = 1
 	end
+
 end
 
 function zBar2:Hook()
@@ -133,11 +138,11 @@ function zBar2:Hook()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	-- hooks for grid
 	hooksecurefunc("MultiActionBar_ShowAllGrids",function()
-		zBar2.showgrid = zBar2.showgrid + 1
+		self:IncGrid()
 		zBar2:Update()
 	end)
 	hooksecurefunc("MultiActionBar_HideAllGrids",function()
-		zBar2.showgrid = zBar2.showgrid - 1
+		self:DecGrid()
 		zBar2:Update()
 	end)
 end
@@ -147,12 +152,24 @@ function zBar2:RegisterGridUpdater(func)
 	table.insert(self.gridUpdaters, func)
 end
 
+function zBar2:IncGrid()
+	if not entered then return end
+	self.showgrid = self.showgrid + 1
+end
+
+function zBar2:DecGrid()
+	if not entered then return end
+	if self.showgrid > 0 then
+		self.showgrid = self.showgrid - 1
+	end
+end
+
 function zBar2:Update(event)
 	-- event stuff
 	if event == "ACTIONBAR_SHOWGRID" then
-		self.showgrid = self.showgrid + 1
+		self:IncGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" then
-		self.showgrid = self.showgrid - 1
+		self:DecGrid()
 	end
 	-- some other updates
 	for i, func in ipairs(zBar2.gridUpdaters) do

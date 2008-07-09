@@ -147,10 +147,11 @@ function zExBars:UpdateGrid(bar)
 		end
 		return
 	end
-	-- update all buttons if not given a bar
+	-- update all buttons (if not given a bar)
 	local button
 	for i=1, NUM_ZEXBAR_BUTTONS do
 		button = _G["zExButton"..i]
+
 		if zBar2.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
 				button:Show()
