@@ -31,13 +31,13 @@ function zMainBar:Init()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
-	if ( ALWAYS_SHOW_MULTIBARS == "1" or ALWAYS_SHOW_MULTIBARS == 1) then
-		self:UpdateGrid(1)
-	end
-
 	self:InitStanceMap()
 
 	self:Hook()
+	
+	-- grid stuff
+	zBar2:RegisterGridUpdater(self.UpdateGrid)
+	self:UpdateGrid()
 end
 
 --[[
@@ -63,9 +63,6 @@ end
 function zMainBar:Hook()
 	hooksecurefunc("ActionButton_UpdateHotkeys", zMainBar.UpdateHotkey)
 
-	hooksecurefunc("MultiActionBar_ShowAllGrids",function() zMainBar:UpdateGrid(1) end)
-	hooksecurefunc("MultiActionBar_HideAllGrids",function() zMainBar:UpdateGrid() end)
-
 	BonusActionBarFrame:Hide()
 	BonusActionBarFrame:UnregisterAllEvents()
 	BonusActionBarFrame.Show = zBar2.NOOP
@@ -89,14 +86,19 @@ function zMainBar:UpdateHotkey()
 	end
 end
 
-function zMainBar:UpdateGrid(show)
+function zMainBar:UpdateGrid()
 	-- in combat we can't let it be shown or hidden
---~ 	if InCombatLockdown() then return end
+ 	if InCombatLockdown() then return end
 	for i=1, 12 do
-		if ( show ) then
-			ActionButton_ShowGrid(_G["ActionButton"..i])
-		else
-			ActionButton_HideGrid(_G["ActionButton"..i])
+		local button = _G["ActionButton"..i]
+		button:SetAttribute("showgrid", zBar2.showgrid)
+		if button:GetAttribute("showgrid") > 0 then
+			if not button:GetAttribute("statehidden") then
+				button:Show();
+				--_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
+			end
+		elseif not HasAction(button.action) then
+			button:Hide();
 		end
 	end
 end
