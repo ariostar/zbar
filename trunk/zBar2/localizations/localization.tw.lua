@@ -36,6 +36,7 @@
 		LockButtons = "鎖定所有按鈕",
 		HideGrid = "隱藏空按鈕",
 		PageTrigger = "自動繙頁",
+		CatStealth = "德魯伊貓形態潛行翻頁",
 
 		Scale = "縮放",
 		Inset = "按鈕間距",

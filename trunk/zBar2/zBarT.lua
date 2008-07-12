@@ -57,13 +57,22 @@ function zBarT:Reset(resetsaves)
 end
 
 function zBarT:UpdateVisibility()
-	local state
+	local state = 1 -- tab-show; bar-show
 	if zBar2Saves[self:GetName()].hide then
-		state = 0
-	else
-		state = 1
+		state = 0 -- tab-show; bar-hide
 	end
-	if zBar2Saves[self:GetName()].hideTab then state = state + 2 end
+	if zBar2Saves[self:GetName()].hideTab
+		then state = state + 2 -- tab-hide; bar-hide if is 2; bar-show if is 3;
+	end
+	if state == 0 then -- bar-show when mouse enter; bar-hide when leave;
+		self:GetHeader():SetAttribute("statemap-anchor-enter","1")
+		self:GetHeader():SetAttribute("delaystatemap-anchor-leave","0")
+		self:GetHeader():SetAttribute("delaytimemap-anchor-leave","1")
+		self:GetHeader():SetAttribute("delayhovermap-anchor-leave","true")
+	else
+		self:GetHeader():SetAttribute("statemap-anchor-enter","")
+	end
+		self:GetHeader():SetAttribute("statemap-anchor-leave","")
 	self:GetHeader():SetAttribute("state", state)
 end
 
@@ -141,6 +150,7 @@ function zBarT:GetHeader()
 	header:SetID(id)
 
 	self:SetAttribute("showstates","1,3")
+	
 	header:SetAttribute("addchild", self)
 	header:SetAttribute("addchild", self:GetTab())
 
@@ -186,6 +196,9 @@ function zBarT:GetTab()
 
 	tab:SetAttribute("newstate1","0,1")
 	tab:SetAttribute("showstates","0,1")
+	tab:SetAttribute("childstate-OnEnter","enter")
+	tab:SetAttribute("childstate-OnLeave","leave")
+	tab:SetAttribute("anchorchild","$parent")
 
 	tab:SetScale(self:GetScale())
 	tab:SetFrameLevel(self:GetFrameLevel() + 5)

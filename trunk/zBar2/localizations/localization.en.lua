@@ -36,6 +36,7 @@ if not zBar2.loc then
 		LockButtons = "Lock All Buttons",
 		HideGrid = "Hide Empty Buttons",
 		PageTrigger = "Auto Page",
+		CatStealth = "Swich page when stealth for Druid cat form",
 
 		Scale = "Scale: ",
 		Inset = "Button Spacing",

@@ -92,7 +92,7 @@ function zMainBar:UpdateGrid()
 	for i=1, 12 do
 		local button = _G["ActionButton"..i]
 		button:SetAttribute("showgrid", zBar2.showgrid)
-		if button:GetAttribute("showgrid") > 0 then
+		if zBar2.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
 				button:Show();
 				--_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
@@ -116,11 +116,14 @@ local stances = {
 
 function zMainBar:GetStateCommand()
 	local header, state = "[bonusbar:5]11;", ""
-
+	
 	if zBar2Saves["pageTrigger"] then
 		for k,v in pairs(triggers) do
 			state = v .. ";"
 			header = header .. state
+		end
+		if zBar2Saves["catStealth"] then
+			header = header .. "[actionbar:1,stealth]10;"
 		end
 	end
 	
