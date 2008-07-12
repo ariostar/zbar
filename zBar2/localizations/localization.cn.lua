@@ -36,6 +36,7 @@
 		LockButtons = "锁定所有按钮",
 		HideGrid = "隐藏空按钮",
 		PageTrigger = "自动翻页",
+		CatStealth = "德鲁伊猫形态潜行翻页",
 
 		Scale = "缩放",
 		Inset = "按钮间距",

@@ -5,7 +5,7 @@ zBar2:RegisterPlugin(zBarOption)
 
 --[[ functional ]]
 function zBarOption:Init()
-	self:SetWidth(320); self:SetHeight(385);
+	self:SetWidth(320); self:SetHeight(385); self:SetHeight(400);
 	self:SetPoint("CENTER")
 	self:SetMovable(true)
 	self:SetToplevel(true)
@@ -287,8 +287,8 @@ zBarOption.labels = {
 	["SelectBar"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-30},
 	["Attribute"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-120},
 	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",100,-120},
-	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-230},
-	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"BOTTOMLEFT",10,100},
+	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-228},
+	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-265},
 }
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR",	"zMultiR2", "zMultiR1",
@@ -381,8 +381,11 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 			zBarOptionCircle:SetChecked(false)
 			if not zBar2.buttons[zBarOption.bar:GetName().."1"] then return end
 			local saves = zBar2Saves[zBarOption.bar:GetName()]
-			for i = 1, saves.max or NUM_ACTIONBAR_BUTTONS do
-				_G[zBar2.buttons[zBarOption.bar:GetName()..i]]:SetMovable(true)
+			for i = 1, saves.num do
+				local button = _G[zBar2.buttons[zBarOption.bar:GetName()..i]]
+				if not button:IsMovable() then
+					button:SetMovable(true)
+				end
 			end
 			zTab:SaveAllPoints(zBarOption.bar)
 		end,
@@ -431,8 +434,15 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 		name="PageTrigger",var="pageTrigger",common=true,
 		pos={"TOP","zBarOptionHideGrid","BOTTOM",0,0},
 		IsEnabled=function() return (zMainBar and true) end,
-		OnChecked=function() if zMainBar then zMainBar:UpdateStateHeader() end end,
-		UnChecked=function() if zMainBar then zMainBar:UpdateStateHeader() end end,
+		OnChecked=function() zMainBar:UpdateStateHeader() end,
+		UnChecked=function() zMainBar:UpdateStateHeader() end,
+	},
+	{-- Duid cat form, page change when stealth
+		name="CatStealth",var="catStealth",common=true,
+		pos={"TOP","zBarOptionPageTrigger","BOTTOM",0,0},
+		IsEnabled=function() return (zMainBar and zBar2.class == "DRUID") end,
+		OnChecked=function() zMainBar:UpdateStateHeader() end,
+		UnChecked=function() zMainBar:UpdateStateHeader() end,
 	},
 }
 zBarOption.sliders = { --[[ Sliders ]]
