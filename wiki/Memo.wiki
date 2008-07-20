@@ -8,14 +8,12 @@ This is a note book.
 
 = Notes =
 
-  * 控制条可隐藏（可通过设置按钮数隐藏？？）
-  * 可设置小德潜行是否翻页
-  * 鼠标停留在移动标签上可以显示隐藏的动作条
+  * 改进对齐功能
+  * 增加Roll Bar
 
 EN:
-  * Possess bar can be hide
-  * Add setting for page-changing when stealth of cat form for Druid
-  * Show hidden bar when mouse over tab
+  * Improve stick feature
+  * Add Roll Bar
 
 
   * *bold* _italic_
