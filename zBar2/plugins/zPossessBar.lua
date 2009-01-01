@@ -1,7 +1,7 @@
 if zBar2.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zPossessBar", UIParent, "SecureStateHeaderTemplate")
+CreateFrame("Frame", "zPossessBar", UIParent)
 zBar2:RegisterPlugin(zPossessBar)
 zBar2:RegisterBar(zPossessBar)
 
@@ -17,7 +17,8 @@ function zPossessBar:Init()
 	-- create and add buttons
 	for i = 1, 2 do
 		local button = _G["PossessButton"..i]
-		self:SetAttribute("addchild", button)
+    button:SetParent(self)
+		--self:SetAttribute("addchild", button)
 		zBar2.buttons["zPossessBar"..i] = button:GetName()
 		button:ClearAllPoints()
 		button:SetPoint("CENTER")

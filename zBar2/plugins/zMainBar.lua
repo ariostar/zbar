@@ -1,7 +1,7 @@
 ﻿if zBar2.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zMainBar", UIParent, "SecureStateHeaderTemplate")
+CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
 zBar2:RegisterPlugin(zMainBar)
 zBar2:RegisterBar(zMainBar)
 
@@ -14,12 +14,6 @@ function zMainBar:Init()
 	self:SetClampedToScreen(true)
 	self:SetWidth(36) self:SetHeight(36)
 
---~ 	self:SetAttribute("unit2","player")
-	self:SetAttribute("statemap-actionpage", "$input")
-	self:SetAttribute("statebutton", "1:p1;2:p2;3:p3;4:p4;5:p5;6:p6;7:p7;8:p8;9:p9;10:p10;11:p11")
---~ 	self:SetAttribute("statebutton2", "RightButton")
-	self:UpdateStateHeader()
-
 	SetModifiedClick("SELFCAST", "ALT")
 
 	for id=1,12 do
@@ -31,8 +25,17 @@ function zMainBar:Init()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
-	self:InitStanceMap()
+  
+  self:Execute( [[ActionButtons = table.new(self:GetChildren())]] )
+  self:SetAttribute('_onstate-actionpage',[[
+    for i, button in ipairs(ActionButtons) do
+      button:SetAttribute('action', -button:GetID() + (newstate-1) * 12)
+    end
+  ]])
 
+	self:InitStanceMap()
+	self:UpdateStateHeader()
+  
 	self:Hook()
 	
 	-- grid stuff
@@ -45,15 +48,10 @@ end
 --]]
 
 function zMainBar:RegisterButton(button, id)
-	self:SetAttribute("addchild", button)
+  button:SetParent(self)
 
 	button:SetID(-id)
-	button:SetAttribute("stateheader", self)
-	button:SetAttribute("useparent-statebutton", true)
 
-	for p=1,11 do
-		button:SetAttribute("*action-p"..p, id + (p-1)*12 )
-	end
 	button:Show()
 	button.Hide = function(self) self:SetAlpha(0) end
 	button.Show = function(self) self:SetAlpha(1) end
@@ -123,19 +121,19 @@ function zMainBar:GetStateCommand()
 			header = header .. state
 		end
 		if zBar2Saves["catStealth"] then
-			header = header .. "[actionbar:1,stealth]10;"
+			header = header .. "[bar:1,stealth]10;"
 		end
 	end
 	
 	if stances[zBar2.class] then
 		for k,v in pairs(stances[zBar2.class]) do
-			state = format("[actionbar:1,stance:%d]%d;", k, v)
+			state = format("[bar:1,stance:%d]%d;", k, v)
 			header = header .. state
 		end
 	end
 
 	for i=1,6 do
-		state = format("[actionbar:%d]%d;", i, i)
+		state = format("[bar:%d]%d;", i, i)
 		header = header .. state
 	end
 

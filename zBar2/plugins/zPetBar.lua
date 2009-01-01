@@ -45,11 +45,12 @@ end
 function zPetBar:UpdateButtons()
 	zBarT.UpdateButtons(self)
 	local name = self:GetName()
-	for i = 2, zBar2Saves[name].max or NUM_ACTIONBAR_BUTTONS do
+	for i = 2, NUM_PET_ACTION_SLOTS do
 		if _G[zBar2.buttons[name..i]]:GetAttribute("statehidden") then
 			_G[zBar2.buttons[name..i]]:SetParent(zBar2.hiddenFrame)
 		else
 			_G[zBar2.buttons[name..i]]:SetParent(self)
+      _G[zBar2.buttons[name..i]]:Show()
 		end
 	end
 end

@@ -20,6 +20,9 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 		<HitRectInsets left="0" right="-50" top="0" bottom="0"/>
 		<Scripts>
 			<OnEnter>
+        if (this:IsEnabled()) then
+          getglobal(self:GetName().."Text"):SetTextColor(1.0,1.0,1.0)
+        end
 				if ( this.tooltipText ) then
 					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
 					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
@@ -30,17 +33,19 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 				end
 			</OnEnter>
 			<OnLeave>
+        getglobal(self:GetName().."Text"):SetTextColor(this.r,this.g,this.b)
 				GameTooltip:Hide();
 			</OnLeave>
 		</Scripts>
-		<ButtonText>
-			<Anchors>
-				<Anchor point="LEFT" relativePoint="RIGHT"/>
-			</Anchors>
-		</ButtonText>
-		<NormalFont inherits="GameFontNormalSmall"/>
-		<HighlightFont inherits="GameFontHighlightSmall"/>
-		<DisabledFont inherits="GameFontDarkGraySmall"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormalSmall">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT"/>
+          </Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<NormalTexture file="Interface\Buttons\UI-RadioButton">
 			<TexCoords left="0" right="0.25" top="0" bottom="1"/>
 		</NormalTexture>
@@ -56,6 +61,9 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 		</HitRectInsets>
 		<Scripts>
 			<OnEnter>
+        if (this:IsEnabled()) then
+          getglobal(self:GetName().."Text"):SetTextColor(1.0,1.0,1.0)
+        end
 				if ( this.tooltipText ) then
 					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
 					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
@@ -66,14 +74,19 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 				end
 			</OnEnter>
 			<OnLeave>
+        getglobal(self:GetName().."Text"):SetTextColor(this.r,this.g,this.b)
 				GameTooltip:Hide();
 			</OnLeave>
 		</Scripts>
-		<ButtonText>
-			<Anchors>
-				<Anchor point="LEFT" relativePoint="RIGHT"/>
-			</Anchors>
-		</ButtonText>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontGreenSmall">
+          <Anchors>
+            <Anchor point="LEFT" relativePoint="RIGHT"/>
+          </Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<NormalFont inherits="GameFontGreenSmall"/>
 		<HighlightFont inherits="GameFontHighlightSmall"/>
 		<DisabledFont inherits="GameFontDarkGraySmall"/>

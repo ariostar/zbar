@@ -20,8 +20,8 @@ function zTab:SavePosition(tab)
 end
 
 -- drag start
-function zTab:OnDragStart()
-	this:StartMoving()
+function zTab:OnDragStart(self)
+	self:StartMoving()
 
 	if InCombatLockdown() then return end
 
@@ -35,13 +35,13 @@ function zTab:OnDragStart()
 end
 
 -- darg stop
-function zTab:OnDragStop()
-	this:StopMovingOrSizing()
+function zTab:OnDragStop(self)
+	self:StopMovingOrSizing()
 
-	zTab:SavePosition(this)
-	if this.master then -- remove this from master tab's cortege list
-		tDeleteItem(this.master.cortege, this:GetName())
-		this.master = nil
+	zTab:SavePosition(self)
+	if self.master then -- remove self from master tab's cortege list
+		tDeleteItem(self.master.cortege, self:GetName())
+		self.master = nil
 	end
 
 	if InCombatLockdown() then return end
@@ -56,27 +56,27 @@ function zTab:OnDragStop()
 	for key, name in pairs(zBar2.buttons) do
 		local button = _G[name]
 		if attachPoint then
-			if button and this.bar ~= button:GetParent() and
+			if button and self.bar ~= button:GetParent() and
 			button:IsVisible() and MouseIsOver(button) then
 
 				local offsetX, offsetY = button:GetParent():GetChildSizeAdjust(attachPoint)
-				offsetX = offsetX / this.bar:GetScale()
-				offsetY = offsetY / this.bar:GetScale()
+				offsetX = offsetX / self.bar:GetScale()
+				offsetY = offsetY / self.bar:GetScale()
 
-				this:ClearAllPoints()
-				this:SetPoint("BOTTOMLEFT", button, attachPoint, offsetX, offsetY)
-				zTab:SavePosition(this)
+				self:ClearAllPoints()
+				self:SetPoint("BOTTOMLEFT", button, attachPoint, offsetX, offsetY)
+				zTab:SavePosition(self)
 
 				-- master and cortege
 				local tab = _G[name]:GetParent():GetTab()
-				this.master = tab
+				self.master = tab
 				tab.cortege = tab.cortege or {}
-				table.insert(tab.cortege, this:GetName())
+				table.insert(tab.cortege, self:GetName())
 
 				attachPoint = nil -- done, i'm already stick one
 			end
 		end
-		-- update this button
+		-- update self button
 		if button:GetParent():GetID() <= 10 and button.action then
 			if (zBar2.showgrid == 0 and not HasAction(button.action)) then
 				button:Hide()
@@ -176,22 +176,22 @@ function zTab:FreeOnWheel()
 	zTab:SaveFreePosition()
 end
 
-function zTab:FreeOnEnter()
+function zTab:FreeOnEnter(self)
 	if InCombatLockdown() then return end
-	local bar = this:GetParent()
+	local bar = self:GetParent()
 	if zBar2Saves[bar:GetName()].layout == "free" and
 		IsControlKeyDown() and IsAltKeyDown() and IsShiftKeyDown() then
 		local tab = zTab:GetFreeTab()
-		tab:SetAllPoints(this)
-		tab:SetFrameLevel(this:GetFrameLevel() + 5)
-		tab.button = this
+		tab:SetAllPoints(self)
+		tab:SetFrameLevel(self:GetFrameLevel() + 5)
+		tab.button = self
 		tab:Show()
 
 		return true
 	end
 end
 
-function zTab:FreeOnLeave()
+function zTab:FreeOnLeave(self)
 	local tab = zTab:GetFreeTab()
 	tab.button:StopMovingOrSizing()
 	zTab:SaveFreePosition()

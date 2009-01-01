@@ -14,8 +14,10 @@ function zMicroBar:Init()
 	CharacterMicroButton:SetPoint("BOTTOM")
 	SpellbookMicroButton:SetParent(self)
 	TalentMicroButton:SetParent(self)
+  AchievementMicroButton:SetParent(self)
 	QuestLogMicroButton:SetParent(self)
 	SocialsMicroButton:SetParent(self)
+  PVPMicroButton:SetParent(self)
 	LFGMicroButton:SetParent(self)
 	MainMenuMicroButton:SetParent(self)
 	HelpMicroButton:SetParent(self)
@@ -23,11 +25,13 @@ function zMicroBar:Init()
 	zBar2.buttons["zMicroBar1"]= "CharacterMicroButton"
 	zBar2.buttons["zMicroBar2"]= "SpellbookMicroButton"
 	zBar2.buttons["zMicroBar3"]= "TalentMicroButton"
-	zBar2.buttons["zMicroBar4"]= "QuestLogMicroButton"
-	zBar2.buttons["zMicroBar5"]= "SocialsMicroButton"
-	zBar2.buttons["zMicroBar6"]= "LFGMicroButton"
-	zBar2.buttons["zMicroBar7"]= "MainMenuMicroButton"
-	zBar2.buttons["zMicroBar8"]= "HelpMicroButton"
+	zBar2.buttons["zMicroBar4"]= "AchievementMicroButton"
+	zBar2.buttons["zMicroBar5"]= "QuestLogMicroButton"
+	zBar2.buttons["zMicroBar6"]= "SocialsMicroButton"  
+	zBar2.buttons["zMicroBar7"]= "PVPMicroButton"
+	zBar2.buttons["zMicroBar8"]= "LFGMicroButton"
+	zBar2.buttons["zMicroBar9"]= "MainMenuMicroButton"
+	zBar2.buttons["zMicroBar10"]= "HelpMicroButton"
 
 	self:GetTab():GetNormalTexture():SetWidth(42)
 	self:GetTab():GetHighlightTexture():SetWidth(42)
