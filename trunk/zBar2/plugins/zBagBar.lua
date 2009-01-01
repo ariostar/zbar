@@ -38,7 +38,7 @@ function zBagBar:Init()
 	KeyRingButton:ClearAllPoints()
 	KeyRingButton:SetPoint("RIGHT",zBagBarButton6)
 	KeyRingButton:Show()
-
+--[[
 	MainMenuBarPerformanceBarFrame:SetParent(zBagBarButton6)
 	MainMenuBarPerformanceBarFrame:SetFrameLevel(1)
 	MainMenuBarPerformanceBarFrame:ClearAllPoints()
@@ -49,7 +49,7 @@ function zBagBar:Init()
 	MainMenuBarPerformanceBar:SetHeight(62)
 	MainMenuBarPerformanceBar:ClearAllPoints()
 	MainMenuBarPerformanceBar:SetPoint("CENTER",1,0.5)
-
+]]
 	self:GetTab():GetNormalTexture():SetWidth(60)
 	self:GetTab():GetHighlightTexture():SetWidth(60)
 
@@ -57,7 +57,7 @@ function zBagBar:Init()
 end
 
 function zBagBar:Hook()
-	MainMenuBarPerformanceBarFrame.SetPoint = zBar2.NOOP
+--	MainMenuBarPerformanceBarFrame.SetPoint = zBar2.NOOP
 end
 
 function zBagBar:UpdateButtons()

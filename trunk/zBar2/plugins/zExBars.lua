@@ -8,7 +8,7 @@ function zExBars:GetName() return "zExBars" end
 zBar2:RegisterPlugin(zExBars)
 
 function zExBars:New(prefix,id,page)
-	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureStateHeaderTemplate")
+	local bar = CreateFrame("Frame", prefix..id, UIParent)
 	zBar2:RegisterBar(bar)
 
 	bar:SetFrameStrata("MEDIUM")

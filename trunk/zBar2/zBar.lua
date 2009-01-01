@@ -115,14 +115,14 @@ function zBar2:Hook()
 				if button then
 					button:SetMovable(true)
 					-- set button scripts
-					button:SetScript("OnEnter",function()
-						if zTab:FreeOnEnter() then return end
-						this:GetParent():SetAlpha(1)
+					button:SetScript("OnEnter",function(self)
+						if zTab:FreeOnEnter(self) then return end
+						self:GetParent():SetAlpha(1)
 						if zBar2Saves.hideTip then return end
-						ActionButton_SetTooltip(this)
+						ActionButton_SetTooltip(self)
 					end)
-					button:SetScript("OnLeave",function()
-						local bar = this:GetParent()
+					button:SetScript("OnLeave",function(self)
+						local bar = self:GetParent()
 						bar:SetAlpha(zBar2Saves[bar:GetName()].alpha)
 						if zBar2Saves.hideTip then return end
 						GameTooltip:Hide()

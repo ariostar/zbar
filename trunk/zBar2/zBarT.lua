@@ -4,7 +4,7 @@ local _G = getfenv(0)
 --]]
 
 -- template for common functions of bars
-zBarT = CreateFrame("Frame",nil,UIParent,"SecureStateHeaderTemplate")
+zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
 
 --[[ reset profile, scale, position to DEFAULT for any bar ]]
 function zBarT:Reset(resetsaves)
@@ -57,23 +57,35 @@ function zBarT:Reset(resetsaves)
 end
 
 function zBarT:UpdateVisibility()
-	local state = 1 -- tab-show; bar-show
+	--local state = 1 -- tab-show; bar-show
 	if zBar2Saves[self:GetName()].hide then
-		state = 0 -- tab-show; bar-hide
+		--state = 0 -- tab-show; bar-hide
+    self:Hide()
+  else
+    self:Show()
 	end
-	if zBar2Saves[self:GetName()].hideTab
-		then state = state + 2 -- tab-hide; bar-hide if is 2; bar-show if is 3;
+	if zBar2Saves[self:GetName()].hideTab then
+    --state = state + 2 -- tab-hide; bar-hide if is 2; bar-show if is 3;
+    self:GetTab():Hide()
+  else
+    self:GetTab():Show()
 	end
+  --[[
 	if state == 0 then -- bar-show when mouse enter; bar-hide when leave;
 		self:GetHeader():SetAttribute("statemap-anchor-enter","1")
+		self:GetHeader():SetAttribute("statemap-anchor-leave",";")
 		self:GetHeader():SetAttribute("delaystatemap-anchor-leave","0")
 		self:GetHeader():SetAttribute("delaytimemap-anchor-leave","1")
 		self:GetHeader():SetAttribute("delayhovermap-anchor-leave","true")
 	else
-		self:GetHeader():SetAttribute("statemap-anchor-enter","")
+		self:GetHeader():SetAttribute("statemap-anchor-enter",NOOP)
+		self:GetHeader():SetAttribute("statemap-anchor-leave",NOOP)
+		self:GetHeader():SetAttribute("delaystatemap-anchor-leave",NOOP)
+		self:GetHeader():SetAttribute("delaytimemap-anchor-leave",NOOP)
+		self:GetHeader():SetAttribute("delayhovermap-anchor-leave",NOOP)
 	end
-		self:GetHeader():SetAttribute("statemap-anchor-leave","")
 	self:GetHeader():SetAttribute("state", state)
+  ]]
 end
 
 function zBarT:UpdateAutoPop()
@@ -146,13 +158,15 @@ function zBarT:GetHeader()
 	local header = _G["zBar2Header"..id]
 	if header then return header end
 
-	header = CreateFrame("Frame", "zBar2Header"..id, UIParent, "SecureStateHeaderTemplate")
+	header = CreateFrame("Frame", "zBar2Header"..id, UIParent,"SecureHandlerStateTemplate")
 	header:SetID(id)
 
 	self:SetAttribute("showstates","1,3")
 	
-	header:SetAttribute("addchild", self)
-	header:SetAttribute("addchild", self:GetTab())
+  self:SetParent(header)
+  self:GetTab():SetParent(header)
+	--header:SetAttribute("addchild", self)
+	--header:SetAttribute("addchild", self:GetTab())
 
 	return header
 end
@@ -185,8 +199,8 @@ function zBarT:GetTab()
 	tab:SetID(id)
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	tab:SetScript("OnDragStart",zTab.OnDragStart)
-	tab:SetScript("OnDragStop",zTab.OnDragStop)
+	tab:SetScript("OnDragStart", function(self) zTab:OnDragStart(self) end)
+	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
 
 	tab:SetAttribute("type2", "OnMenu")
 	tab.OnMenu = function(self, unit, button)

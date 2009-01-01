@@ -94,7 +94,10 @@ function zBarOption:CheckReady()
 
 		button = CreateFrame("CheckButton", "zBarOptionBar"..name,self,"zBarOptionRadioButtonTemplate")
 		button.bar = bar
-		if not bar or not bar.Reset then button:Disable() end
+		if not bar or not bar.Reset then
+      button:Disable()
+      _G[button:GetName().."Text"]:SetTextColor(0.5,0.5,0.5)
+    end
 
 		if id == 1 then
 			button:SetPoint("TOPLEFT",zBarOptionSelectBar,"BOTTOMLEFT",0,-5)
@@ -104,13 +107,13 @@ function zBarOption:CheckReady()
 			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",55,0)
 		end
 
-		button:SetText(zBar2.loc.Labels[name])
+		_G[button:GetName().."Text"]:SetText(zBar2.loc.Labels[name])
+    button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
 
 		button:SetScript("OnClick", function()
-			PlayClickSound()
+			PlaySound("igMainMenuOptionCheckBoxOn")
 			zBarOption:Openfor(this.bar)
 		end)
-		button:SetScript("OnEnter",nil)
 	end
 
 	-- reset button
@@ -130,14 +133,19 @@ function zBarOption:CheckReady()
 		end
 		button = CreateFrame("CheckButton","zBarOption"..value.name,zBarOption, template)
 		button:SetPoint(value.pos[1],value.pos[2],value.pos[3],value.pos[4],value.pos[5])
-		button:SetText(zBar2.loc.Option[value.name])
+    
+		if value.notReady or (value.IsEnabled and not value.IsEnabled()) then
+      button:Disable()
+      _G[button:GetName().."Text"]:SetTextColor(0.5,0.5,0.5)
+    end
+    
+    _G[button:GetName().."Text"]:SetText(zBar2.loc.Option[value.name])
+    button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
 		button.tooltipText = zBar2.loc.Tips[value.name]
 		button:SetID(id)
 
-		if value.notReady or (value.IsEnabled and not value.IsEnabled()) then button:Disable() end
-
 		button:SetScript("OnClick",function()
-			PlayClickSound()
+			PlaySound("igMainMenuOptionCheckBoxOn")
 			local value = zBarOption.buttons[this:GetID()]
 			local checked = this:GetChecked()
 			-- save the option value
@@ -241,12 +249,14 @@ function zBarOption:Select(bar)
 		button = _G["zBarOptionBar"..name]
 		if button:GetChecked() then
 			button:SetChecked(false)
-			button:SetTextColor(1,0.82,0)
+      _G[button:GetName().."Text"]:SetTextColor(1.0, 0.82, 0)
+      button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
 		end
 	end
 	button = _G["zBarOptionBar"..bar:GetName()]
 	button:SetChecked(true)
-	button:SetTextColor(0.1,1,0.1)
+  _G[button:GetName().."Text"]:SetTextColor(0.1, 1.0, 0.1)
+  button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
 
 	self.bar = bar
 end
