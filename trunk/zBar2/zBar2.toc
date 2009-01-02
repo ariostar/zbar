@@ -8,9 +8,9 @@
 ## Notes-zhCN: 让你感受燃烧的快感！|n 作者：炽火 Zero ℃
 ## Author-zhCN: 炽火 Zero ℃
 
-## Version: 3.0.b2
+## Version: 3.0.b3
 ## eMail: zero.flamy@gmail.com
-## Url: http://bbs.game.mop.com/viewthread.php?tid=1637503
+## Url: http://groups.google.com/group/zbar
 
 ## SavedVariablesPerCharacter: zBar2Saves
 

@@ -48,11 +48,29 @@ function zMicroBar:GetChildSizeAdjust(attachPoint)
 end
 
 function zMicroBar:Hook()
-	QuestLogMicroButton.zSetPoint = QuestLogMicroButton.SetPoint
-	QuestLogMicroButton.SetPoint = zBar2.NOOP
+	for i = 1, zBar2Saves['zMicroBar'].max or NUM_ACTIONBAR_BUTTONS do
+    local button = _G[zBar2.buttons['zMicroBar'..i]]
+    button.zClearAllPoints = button.ClearAllPoints
+    button.ClearAllPoints = zBar2.NOOP
+    button.zSetPoint = button.SetPoint
+    button.SetPoint = zBar2.NOOP
+    button.zSetParent = button.SetParent
+    button.SetParent = zBar2.NOOP
+	end
+end
+
+function zMicroBar:UnHook()
+	for i = 1, zBar2Saves['zMicroBar'].max or NUM_ACTIONBAR_BUTTONS do
+    local button = _G[zBar2.buttons['zMicroBar'..i]]
+    button.ClearAllPoints = button.zClearAllPoints
+    button.SetPoint = button.zSetPoint
+    button.SetParent = button.zSetParent
+	end
 end
 
 function zMicroBar:UpdateButtons()
+  self:UnHook()
+  
 	zBarT.UpdateButtons(self)
 	local name = self:GetName()
 	for i = 2, zBar2Saves[name].max or NUM_ACTIONBAR_BUTTONS do
@@ -63,4 +81,14 @@ function zMicroBar:UpdateButtons()
 			_G[zBar2.buttons[name..i]]:Show()
 		end
 	end
+  
+  self:Hook()
+end
+
+function zMicroBar:UpdateLayouts()
+  self:UnHook()
+
+  zBarT.UpdateLayouts(self)
+  
+  self:Hook()
 end
