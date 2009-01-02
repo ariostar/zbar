@@ -39,13 +39,9 @@ function zBarT:ResetButtonScales(num)
 end
 -- local func, for points settings
 local function SetButtonPoint(bar,index,point,referIndex,relativePoint,offx,offy)
-	local button = _G[zBar2.buttons[bar:GetName()..index]]
-	button:ClearAllPoints()
-	if button.zSetPoint then
-		button:zSetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
-	else
-		button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
-	end
+  local button = _G[zBar2.buttons[bar:GetName()..index]]
+  button:ClearAllPoints()
+  button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
 end
 --~ line arrangement
 function zBarT:SetLineNum()
@@ -132,8 +128,12 @@ function zBarT:SetSuite(suitename)
 	if num == 1 then return end
 	local k = 1
 	if zBar2Saves[self:GetName()].invert then k = -1 end
+  
+  local offX, offY = 0, 0
+  if self == zMicroBar then offX, offY = -3, -23 end
+  
 	for id, pos in pairs(self[suitename][num]) do
-		SetButtonPoint(self, id, Invert(pos[1],k), pos[2], Invert(pos[3],k), k*inset*pos[4], inset*pos[5])
+		SetButtonPoint(self, id, Invert(pos[1],k), pos[2], Invert(pos[3],k), k*(inset+offX)*pos[4], (inset+offY)*pos[5])
 	end
 end
 
