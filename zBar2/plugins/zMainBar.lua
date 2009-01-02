@@ -65,7 +65,8 @@ function zMainBar:Hook()
 	BonusActionBarFrame:UnregisterAllEvents()
 	BonusActionBarFrame.Show = zBar2.NOOP
 
-	MainMenuBar:Hide()
+	--MainMenuBar:Hide()
+  MainMenuBar:SetParent(zBar2.hiddenFrame)
 end
 
 function zMainBar:UpdateHotkey()
