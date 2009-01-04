@@ -14,7 +14,7 @@ function zMainBar:Init()
 	self:SetClampedToScreen(true)
 	self:SetWidth(36) self:SetHeight(36)
 
-	SetModifiedClick("SELFCAST", "ALT")
+	--SetModifiedClick("SELFCAST", "ALT")
 
 	for id=1,12 do
 		self:RegisterButton(_G["ActionButton"..id], id)
@@ -33,7 +33,7 @@ function zMainBar:Init()
     end
   ]])
 
-	self:InitStanceMap()
+	--self:InitStanceMap()
 	self:UpdateStateHeader()
   
 	self:Hook()
@@ -104,15 +104,16 @@ end
 
 --[[ Page Mapping. partly reference to PM2 ]]
 local triggers = {
-	[1] = "[modifier:alt]2",
+	[1] = "[mod:SELFCAST]2",
 	[2] = "[help]2",
 }
+--[[
 local stances = {
 	["ROGUE"] = { [1] = 7 },
 	--["DRUID"] = { [1] = 9, [3] = 7, [5] = 8 },	-- moonkin/tree-of-life
 	["WARRIOR"] = { [1] = 7, [2] = 8, [3] = 9 },
 }
-
+]]
 function zMainBar:GetStateCommand()
 	local header, state = "[bonusbar:5]11;", ""
 	
@@ -121,18 +122,23 @@ function zMainBar:GetStateCommand()
 			state = v .. ";"
 			header = header .. state
 		end
-		if zBar2Saves["catStealth"] then
-			header = header .. "[bar:1,stealth]10;"
-		end
 	end
-	
+  
+  if zBar2Saves["catStealth"] then
+    header = header .. "[bar:1,stealth]10;"
+  end
+--[[	
 	if stances[zBar2.class] then
 		for k,v in pairs(stances[zBar2.class]) do
 			state = format("[bar:1,stance:%d]%d;", k, v)
 			header = header .. state
 		end
 	end
-
+]]
+  fro i=1,4 do
+    state = format("[bonusbar:%d]%d;", i, i+6)
+    header = header .. state
+  end
 	for i=1,6 do
 		state = format("[bar:%d]%d;", i, i)
 		header = header .. state
@@ -145,124 +151,3 @@ function zMainBar:UpdateStateHeader()
 	UnregisterStateDriver(zMainBar, "actionpage")
 	RegisterStateDriver(zMainBar, "actionpage", zMainBar:GetStateCommand())
 end
-
---[[ Stance Map Update- for Priest or Druid ]]
-
---local StanceTexturePriest = "Interface\\Icons\\Spell_Shadow_Shadowform"
-
-local function searchTalent(pattern)
-	-- search when initial
-	local numTabs = GetNumTalentTabs()
-	for t=1, numTabs do
-		local numTalents = GetNumTalents(t)
-		for i=1, numTalents do
-			local nameTalent, icon, tier, column, currRank, maxRank= GetTalentInfo(t,i)
-			if string.find( string.lower(icon), pattern ) then
-				zBar2:print("zBar2 : "..UnitClass("player").." - "..nameTalent.." - Rank:"..currRank.."/"..maxRank,1,1,0)
-				zMainBar.TabIndex, zMainBar.TalentIndex = t, i
-				zMainBar.TalentName = nameTalent
-				zMainBar.ShadowFormRank = currRank
-				if currRank > 0 then -- if has shadow form
-					stances["PRIEST"] = {[1]=7}
-					zMainBar:UpdateStateHeader()
-				end
-				return
-			end
-		end
-	end
-end
-
-function zMainBar:InitStanceMap()
-	if zBar2.class == "PRIEST" then
-		searchTalent("shadowform")
-		self:RegisterEvent("PLAYER_ALIVE")
-		self:RegisterEvent("CHARACTER_POINTS_CHANGED")
-		self:SetScript("OnEvent", zMainBar.UpdatePriestStanceMap)
-	elseif zBar2.class == "DRUID" then
-		self:RegisterEvent("PLAYER_ENTERING_WORLD")
-		self:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
-		self:SetScript("OnEvent", zMainBar.UpdateDruidStanceMap)
-	end
-end
-
-function zMainBar:UpdatePriestStanceMap()
-	if event == "PLAYER_ALIVE" then
-		searchTalent("shadowform") -- initial search
-		zMainBar:UnregisterEvent("PLAYER_ALIVE")
-	elseif event == "CHARACTER_POINTS_CHANGED" then
-		local currRank = select(5, GetTalentInfo(zMainBar.TabIndex,zMainBar.TalentIndex))
-		if zMainBar.ShadowFormRank ~= currRank then
-			zBar2:print("zBar2: "..zMainBar.TalentName.." Change Rank:"..currRank,1,1,0)
-			zMainBar.ShadowFormRank = currRank
-
-			if currRank > 0 then -- if has shadow form
-				stances["PRIEST"] = {[1]=7}
-			else
-				stances["PRIEST"] = nil
-			end
-			if InCombatLockdown() then
-				zMainBar:RegisterEvent("PLAYER_REGEN_ENABLED")
-			else
-				zMainBar:UpdateStateHeader()
-			end
-		end
-	elseif event == "PLAYER_REGEN_ENABLED" then
-		zMainBar:UpdateStateHeader()
-		zMainBar:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	end
-end
-
--- [[ for Druid
-local DruidStanceTextureMap = {
-	["BearForm"] = 9,
-	["CatForm"] = 7,
-	["TreeofLife"] = 8,
-	["ForceOfNature"] = 8,	-- moonkin
-}
-zMainBar.numForms = 0
-function zMainBar:UpdateDruidStanceMap()
-	-- for secure
-	if InCombatLockdown() then
-		-- rescan after leaving combat
-		zMainBar:RegisterEvent("PLAYER_REGEN_ENABLED")
-		zMainBar.numForms = -1
-		return
-	end
-	if event == "PLAYER_REGEN_ENABLED" then
-		zMainBar:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	end
-
-	local numForms = GetNumShapeshiftForms()
-
-	-- return if no changes
-	if numForms == zMainBar.numForms then return end
-	zMainBar.numForms = numForms
-
-	-- rescan stance map
-	stances[zBar2.class] = {} -- clear stances
-	for i = 1, numForms do
-		local texture, name, isActive = GetShapeshiftFormInfo(i)
-		if isActive then -- if is active, the texture will not be the stance texture
-			local j = 1
-			local buffName, rank, buffTexture = UnitBuff("player", j)
-			while buffName do
-				if buffName == name then
-					texture = buffTexture -- so we use the buff texture
-					break -- escape when found
-				end
-				j = j + 1
-				buffName, rank, buffTexture = UnitBuff("player", j)
-			end
-		end
-		for str, page in pairs(DruidStanceTextureMap) do
-			if string.find(string.lower(texture), string.lower(str)) then
-				stances[zBar2.class][i] = page -- remapping the page
-			end
-		end
-	end
-
-	-- update
-	zMainBar:UpdateStateHeader()
-	zBar2:print("zBar2 - Detecting Stances for "..UnitClass("player"), 1,1,0)
-end
---]]

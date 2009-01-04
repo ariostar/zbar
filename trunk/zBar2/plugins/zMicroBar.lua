@@ -48,7 +48,7 @@ function zMicroBar:GetChildSizeAdjust(attachPoint)
 end
 
 function zMicroBar:Hook()
-	for i = 1, zBar2Saves['zMicroBar'].max or NUM_ACTIONBAR_BUTTONS do
+	for i = 1, zBar2.defaults["zMicroBar"].saves.max do
     local button = _G[zBar2.buttons['zMicroBar'..i]]
     button.zClearAllPoints = button.ClearAllPoints
     button.ClearAllPoints = zBar2.NOOP
@@ -60,7 +60,7 @@ function zMicroBar:Hook()
 end
 
 function zMicroBar:UnHook()
-	for i = 1, zBar2Saves['zMicroBar'].max or NUM_ACTIONBAR_BUTTONS do
+	for i = 1, zBar2.defaults["zMicroBar"].saves.max do
     local button = _G[zBar2.buttons['zMicroBar'..i]]
     button.ClearAllPoints = button.zClearAllPoints
     button.SetPoint = button.zSetPoint

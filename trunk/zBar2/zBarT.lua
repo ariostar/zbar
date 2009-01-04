@@ -70,22 +70,6 @@ function zBarT:UpdateVisibility()
   else
     self:GetTab():Show()
 	end
-  --[[
-	if state == 0 then -- bar-show when mouse enter; bar-hide when leave;
-		self:GetHeader():SetAttribute("statemap-anchor-enter","1")
-		self:GetHeader():SetAttribute("statemap-anchor-leave",";")
-		self:GetHeader():SetAttribute("delaystatemap-anchor-leave","0")
-		self:GetHeader():SetAttribute("delaytimemap-anchor-leave","1")
-		self:GetHeader():SetAttribute("delayhovermap-anchor-leave","true")
-	else
-		self:GetHeader():SetAttribute("statemap-anchor-enter",NOOP)
-		self:GetHeader():SetAttribute("statemap-anchor-leave",NOOP)
-		self:GetHeader():SetAttribute("delaystatemap-anchor-leave",NOOP)
-		self:GetHeader():SetAttribute("delaytimemap-anchor-leave",NOOP)
-		self:GetHeader():SetAttribute("delayhovermap-anchor-leave",NOOP)
-	end
-	self:GetHeader():SetAttribute("state", state)
-  ]]
 end
 
 function zBarT:UpdateAutoPop()
