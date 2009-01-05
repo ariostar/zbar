@@ -59,14 +59,14 @@ end
 
 function zBarT:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
-    self:Hide()
-  else
-    self:Show()
+		self:Hide()
+	else
+		self:Show()
 	end
 	if zBar3Data[self:GetName()].hideTab then
-    self:GetTab():Hide()
-  else
-    self:GetTab():Show()
+		self:GetTab():Hide()
+	else
+		self:GetTab():Show()
 	end
 end
 
@@ -92,7 +92,7 @@ function zBarT:UpdateButtons()
 
 	if db.max == 0 then return end
 
-	for i =  1, db.max or NUM_ACTIONBAR_BUTTONS do
+	for i = 1, db.max or NUM_ACTIONBAR_BUTTONS do
 		button = self:GetButton(i)
 		assert(button)
 		if i <= (db.num or 1) then
@@ -143,8 +143,8 @@ function zBarT:GetHeader()
 	header = CreateFrame("Frame", "zBar3Header"..id, UIParent,"SecureHandlerStateTemplate")
 	header:SetID(id)
 
-  self:SetParent(header)
-  self:GetTab():SetParent(header)
+	self:SetParent(header)
+	self:GetTab():SetParent(header)
 
 	return header
 end
@@ -189,7 +189,7 @@ function zBarT:GetTab()
 	
 	tab:SetAttribute("_onclick", [[
 		if button == 'RightButton' then
-			CallMethod('OnMenu')
+			control:CallMethod(self, 'OnMenu')
 		elseif button == 'LeftButton' then
 			if bar:IsShown() then
 				bar:Hide()
