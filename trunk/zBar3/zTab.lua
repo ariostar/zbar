@@ -9,7 +9,7 @@ function zTab:SavePosition(tab)
 	local cx, cy = UIParent:GetCenter()
 	cx = cx / tab:GetScale()
 	cy = cy / tab:GetScale()
-	zBar2Saves[tab.bar:GetName()].pos = {"CENTER",x-cx,y-cy,}
+	zBar3Data[tab.bar:GetName()].pos = {"CENTER",x-cx,y-cy,}
 	tab:SetUserPlaced(false)
 	-- save my corteges' positions
 	if tab.cortege then
@@ -25,7 +25,7 @@ function zTab:OnDragStart(self)
 
 	if InCombatLockdown() then return end
 
-	for key, name in pairs(zBar2.buttons) do
+	for key, name in pairs(zBar3.buttons) do
 		if not _G[name]:GetAttribute("statehidden")
 			and _G[name]:GetParent():GetID() <= 10 then
 			_G[name]:Show()
@@ -53,7 +53,7 @@ function zTab:OnDragStop(self)
 		attachPoint = "TOPRIGHT"
 	end
 		-- check if drop on a button
-	for key, name in pairs(zBar2.buttons) do
+	for key, name in pairs(zBar3.buttons) do
 		local button = _G[name]
 		if attachPoint then
 			if button and self.bar ~= button:GetParent() and
@@ -78,7 +78,7 @@ function zTab:OnDragStop(self)
 		end
 		-- update self button
 		if button:GetParent():GetID() <= 10 and button.action then
-			if (zBar2.showgrid == 0 and not HasAction(button.action)) then
+			if (zBar3.showgrid == 0 and not HasAction(button.action)) then
 				button:Hide()
 			end
 		end
@@ -108,14 +108,14 @@ end
 
 -- called by zBarOption, when free style is selected
 function zTab:SaveAllPoints(bar)
-	for i = 2, zBar2Saves[bar:GetName()].num do
-		zTab:SaveFreePosition(_G[zBar2.buttons[bar:GetName()..i]])
+	for i = 2, zBar3Data[bar:GetName()].num do
+		zTab:SaveFreePosition(_G[zBar3.buttons[bar:GetName()..i]])
 	end
 end
 
 function zTab:SaveFreePosition(button)
 	local button = button or zTab:GetFreeTab().button
-	local target = _G[zBar2.buttons[button:GetParent():GetName().."1"]]
+	local target = _G[zBar3.buttons[button:GetParent():GetName().."1"]]
 
 	if button == target then return end
 
@@ -124,7 +124,7 @@ function zTab:SaveFreePosition(button)
 	x = x - x1 / button:GetScale()
 	y = y - y1 / button:GetScale()
 
-	local saves = zBar2Saves[button:GetParent():GetName()]
+	local saves = zBar3Data[button:GetParent():GetName()]
 	if not saves.buttons then saves.buttons = {} end
 	if not saves.buttons[button:GetName()] then
 		saves.buttons[button:GetName()] = {}
@@ -140,8 +140,8 @@ function zTab:FreeOnDragStart()
 	local button = zTab:GetFreeTab().button
 	local bar = button:GetParent()
 
-	if zBar2Saves[bar:GetName()].num > 1
-		and button:GetName() ~= zBar2.buttons[bar:GetName()..1] then
+	if zBar3Data[bar:GetName()].num > 1
+		and button:GetName() ~= zBar3.buttons[bar:GetName()..1] then
 		button:StartMoving()
 	end
 end
@@ -155,17 +155,17 @@ function zTab:FreeOnWheel()
 	local target = zTab:GetFreeTab().button
 	local scale = target:GetScale() + arg1/10
 
-	if target:GetName() == zBar2.buttons[target:GetParent():GetName()..1] then
+	if target:GetName() == zBar3.buttons[target:GetParent():GetName()..1] then
 		target = target:GetParent()
 		scale = target:GetScale() + arg1/10
 		if scale > 1.8 then scale = 1.8 end
-		zBar2Saves[target:GetName()].scale = scale
+		zBar3Data[target:GetName()].scale = scale
 		target:GetTab():SetScale(scale)
 		target:SetScale(scale)
 		return
 	end
 
-	local saves = zBar2Saves[target:GetParent():GetName()]
+	local saves = zBar3Data[target:GetParent():GetName()]
 	if not saves.buttons then saves.buttons = {} end
 	if not saves.buttons[target:GetName()] then
 		saves.buttons[target:GetName()] = {}
@@ -179,7 +179,7 @@ end
 function zTab:FreeOnEnter(self)
 	if InCombatLockdown() then return end
 	local bar = self:GetParent()
-	if zBar2Saves[bar:GetName()].layout == "free" and
+	if zBar3Data[bar:GetName()].layout == "free" and
 		IsControlKeyDown() and IsAltKeyDown() and IsShiftKeyDown() then
 		local tab = zTab:GetFreeTab()
 		tab:SetAllPoints(self)
