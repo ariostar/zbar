@@ -1,18 +1,18 @@
-if zBar2.lite then return end
+if zBar3.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zStanceBar", UIParent, "SecureFrameTemplate")
-zBar2:RegisterPlugin(zStanceBar)
-zBar2:RegisterBar(zStanceBar)
+zBar3:AddPlugin(zStanceBar)
+zBar3:AddBar(zStanceBar)
 
-function zStanceBar:Init()
+function zStanceBar:Load()
 	self:SetID(12)
 	self:SetFrameStrata("LOW")
 	self:SetClampedToScreen(true)
 	self:SetWidth(30); self:SetHeight(30)
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
-		zBar2.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
+		zBar3.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
 		_G["ShapeshiftButton"..i]:SetParent(self)
 		_G["ShapeshiftButton"..i.."NormalTexture"]:SetPoint("CENTER")
 		_G["ShapeshiftButton"..i]:RegisterEvent("UPDATE_BINDINGS")
@@ -33,12 +33,12 @@ end
 
 function zStanceBar:UpdateNums()
 	local num = GetNumShapeshiftForms()
-	if num ~= zBar2Saves["zStanceBar"].num then
-		if zBar2Saves["zStanceBar"].linenum == zBar2Saves["zStanceBar"].num then
-			zBar2Saves["zStanceBar"].linenum = num
+	if num ~= zBar3Data["zStanceBar"].num then
+		if zBar3Data["zStanceBar"].linenum == zBar3Data["zStanceBar"].num then
+			zBar3Data["zStanceBar"].linenum = num
 		end
-		zBar2Saves["zStanceBar"].num = num
-		zBar2Saves["zStanceBar"].max = num
+		zBar3Data["zStanceBar"].num = num
+		zBar3Data["zStanceBar"].max = num
 		if not InCombatLockdown() then
 			zStanceBar:UpdateLayouts()
 			zStanceBar:UpdateHotkeys()
@@ -47,8 +47,8 @@ function zStanceBar:UpdateNums()
 end
 
 function zStanceBar:Hook()
-	ShapeshiftButton1.ClearAllPoints = zBar2.NOOP
-	ShapeshiftButton1.SetPoint = zBar2.NOOP
+	ShapeshiftButton1.ClearAllPoints = zBar3.NOOP
+	ShapeshiftButton1.SetPoint = zBar3.NOOP
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		_G["ShapeshiftButton"..i]:HookScript("OnEnter",function()
@@ -57,7 +57,7 @@ function zStanceBar:Hook()
 		end)
 		_G["ShapeshiftButton"..i]:HookScript("OnLeave",function()
 			if zPossessBar and zPossessBar.shown then return end
-			zStanceBar:SetAlpha(zBar2Saves["zStanceBar"].alpha)
+			zStanceBar:SetAlpha(zBar3Data["zStanceBar"].alpha)
 		end)
 	end
 	hooksecurefunc("ShapeshiftBar_Update", zStanceBar.UpdateNums)

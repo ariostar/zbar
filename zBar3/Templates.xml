@@ -5,11 +5,11 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	<Button name="zBarTabTemplate" inherits="SecureHandlerClickTemplate,SecureHandlerEnterLeaveTemplate" movable="true"
 	frameStrata="HIGH" alpha="0.5" clampedToScreen="true" virtual="true" toplevel="true">
 		<Size x="34" y="8"/>
-		<NormalTexture file="Interface\AddOns\zBar2\img\tab1.tga">
+		<NormalTexture file="Interface\AddOns\zBar3\img\tab1.tga">
 			<Size x="56" y="12"/>
 			<Anchors><Anchor point="CENTER"/></Anchors>
 		</NormalTexture>
-		<HighlightTexture file="Interface\Addons\zBar2\img\tab2.tga" alphaMode="ADD">
+		<HighlightTexture file="Interface\Addons\zBar3\img\tab2.tga" alphaMode="ADD">
 			<Size x="56" y="12"/>
 			<Anchors><Anchor point="CENTER"/></Anchors>
 		</HighlightTexture>

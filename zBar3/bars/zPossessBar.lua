@@ -1,11 +1,11 @@
-if zBar2.lite then return end
+if zBar3.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zPossessBar", UIParent)
-zBar2:RegisterPlugin(zPossessBar)
-zBar2:RegisterBar(zPossessBar)
+zBar3:AddPlugin(zPossessBar)
+zBar3:AddBar(zPossessBar)
 
-function zPossessBar:Init()
+function zPossessBar:Load()
 	self:SetID(20)
 	self:SetFrameStrata("LOW")
 	self:SetClampedToScreen(true)
@@ -17,9 +17,9 @@ function zPossessBar:Init()
 	-- create and add buttons
 	for i = 1, 2 do
 		local button = _G["PossessButton"..i]
-    button:SetParent(self)
+		button:SetParent(self)
 		--self:SetAttribute("addchild", button)
-		zBar2.buttons["zPossessBar"..i] = button:GetName()
+		zBar3.buttons["zPossessBar"..i] = button:GetName()
 		button:ClearAllPoints()
 		button:SetPoint("CENTER")
 		_G[button:GetName().."NormalTexture"]:SetWidth(52)
@@ -32,7 +32,7 @@ end
 
 -- override
 function zPossessBar:UpdateVisibility()
-	if zBar2Saves[self:GetName()].hide then
+	if zBar3Data[self:GetName()].hide then
 		UnregisterStateDriver(self, "visibility")
 	else
 		RegisterStateDriver(self, "visibility", "[bonusbar:5]show;hide")

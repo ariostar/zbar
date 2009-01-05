@@ -1,6 +1,6 @@
-if not zBar2.loc then
-	zBar2.loc = {}
-	local loc = zBar2.loc
+if not zBar3.loc then
+	zBar3.loc = {}
+	local loc = zBar3.loc
 
 	loc.Labels = {
 		zMultiR1 = "Right", zMultiR2 = "Left", zMultiBR = "BRight", zMultiBL = "BLeft",

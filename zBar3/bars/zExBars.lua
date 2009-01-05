@@ -4,12 +4,11 @@ NUM_ZEXBAR_BAR = 2
 NUM_ZEXBAR_BUTTONS = 24
 
 zExBars = {}
-function zExBars:GetName() return "zExBars" end
-zBar2:RegisterPlugin(zExBars)
+zBar3:AddPlugin(zExBars)
 
 function zExBars:New(prefix,id,page)
 	local bar = CreateFrame("Frame", prefix..id, UIParent)
-	zBar2:RegisterBar(bar)
+	zBar3:AddBar(bar)
 
 	bar:SetFrameStrata("MEDIUM")
 	bar:SetClampedToScreen(true)
@@ -35,15 +34,15 @@ function zExBars:New(prefix,id,page)
 		bar:GetButton(1):SetPoint("CENTER")
 	end
 
-	if not zBar2Saves[prefix..id] then
-		zBar2Saves[prefix..id] = zBar2:GetDefault(bar,"saves")
-		zBar2Saves[prefix..id].pos = zBar2:GetDefault(bar,"pos")
+	if not zBar3Data[prefix..id] then
+		zBar3Data[prefix..id] = zBar3:GetDefault(bar,"saves")
+		zBar3Data[prefix..id].pos = zBar3:GetDefault(bar,"pos")
 	end
 
 	return bar
 end
 
-function zExBars:Init()
+function zExBars:Load()
 	-- create buttons
 	local button
 	for id = 1, NUM_ZEXBAR_BUTTONS do
@@ -59,8 +58,8 @@ function zExBars:Init()
 	for id = 1, NUM_ZEXBAR_BAR do
 		page = 11 - id
 		if id == 2 then
-			if zBar2.class == "DRUID" then page = 8 end
-			if zBar2.class == "WARRIOR" then page = 1 end
+			if zBar3.class == "DRUID" then page = 8 end
+			if zBar3.class == "WARRIOR" then page = 1 end
 		end
 		-- create normal bar
 		self:New("zExBar", id, page)
@@ -71,12 +70,12 @@ function zExBars:Init()
 	end
 
 	-- grid stuff
-	zBar2:RegisterGridUpdater(zExBars.UpdateGrid)
+	--zBar3:RegisterGridUpdater(zExBars.UpdateGrid)
 
 end
 
 function zExBars:GetButton(i)
-	if self.isShadow then return _G[zBar2.buttons[self:GetName()..i]] end
+	if self.isShadow then return _G[zBar3.buttons[self:GetName()..i]] end
 	return _G["zExButton"..i + (self:GetID()-1)*NUM_ACTIONBAR_BUTTONS]
 end
 
@@ -88,7 +87,7 @@ function zExBars:UpdateExBarButtons() -- for ex bars
 	zBarT.UpdateLayouts(_G["zShadow"..bar:GetID()])
 
 	zBarT.UpdateButtons(bar)
-	zExBars:UpdateGrid(bar)
+	--zExBars:UpdateGrid(bar)
 end
 function zExBars:UpdateShadowButtons()
 	local bar = self
@@ -98,12 +97,12 @@ function zExBars:UpdateShadowButtons()
 	zBarT.UpdateLayouts(_G["zExBar"..-bar:GetID()])
 
 	zBarT.UpdateButtons(bar)
-	zExBars:UpdateGrid(bar)
+	--zExBars:UpdateGrid(bar)
 end
 
 function zExBars:UpdateShadows(index)
 	local id = math.abs(index)
-	local num = zBar2Saves["zExBar"..id].num
+	local num = zBar3Data["zExBar"..id].num
 	local bar = _G["zExBar"..id]
 	local shadow = _G["zShadow"..id]
 	for i = 1, 12 do
@@ -111,23 +110,23 @@ function zExBars:UpdateShadows(index)
 		if i > 1 then button:ClearAllPoints() end
 		if i <= num then
 			button:SetParent(bar)
-			zBar2.buttons["zExBar"..id..i] = button:GetName()
-			zBar2.buttons["zShadow"..id..13-i] = nil
+			zBar3.buttons["zExBar"..id..i] = button:GetName()
+			zBar3.buttons["zShadow"..id..13-i] = nil
 		else
 			button:SetParent(shadow)
-			zBar2.buttons["zExBar"..id..i] = nil
-			zBar2.buttons["zShadow"..id..13-i] = button:GetName()
+			zBar3.buttons["zExBar"..id..i] = nil
+			zBar3.buttons["zShadow"..id..13-i] = button:GetName()
 		end
 		_G[button:GetName().."Cooldown"]:SetFrameLevel(button:GetFrameLevel())
 	end
-	zBar2Saves["zShadow"..id].max = 12 - num
-	if zBar2Saves["zShadow"..id].num > 12 - num then
-		zBar2Saves["zShadow"..id].num = 12 - num
-	elseif zBar2Saves["zShadow"..id].num == 0 then
-		zBar2Saves["zShadow"..id].num = 12 - num
+	zBar3Data["zShadow"..id].max = 12 - num
+	if zBar3Data["zShadow"..id].num > 12 - num then
+		zBar3Data["zShadow"..id].num = 12 - num
+	elseif zBar3Data["zShadow"..id].num == 0 then
+		zBar3Data["zShadow"..id].num = 12 - num
 	end
-	if zBar2Saves["zShadow"..id].linenum > 12 - num then
-		zBar2Saves["zShadow"..id].linenum = 12 - num
+	if zBar3Data["zShadow"..id].linenum > 12 - num then
+		zBar3Data["zShadow"..id].linenum = 12 - num
 	end
 	if shadow:GetButton(1) then
 		shadow:GetButton(1):ClearAllPoints()
@@ -140,8 +139,8 @@ function zExBars:UpdateGrid(bar)
 	if InCombatLockdown() then return end
 
 	if bar then -- update for bar
-		for i=1, zBar2Saves[bar:GetName()].num do
-			if zBar2.showgrid > 0 then
+		for i=1, zBar3Data[bar:GetName()].num do
+			if zBar3.showgrid > 0 then
 				bar:GetButton(i):Show()
 			end
 		end
@@ -152,7 +151,7 @@ function zExBars:UpdateGrid(bar)
 	for i=1, NUM_ZEXBAR_BUTTONS do
 		button = _G["zExButton"..i]
 
-		if zBar2.showgrid > 0 then
+		if zBar3.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
 				button:Show()
 			end

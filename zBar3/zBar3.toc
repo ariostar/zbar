@@ -5,7 +5,7 @@
 ## Author: Zero Fire
 
 ## Title-zhCN: zBar3 - |cffFF3300炽火|r|cff33AAFF动作条|r
-## Notes-zhCN: 让你感受燃烧的快感！|n 作者：炽火 Zero ℃
+## Notes-zhCN: 让你感受燃烧的快感！|n作者：炽火 Zero ℃
 ## Author-zhCN: 炽火 Zero ℃
 
 ## Version: 3.0.b5

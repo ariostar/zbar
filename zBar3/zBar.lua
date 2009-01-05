@@ -1,5 +1,5 @@
 --[[ Create ]]
-zBar3 = CreateFrame("Frame")
+zBar3 = CreateFrame("Frame",nil,UIParent)
 zBar3:RegisterEvent("PLAYER_LOGIN")
 
 --[[ Tables ]]
@@ -103,13 +103,13 @@ function zBar3:Hook()
 					button:SetScript("OnEnter",function(self)
 						if zTab:FreeOnEnter(self) then return end
 						self:GetParent():SetAlpha(1)
-						if zBar3Saves.hideTip then return end
+						if zBar3Data.hideTip then return end
 						ActionButton_SetTooltip(self)
 					end)
 					button:SetScript("OnLeave",function(self)
 						local bar = self:GetParent()
-						bar:SetAlpha(zBar3Saves[bar:GetName()].alpha)
-						if zBar3Saves.hideTip then return end
+						bar:SetAlpha(zBar3Data[bar:GetName()].alpha)
+						if zBar3Data.hideTip then return end
 						GameTooltip:Hide()
 					end)
 				end
