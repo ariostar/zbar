@@ -1,8 +1,8 @@
 zCastBar = CreateFrame("Frame", "zCastBar", UIParent)
-zBar2:RegisterPlugin(zCastBar)
-zBar2:RegisterBar(zCastBar)
+zBar3:AddPlugin(zCastBar)
+zBar3:AddBar(zCastBar)
 
-function zCastBar:Init()
+function zCastBar:Load()
 	zCastBar:SetID(16)
 	zCastBar:SetWidth(195); zCastBar:SetHeight(13)
 
@@ -42,14 +42,14 @@ function zCastBar:Init()
 end
 
 function zCastBar:Hook()
-	CastingBarFrame.ClearAllPoints = zBar2.NOOP
-	CastingBarFrame.SetPoint = zBar2.NOOP
-	FramerateLabel.ClearAllPoints = zBar2.NOOP
-	FramerateLabel.SetPoint = zBar2.NOOP
+	CastingBarFrame.ClearAllPoints = zBar3.NOOP
+	CastingBarFrame.SetPoint = zBar3.NOOP
+	FramerateLabel.ClearAllPoints = zBar3.NOOP
+	FramerateLabel.SetPoint = zBar3.NOOP
 end
 
 function zCastBar:UpdateButtons()
-	if zBar2Saves["zCastBar"].num > 1 then
+	if zBar3Data["zCastBar"].num > 1 then
 		CastingBarFrameIcon:Show()
 	else
 		CastingBarFrameIcon:Hide()
@@ -58,7 +58,7 @@ end
 
 function zCastBar:UpdateLayouts()
 	CastingBarFrameIcon:ClearAllPoints()
-	if zBar2Saves["zCastBar"].invert then
+	if zBar3Data["zCastBar"].invert then
 		CastingBarFrameIcon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
 	else
 		CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)

@@ -1,12 +1,12 @@
-if zBar2.lite then return end
+if zBar3.lite then return end
 local _G = getfenv(0)
 local XPHeight = 20
 
 CreateFrame("Frame","zXPBar",UIParent,"SecureFrameTemplate")
-zBar2:RegisterPlugin(zXPBar)
-zBar2:RegisterBar(zXPBar)
+zBar3:AddPlugin(zXPBar)
+zBar3:AddBar(zXPBar)
 
-function zXPBar:Init()
+function zXPBar:Load()
 	zXPBar:SetID(15)
 	zXPBar:SetMovable(true)
 	zXPBar:SetClampedToScreen(true)
@@ -80,7 +80,7 @@ local function OnEnter()
 	end
 end
 local function OnLeave()
-	zXPBar:SetAlpha(zBar2Saves["zXPBar"].alpha)
+	zXPBar:SetAlpha(zBar3Data["zXPBar"].alpha)
 	GameTooltip:Hide()
 end
 function zXPBar:Hook()
@@ -90,10 +90,10 @@ function zXPBar:Hook()
 	ReputationWatchBar:HookScript("OnLeave", OnLeave)
 
 	--[[ Override when ReputationWatchBar Updates ]]
-	MainMenuExpBar.ClearAllPoints = zBar2.NOOP
-	MainMenuExpBar.SetPoint = zBar2.NOOP
-	ReputationWatchBar.ClearAllPoints = zBar2.NOOP
-	ReputationWatchBar.SetPoint = zBar2.NOOP
+	MainMenuExpBar.ClearAllPoints = zBar3.NOOP
+	MainMenuExpBar.SetPoint = zBar3.NOOP
+	ReputationWatchBar.ClearAllPoints = zBar3.NOOP
+	ReputationWatchBar.SetPoint = zBar3.NOOP
 
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
 		local name, reaction = GetWatchedFactionInfo()
@@ -117,7 +117,7 @@ function zXPBar:Hook()
 end
 
 function zXPBar:UpdateButtons()
-	local value = zBar2Saves[self:GetName()]
+	local value = zBar3Data[self:GetName()]
 	if not value.num or value.num < 1 then value.num = 1 end
 	local width = 512 + 256*(value.num-1)
 	MainMenuExpBar:SetWidth(width)

@@ -2,13 +2,13 @@
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
-zBar3:RegisterPlugin(zMainBar)
-zBar3:RegisterBar(zMainBar)
+zBar3:AddPlugin(zMainBar)
+zBar3:AddBar(zMainBar)
 
 --[[
 	functional
 --]]
-function zMainBar:Init()
+function zMainBar:Load()
 	self:SetID(10)
 	self:SetFrameStrata("HIGH")
 	self:SetClampedToScreen(true)
@@ -113,7 +113,7 @@ function zMainBar:GetStateCommand()
   end
 
 	for i=1,4 do
-		state = format('[bonusbar:%d]%d', i, i+6)
+		state = format('[bonusbar:%d]%d;', i, i+6)
 		header = header .. state
 	end
 

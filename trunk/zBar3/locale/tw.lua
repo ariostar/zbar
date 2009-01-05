@@ -1,6 +1,6 @@
 ﻿if GetLocale() == "zhTW" then
-	zBar2.loc = {}
-	local loc = zBar2.loc
+	zBar3.loc = {}
+	local loc = zBar3.loc
 
 	loc.Labels = {
 		zMultiR1 = "右1", zMultiR2 = "右2", zMultiBR = "右下", zMultiBL = "左下",

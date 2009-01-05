@@ -1,10 +1,10 @@
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zBarOption", UIParent)
-zBar2:RegisterPlugin(zBarOption)
+zBar3:AddPlugin(zBarOption)
 
 --[[ functional ]]
-function zBarOption:Init()
+function zBarOption:Load()
 	self:SetWidth(320); self:SetHeight(385); self:SetHeight(400);
 	self:SetPoint("CENTER")
 	self:SetMovable(true)
@@ -14,11 +14,11 @@ function zBarOption:Init()
 
 	SlashCmdList["ZBAR"] = function(msg)
 		local offset = tonumber(msg)
-		for name,bar in pairs(zBar2.bars) do
+		for name,bar in pairs(zBar3.bars) do
 			if msg == "resetall" then
 				bar:Reset(true)
 			elseif offset then
-				local pos = zBar2Saves[bar:GetName()].pos or zBar2:GetDefault(bar, "pos")
+				local pos = zBar3Data[bar:GetName()].pos or zBar3:GetDefault(bar, "pos")
 				bar:GetTab():ClearAllPoints()
 				if type(pos[2]) == "string" then
 					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetScale())
@@ -37,7 +37,7 @@ end
 
 function zBarOption:Openfor(bar)
 	if InCombatLockdown() then
-		UIErrorsFrame:AddMessage("zBar2Option: DO NOT SETUP IN COMBAT !!!",1.0,0.1,0.1,1.0)
+		UIErrorsFrame:AddMessage("zBar3Option: DO NOT SETUP IN COMBAT !!!",1.0,0.1,0.1,1.0)
 		return
 	end
 	self:CheckReady()
@@ -47,7 +47,7 @@ function zBarOption:Openfor(bar)
 end
 
 function zBarOption:GetSelected()
-	if not self.bar then zBar2:print("Nothing selected") end
+	if not self.bar then zBar3:print("Nothing selected") end
 	return self.bar
 end
 
@@ -81,7 +81,7 @@ function zBarOption:CheckReady()
 		label = self:CreateFontString(self:GetName()..name,"ARTWORK",args[1])
 		label:SetTextColor(args[2],args[3],args[4])
 		label:SetPoint(args[5],args[6],args[7])
-		label:SetText(zBar2.loc.Option[name])
+		label:SetText(zBar3.loc.Option[name])
 	end
 
 	-- close button
@@ -107,7 +107,7 @@ function zBarOption:CheckReady()
 			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",55,0)
 		end
 
-		_G[button:GetName().."Text"]:SetText(zBar2.loc.Labels[name])
+		_G[button:GetName().."Text"]:SetText(zBar3.loc.Labels[name])
     button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
 
 		button:SetScript("OnClick", function()
@@ -120,7 +120,7 @@ function zBarOption:CheckReady()
 	button = CreateFrame("Button","zBarOptionResetButton",self,"UIPanelButtonTemplate2")
 	button:SetWidth(110); button:SetHeight(20);
 	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-125)
-	button:SetText(zBar2.loc.Option.Reset)
+	button:SetText(zBar3.loc.Option.Reset)
 	button:SetScript("OnClick", function() zBarOption.bar:Reset(true) zBarOption:LoadOptions() end)
 
 	-- check buttons
@@ -139,9 +139,9 @@ function zBarOption:CheckReady()
       _G[button:GetName().."Text"]:SetTextColor(0.5,0.5,0.5)
     end
     
-    _G[button:GetName().."Text"]:SetText(zBar2.loc.Option[value.name])
+    _G[button:GetName().."Text"]:SetText(zBar3.loc.Option[value.name])
     button.r,button.g,button.b = _G[button:GetName().."Text"]:GetTextColor()
-		button.tooltipText = zBar2.loc.Tips[value.name]
+		button.tooltipText = zBar3.loc.Tips[value.name]
 		button:SetID(id)
 
 		button:SetScript("OnClick",function()
@@ -150,12 +150,12 @@ function zBarOption:CheckReady()
 			local checked = this:GetChecked()
 			-- save the option value
 			if value.common then
-				zBar2Saves[value.var] = checked
+				zBar3Data[value.var] = checked
 			elseif value.var then
 				if value.value and checked then
 					checked = value.value
 				end
-				zBar2Saves[zBarOption.bar:GetName()][value.var] = checked
+				zBar3Data[zBarOption.bar:GetName()][value.var] = checked
 			end
 			if checked then
 				value.OnChecked()
@@ -175,8 +175,8 @@ function zBarOption:CheckReady()
 		slider:SetValueStep(value.step)
 		slider:SetScript("OnValueChanged", value.setFunc)
 
-		_G["zBarOptionSlider"..id.."Text"]:SetText(zBar2.loc.Option[value.name])
-		slider.tooltipText = zBar2.loc.Tips[value.name]
+		_G["zBarOptionSlider"..id.."Text"]:SetText(zBar3.loc.Option[value.name])
+		slider.tooltipText = zBar3.loc.Tips[value.name]
 
 		if value.factor then
 			_G["zBarOptionSlider"..id.."Low"]:SetText(value.min * value.factor .. "%")
@@ -216,19 +216,19 @@ function zBarOption:LoadOptions()
 			obj:SetChecked(value.IsChecked())
 		elseif value.var then
 			if value.common then -- common attributes
-				obj:SetChecked(zBar2Saves[value.var])
+				obj:SetChecked(zBar3Data[value.var])
 			elseif value.value then
-				obj:SetChecked(zBar2Saves[zBarOption.bar:GetName()][value.var] == value.value)
+				obj:SetChecked(zBar3Data[zBarOption.bar:GetName()][value.var] == value.value)
 			else -- bar attributes
-				obj:SetChecked(zBar2Saves[zBarOption.bar:GetName()][value.var])
+				obj:SetChecked(zBar3Data[zBarOption.bar:GetName()][value.var])
 			end
 		end
 	end
 	-- read sliders value
 	local min = 1
-	local max = zBar2Saves[self.bar:GetName()].max or 12
-	local num = zBar2Saves[zBarOption.bar:GetName()].num or 1
-	local linenum = zBar2Saves[zBarOption.bar:GetName()].linenum or 1
+	local max = zBar3Data[self.bar:GetName()].max or 12
+	local num = zBar3Data[zBarOption.bar:GetName()].num or 1
+	local linenum = zBar3Data[zBarOption.bar:GetName()].linenum or 1
 	if max == 0 then min = 0 end
 	zBarOptionSlider1:SetMinMaxValues(min,max)
 	zBarOptionSlider1:SetValue(num)
@@ -238,7 +238,7 @@ function zBarOption:LoadOptions()
 	zBarOptionSlider2High:SetText(max)
 	for id, value in ipairs(zBarOption.sliders) do
 		obj = _G["zBarOptionSlider"..id]
-		obj:SetValue(zBar2Saves[zBarOption.bar:GetName()][value.var] or 1)
+		obj:SetValue(zBar3Data[zBarOption.bar:GetName()][value.var] or 1)
 	end
 	self.loading = nil
 end
@@ -265,10 +265,10 @@ end
 
 function zBarOption:Befor_ShowGrid()
  	if InCombatLockdown() then return end
-	for name,bar in pairs(zBar2.bars) do
+	for name,bar in pairs(zBar3.bars) do
 		if bar:GetID() >= 5 and bar:GetID() <= 8 then
 			for i=1,12 do
-				local button = _G[zBar2.buttons[name..i]]
+				local button = _G[zBar3.buttons[name..i]]
 				button:SetAttribute("showgrid", button:GetAttribute("showgrid") + 1)
 			end
 		end
@@ -276,10 +276,10 @@ function zBarOption:Befor_ShowGrid()
 end
 function zBarOption:Befor_HideGrid()
  	if InCombatLockdown() then return end
-	for name,bar in pairs(zBar2.bars) do
+	for name,bar in pairs(zBar3.bars) do
 		if bar:GetID() >= 5 and bar:GetID() <= 8 then
 			for i=1,12 do
-				local button = _G[zBar2.buttons[name..i]]
+				local button = _G[zBar3.buttons[name..i]]
 				local showgrid = button:GetAttribute("showgrid")
 				if showgrid > 0 then
 					button:SetAttribute("showgrid", showgrid - 1)
@@ -389,10 +389,10 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 			zBarOptionSuite1:SetChecked(false)
 			zBarOptionSuite2:SetChecked(false)
 			zBarOptionCircle:SetChecked(false)
-			if not zBar2.buttons[zBarOption.bar:GetName().."1"] then return end
-			local saves = zBar2Saves[zBarOption.bar:GetName()]
+			if not zBar3.buttons[zBarOption.bar:GetName().."1"] then return end
+			local saves = zBar3Data[zBarOption.bar:GetName()]
 			for i = 1, saves.num do
-				local button = _G[zBar2.buttons[zBarOption.bar:GetName()..i]]
+				local button = _G[zBar3.buttons[zBarOption.bar:GetName()..i]]
 				if not button:IsMovable() then
 					button:SetMovable(true)
 				end
@@ -450,7 +450,7 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- Duid cat form, page change when stealth
 		name="CatStealth",var="catStealth",common=true,
 		pos={"TOP","zBarOptionPageTrigger","BOTTOM",0,0},
-		IsEnabled=function() return (zMainBar and zBar2.class == "DRUID") end,
+		IsEnabled=function() return (zMainBar and zBar3.class == "DRUID") end,
 		OnChecked=function() zMainBar:UpdateStateHeader() end,
 		UnChecked=function() zMainBar:UpdateStateHeader() end,
 	},
@@ -461,7 +461,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		var="num", min=1, max=12, step=1,
 		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-170},
 		setFunc = function()
-			zBar2Saves[zBarOption.bar:GetName()].num = this:GetValue()
+			zBar3Data[zBarOption.bar:GetName()].num = this:GetValue()
 			zBarOption.bar:UpdateButtons()
 			zBarOption.bar:UpdateLayouts()
 		end
@@ -471,7 +471,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		var="linenum", min=1, max=12, step=1,
 		pos={"TOP","zBarOptionSlider1","BOTTOM",0,-25},
 		setFunc = function()
-			local saves = zBar2Saves[zBarOption.bar:GetName()]
+			local saves = zBar3Data[zBarOption.bar:GetName()]
 
 			if zBarOption.loading and saves.layout ~= "line" then return end
 
@@ -499,7 +499,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		pos={"TOP","zBarOptionSlider2","BOTTOM",0,-30},
 		setFunc = function()
 			local value = this:GetValue()
-			zBar2Saves[zBarOption.bar:GetName()].scale = value
+			zBar3Data[zBarOption.bar:GetName()].scale = value
 			zBarOption.bar:SetScale(value)
 			zBarOption.bar:GetTab():SetScale(value)
 			-- set edit box text
@@ -513,7 +513,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		var="inset", min=0, max=30, step=1,
 		pos={"TOP","zBarOptionSlider3","BOTTOM",0,-25},
 		setFunc = function()
-			zBar2Saves[zBarOption.bar:GetName()].inset = this:GetValue()
+			zBar3Data[zBarOption.bar:GetName()].inset = this:GetValue()
 			zBarOption.bar:UpdateLayouts()
 		end
 	},
@@ -522,7 +522,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		var="alpha", min=0, max = 1, step=0.1, factor=100,
 		pos={"TOP","zBarOptionSlider4","BOTTOM",0,-25},
 		setFunc = function()
-			zBar2Saves[zBarOption.bar:GetName()].alpha = this:GetValue()
+			zBar3Data[zBarOption.bar:GetName()].alpha = this:GetValue()
 			zBarOption.bar:SetAlpha(this:GetValue())
 		end
 	},

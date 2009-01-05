@@ -183,20 +183,20 @@ function zBarT:GetTab()
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	tab:SetScript("OnDragStart", function(self) zTab:OnDragStart(self) end)
 	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
-	
+
 	tab:SetFrameRef('bar', self)
-	tab:Execute([[bar = self:GetFrameRef('bar')]])
 	
 	tab:SetAttribute("_onclick", [[
+		local bar = self:GetFrameRef('bar')
 		if button == 'RightButton' then
-			control:CallMethod(self, 'OnMenu')
+			control:CallMethod('OnMenu')
 		elseif button == 'LeftButton' then
 			if bar:IsShown() then
 				bar:Hide()
-				bar:SetAttribute('statehidden', true)
+				bar:SetAttribute('hidden', true)
 			else
 				bar:Show()
-				bar:SetAttribute('statehidden', nil)
+				bar:SetAttribute('hidden', nil)
 			end
 		end
 	]])
@@ -206,11 +206,11 @@ function zBarT:GetTab()
 		zBarOption:Openfor(this.bar)
 	end
 
-	tab:SetAttribute("_onenter", [[
-		if bar:GetAttribute('statehidden') then bar:Show() end
+	tab:SetAttribute("_onenter", [[local bar = self:GetFrameRef('bar')
+		if bar:GetAttribute('hidden') then bar:Show() end
 	]])
-	tab:SetAttribute("_onleave", [[
-		if bar:GetAttribute('statehidden') then bar:Hide() end
+	tab:SetAttribute("_onleave", [[local bar = self:GetFrameRef('bar')
+		if bar:GetAttribute('hidden') then bar:Hide() end
 	]])
 
 	tab:SetScale(self:GetScale())
