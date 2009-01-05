@@ -1,4 +1,4 @@
-#summary Introduce zBar3.
+#summary Introduction of zBar version 3.
 #labels Featured
 
 = Introduction =
@@ -11,9 +11,9 @@ It's still developing and intend to be
   * Modify code to be clean and strong
   * More easier to use
 
-= Details =
+= Feature draft =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+List of features in my mind,
+  * RangeColor option
+  * Improved sticky feature
+  * Improved free style layout
