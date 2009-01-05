@@ -60,24 +60,24 @@ end
 
 --[[ Addon Init ]]
 function zBar3:Init()
-  -- version
+	-- version
 	self.version = GetAddOnMetadata("zBar3", "Version")
 	self.author  = GetAddOnMetadata("zBar3", "Author")
 
-  -- data
+	-- data
 	zBar3Data = zBar3Data or { version = zBar3.version,}
 
-  -- Lite mode state
-  self.lite = select(4, GetAddOnInfo("zBar3Lite"))
+	-- Lite mode state
+	self.lite = select(4, GetAddOnInfo("zBar3Lite"))
 
-  -- function that does nothing
-  self.NOOP = function() end
+	-- function that does nothing
+	self.NOOP = function() end
 
-  -- hidden frame
-  self.hiddenFrame = CreateFrame("Frame")
-  self.hiddenFrame:Hide()
+	-- hidden frame
+	self.hiddenFrame = CreateFrame("Frame")
+	self.hiddenFrame:Hide()
 
-  -- class
+	-- class
 	self.class = select(2, UnitClass("player"))
 end
 

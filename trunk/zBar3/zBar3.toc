@@ -1,7 +1,7 @@
 ﻿## Interface: 30000
 
 ## Title: zBar3
-## Notes: ZeroFire's ActionBar Mod. |n Second Edition.
+## Notes: ZeroFire's ActionBar Mod. |n Third Edition.
 ## Author: Zero Fire
 
 ## Title-zhCN: zBar3 - |cffFF3300炽火|r|cff33AAFF动作条|r
@@ -19,29 +19,29 @@ zBarT.lua
 zTab.lua
 
 zBar.lua
-arrange.lua
+layout.lua
 defaults.lua
 
-language\cn.lua
-language\tw.lua
-language\en.lua
+locale\cn.lua
+locale\tw.lua
+locale\en.lua
 
-plugins\zExBars.lua
+bars\zExBars.lua
 
-plugins\zMultiBars.lua
-plugins\zPetBar.lua
-plugins\zStanceBar.lua
+bars\zMultiBars.lua
+bars\zPetBar.lua
+bars\zStanceBar.lua
 
-plugins\zBagBar.lua
-plugins\zMicroBar.lua
-plugins\zXPBar.lua
+bars\zBagBar.lua
+bars\zMicroBar.lua
+bars\zXPBar.lua
 
-plugins\zMainBar.lua
-plugins\zPossessBar.lua
+bars\zMainBar.lua
+bars\zPossessBar.lua
 
-plugins\zCastBar.lua
-plugins\zChat.lua
+bars\zCastBar.lua
+bars\zChat.lua
 
-plugins\zBarOption.lua
+option\zBarOption.lua
 
 skin\ButtonFacade.lua
