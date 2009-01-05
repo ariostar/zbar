@@ -1,17 +1,18 @@
 local _G = getfenv(0)
 --[[
-	Usage: zBar2:GetDefault("zMainBar")
-	or : zBar2:GetDefault("zMainBar", "pos")
+	Usage: zBar3:GetDefault("zMainBar")
+	or : zBar3:GetDefault("zMainBar", "pos")
 --]]
-local k,v,m,n
-function zBar2:GetDefault(name, key, subkey)
+function zBar3:GetDefault(name, key, subkey)
+	local k,v,m,n
+
 	if type(name) == "table" then
 		name = name:GetName()
 	end
 
 	-- copy
 	local set = {}
-	for k,v in pairs(zBar2.defaults[name]) do
+	for k,v in pairs(zBar3.defaults[name]) do
 		if type(v) == "table" then
 			set[k] = {}
 			for m,n in pairs(v) do
@@ -23,7 +24,7 @@ function zBar2:GetDefault(name, key, subkey)
 	end
 
 	-- common values
-	for k,v in pairs(zBar2.defaults["*"]) do
+	for k,v in pairs(zBar3.defaults["*"]) do
 		if set[k] then
 			for m,n in pairs(v) do
 				if set[k][m] == nil then set[k][m] = n end
@@ -39,8 +40,8 @@ function zBar2:GetDefault(name, key, subkey)
 	return set
 end
 
--- zBar2 defaults
-zBar2.defaults = {
+-- zBar3 defaults
+zBar3.defaults = {
 	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},
 	["zExBar1"] = { saves = { num=6,},
 		pos = {"CENTER",0,0},

@@ -8,10 +8,10 @@ local _G = getfenv(0)
 function zBarT:UpdateLayouts()
 	local name = self:GetName()
 	-- get the button spacing
-	if not zBar2Saves[name].inset then
-		zBar2Saves[name].inset = 6
+	if not zBar3Data[name].inset then
+		zBar3Data[name].inset = 6
 	end
-	local value = zBar2Saves[name]
+	local value = zBar3Data[name]
 	if not value.num or value.num < 2 then return end
 	-- check free style first
 	if value.layout == "free" then
@@ -19,7 +19,7 @@ function zBarT:UpdateLayouts()
 		return
 	end
 	-- if not free style then reset and release
-	zBar2Saves[self:GetName()].buttons = {}
+	zBar3Data[self:GetName()].buttons = {}
 	self:ResetButtonScales(value.num)
 	-- call function for arrangement changing
 	if value.layout == "line" then
@@ -32,24 +32,27 @@ function zBarT:UpdateLayouts()
 		self:SetCircle()
 	end
 end
+
 function zBarT:ResetButtonScales(num)
 	for i = 2, num do
-		_G[zBar2.buttons[self:GetName()..i]]:SetScale(1)
+		_G[zBar3.buttons[self:GetName()..i]]:SetScale(1)
 	end
 end
+
 -- local func, for points settings
 local function SetButtonPoint(bar,index,point,referIndex,relativePoint,offx,offy)
-  local button = _G[zBar2.buttons[bar:GetName()..index]]
-  button:ClearAllPoints()
-  button:SetPoint(point,zBar2.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	local button = _G[zBar3.buttons[bar:GetName()..index]]
+	button:ClearAllPoints()
+	button:SetPoint(point,zBar3.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
 end
+
 --~ line arrangement
 function zBarT:SetLineNum()
-	local value = zBar2Saves[self:GetName()]
+	local value = zBar3Data[self:GetName()]
 	local inset = value.inset
 
 	if not value.linenum or value.linenum == 0 then
-		zBar2Saves[self:GetName()].linenum = 1
+		zBar3Data[self:GetName()].linenum = 1
 	end
 	if self == zMicroBar then
 		inset = inset - 2
@@ -87,9 +90,9 @@ function zBarT:SetLineNum()
 end
 
 function zBarT:SetCircle()
-	local r = 6*zBar2Saves[self:GetName()].num + 5*zBar2Saves[self:GetName()].inset
+	local r = 6*zBar3Data[self:GetName()].num + 5*zBar3Data[self:GetName()].inset
 	if self:GetID() > 10 then r = r - 16 end
-	local n = zBar2Saves[self:GetName()].num
+	local n = zBar3Data[self:GetName()].num
 	local pai = 3.1415926
 	local x, y = 0, 0
 	for i = 2, n do
@@ -100,10 +103,10 @@ function zBarT:SetCircle()
 end
 
 function zBarT:SetFree()
-	local saves = zBar2Saves[self:GetName()]
+	local saves = zBar3Data[self:GetName()]
 	local name
 	for i = 2, saves.num do
-		name = zBar2.buttons[self:GetName()..i]
+		name = zBar3.buttons[self:GetName()..i]
 		if saves.buttons and saves.buttons[name] then
 			_G[name]:SetScale(saves.buttons[name].scale or 1)
 			if saves.buttons[name].pos then
@@ -123,15 +126,15 @@ local function Invert(point, k)
 	return s
 end
 function zBarT:SetSuite(suitename)
-	local inset = zBar2Saves[self:GetName()].inset
-	local num = zBar2Saves[self:GetName()].num
+	local inset = zBar3Data[self:GetName()].inset
+	local num = zBar3Data[self:GetName()].num
 	if num == 1 then return end
 	local k = 1
-	if zBar2Saves[self:GetName()].invert then k = -1 end
-  
-  local offX, offY = 0, 0
-  if self == zMicroBar then offX, offY = -3, -23 end
-  
+	if zBar3Data[self:GetName()].invert then k = -1 end
+
+	local offX, offY = 0, 0
+	if self == zMicroBar then offX, offY = -3, -23 end
+
 	for id, pos in pairs(self[suitename][num]) do
 		SetButtonPoint(self, id, Invert(pos[1],k), pos[2], Invert(pos[3],k), k*(inset+offX)*pos[4], (inset+offY)*pos[5])
 	end
