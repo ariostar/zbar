@@ -1,0 +1,19 @@
+#summary Introduce zBar3.
+#labels Featured
+
+= Introduction =
+
+The new version of zBar is named zBar3.
+It's still developing and intend to be
+  * Design for WoW 3.X
+  * Follow the new rule of secure handlers
+  * Use new syntax of macro condition
+  * Modify code to be clean and strong
+  * More easier to use
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
