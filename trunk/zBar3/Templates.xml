@@ -1,9 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	<Script file="Templates.lua"/>
 	<!-- tab -->
-	<Button name="zBarTabTemplate" inherits="SecureHandlerClickTemplate,SecureHandlerEnterLeaveTemplate" movable="true"
-	frameStrata="HIGH" alpha="0.5" clampedToScreen="true" virtual="true" toplevel="true">
+	<Button name="zBarTabTemplate" inherits="SecureHandlerClickTemplate,SecureHandlerEnterLeaveTemplate"
+	movable="true" frameStrata="HIGH" alpha="0.5" clampedToScreen="true" virtual="true" toplevel="true">
 		<Size x="34" y="8"/>
 		<NormalTexture file="Interface\AddOns\zBar3\img\tab1.tga">
 			<Size x="56" y="12"/>
@@ -19,23 +20,9 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 		<Size x="16" y="16"/>
 		<HitRectInsets left="0" right="-50" top="0" bottom="0"/>
 		<Scripts>
-			<OnEnter>
-				if (this:IsEnabled()) then
-					getglobal(self:GetName().."Text"):SetTextColor(1.0,1.0,1.0)
-				end
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
-				end
-				if ( this.tooltipRequirement ) then
-					GameTooltip:AddLine(this.tooltipRequirement, "", 1.0, 1.0, 1.0);
-					GameTooltip:Show();
-				end
-			</OnEnter>
-			<OnLeave>
-				getglobal(self:GetName().."Text"):SetTextColor(this.r,this.g,this.b)
-				GameTooltip:Hide();
-			</OnLeave>
+			<OnLoad>zBarOptionTemplate.Load(self, 'radio')</OnLoad>
+			<OnEnter>zBarOptionTemplate.Enter(self)</OnEnter>
+			<OnLeave>zBarOptionTemplate.Leave(self)</OnLeave>
 		</Scripts>
 		<Layers>
 			<Layer level="ARTWORK">
@@ -60,23 +47,9 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 			<AbsInset left="0" right="-60" top="0" bottom="0"/>
 		</HitRectInsets>
 		<Scripts>
-			<OnEnter>
-				if (this:IsEnabled()) then
-					getglobal(self:GetName().."Text"):SetTextColor(1.0,1.0,1.0)
-				end
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
-				end
-				if ( this.tooltipRequirement ) then
-					GameTooltip:AddLine(this.tooltipRequirement, "", 1.0, 1.0, 1.0);
-					GameTooltip:Show();
-				end
-			</OnEnter>
-			<OnLeave>
-				getglobal(self:GetName().."Text"):SetTextColor(this.r,this.g,this.b)
-				GameTooltip:Hide();
-			</OnLeave>
+			<OnLoad>zBarOptionTemplate.Load(self, 'check')</OnLoad>
+			<OnEnter>zBarOptionTemplate.Enter(self)</OnEnter>
+			<OnLeave>zBarOptionTemplate.Leave(self)</OnLeave>
 		</Scripts>
 		<Layers>
 			<Layer level="ARTWORK">
@@ -87,9 +60,6 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 				</FontString>
 			</Layer>
 		</Layers>
-		<NormalFont inherits="GameFontGreenSmall"/>
-		<HighlightFont inherits="GameFontHighlightSmall"/>
-		<DisabledFont inherits="GameFontDarkGraySmall"/>
 		<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
 		<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
 		<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>

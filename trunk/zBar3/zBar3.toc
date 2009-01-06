@@ -44,4 +44,4 @@ bars\zChat.lua
 
 option\zBarOption.lua
 
-skin\ButtonFacade.lua
+skin\zButtonFacade.lua
