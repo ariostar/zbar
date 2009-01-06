@@ -70,7 +70,7 @@ function zExBars:Load()
 	end
 
 	-- grid stuff
-	--zBar3:RegisterGridUpdater(zExBars.UpdateGrid)
+	zBar3:RegisterGridUpdater(zExBars.UpdateGrid)
 
 end
 
@@ -140,6 +140,7 @@ function zExBars:UpdateGrid(bar)
 
 	if bar then -- update for bar
 		for i=1, zBar3Data[bar:GetName()].num do
+			bar:GetButton(i):SetAttribute("showgrid", zBar3.showgrid)
 			if zBar3.showgrid > 0 then
 				bar:GetButton(i):Show()
 			end
@@ -150,6 +151,7 @@ function zExBars:UpdateGrid(bar)
 	local button
 	for i=1, NUM_ZEXBAR_BUTTONS do
 		button = _G["zExButton"..i]
+		button:SetAttribute("showgrid", zBar3.showgrid)
 
 		if zBar3.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then

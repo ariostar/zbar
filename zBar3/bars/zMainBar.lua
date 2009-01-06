@@ -14,7 +14,7 @@ function zMainBar:Load()
 	self:SetClampedToScreen(true)
 	self:SetWidth(36) self:SetHeight(36)
 
-	for id=1,12 do
+	for id=1,NUM_ACTIONBAR_BUTTONS do
 		self:RegisterButton(_G["ActionButton"..id], id)
 		zBar3.buttons["zMainBar"..id] = "ActionButton"..id
 		_G["ActionButton"..id.."NormalTexture"]:SetWidth(60)
@@ -34,6 +34,9 @@ function zMainBar:Load()
 	self:UpdateStateHeader()
 	
 	self:Hook()
+
+	-- grid stuff
+	zBar3:RegisterGridUpdater(self.UpdateGrid)
 end
 
 --[[
@@ -46,8 +49,8 @@ function zMainBar:RegisterButton(button, id)
 	button:SetID(-id)
 
 	button:Show()
-	button.Hide = function(self) self:SetAlpha(0) end
-	button.Show = function(self) self:SetAlpha(1) end
+	--button.Hide = function(self) self:SetAlpha(0) end
+	--button.Show = function(self) self:SetAlpha(1) end
 end
 
 --[[ Hooks ]]
@@ -79,12 +82,13 @@ end
 
 function zMainBar:UpdateGrid()
 	-- in combat we can't let it be shown or hidden
- 	if InCombatLockdown() then return end
+	if InCombatLockdown() then return end
 	for i=1, 12 do
 		local button = _G["ActionButton"..i]
 		button:SetAttribute("showgrid", zBar3.showgrid)
 		if zBar3.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
+				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 				button:Show();
 			end
 		elseif not HasAction(button.action) then
@@ -108,9 +112,9 @@ function zMainBar:GetStateCommand()
 		end
 	end
 
-  if zBar3Data["catStealth"] then
-    header = header .. "[bar:1,stealth]10;"
-  end
+	if zBar3Data["catStealth"] then
+		header = header .. "[bar:1,stealth]10;"
+	end
 
 	for i=1,4 do
 		state = format('[bonusbar:%d]%d;', i, i+6)

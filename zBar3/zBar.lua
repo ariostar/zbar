@@ -16,19 +16,21 @@ end
 function zBar3:OnEvent()
 	if event == "PLAYER_LOGIN" then
 		-- self init
-		zBar3:Init()
+		self:Init()
 		-- plugins init
-		for k,v in ipairs(zBar3.plugins) do
+		for k,v in ipairs(self.plugins) do
 			if v.Load then v:Load() end
 		end
 		-- bars init
-		for name, bar in pairs(zBar3.bars) do
+		for name, bar in pairs(self.bars) do
 			bar:Reset()
 		end
 		-- hooks
-		zBar3:Hook()
+		self:Hook()
 		-- welcome message
-		zBar3:print("zBar3 v"..zBar3.version.." Loaded :: Author - "..zBar3.author.. " :: type /zbar",0.0,1.0,0.0)
+		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
+	else
+		self:Update(event)
 	end
 end
 zBar3:SetScript("OnEvent", zBar3.OnEvent)
@@ -79,6 +81,9 @@ function zBar3:Init()
 
 	-- class
 	self.class = select(2, UnitClass("player"))
+
+	-- init grid signal
+	self.showgrid = 0
 end
 
 function zBar3:Hook()
@@ -115,5 +120,47 @@ function zBar3:Hook()
 				end
 			end
 		end
+	end
+
+	-- add events for grid, must after bars initial
+	self:RegisterEvent("ACTIONBAR_SHOWGRID")
+	self:RegisterEvent("ACTIONBAR_HIDEGRID")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	-- hooks for grid
+	hooksecurefunc("MultiActionBar_ShowAllGrids",function()
+		zBar3:IncGrid()
+		zBar3:Update()
+	end)
+	hooksecurefunc("MultiActionBar_HideAllGrids",function()
+		zBar3:DecGrid()
+		zBar3:Update()
+	end)
+end
+
+zBar3.gridUpdaters = {}
+function zBar3:RegisterGridUpdater(func)
+	table.insert(self.gridUpdaters, func)
+end
+
+function zBar3:IncGrid()
+	self.showgrid = self.showgrid + 1
+end
+
+function zBar3:DecGrid()
+	if self.showgrid > 0 then
+		self.showgrid = self.showgrid - 1
+	end
+end
+
+function zBar3:Update(event)
+	-- event stuff
+	if event == "ACTIONBAR_SHOWGRID" then
+		self:IncGrid()
+	elseif event == "ACTIONBAR_HIDEGRID" then
+		self:DecGrid()
+	end
+	-- some other updates
+	for i, func in ipairs(self.gridUpdaters) do
+		if func then func() end
 	end
 end
