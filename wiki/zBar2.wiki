@@ -1,4 +1,4 @@
-#summary Intro to zBar2 on Curse.
+#summary Intro to zBar2 on Curse. Maybe not correct with the latest version for WoTLK.
 #labels Featured
 #sidebar TableOfContents
 
