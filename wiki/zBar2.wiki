@@ -1,7 +1,7 @@
 #summary Intro to zBar2 on Curse.
 #sidebar TableOfContents
 
-
+<wiki:toc max_depth="2" />
 
 =Notes=
 
