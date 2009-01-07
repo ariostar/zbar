@@ -1,10 +1,4 @@
 #summary Table of contents.
 
-  * [Articles HOWTO articles]
-    * [ArticlesXSS Web security]
-    * [ArticlesDom DOM manipulation]
-    * [ArticlesStyle CSS and style]
-    * [ArticlesTips Tips and tricks]
-  * [DOMReference DOM reference]
-  * [HTMLElements HTML reference]
-  * [CSSReference CSS reference]
+  * [zBar2 About zBar2]
+  * [zBar3 About zBar3]
