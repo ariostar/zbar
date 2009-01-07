@@ -58,6 +58,7 @@ function zBar3:AddBar(bar)
 	-- inherit functions
 	setmetatable(bar, {__index = zBarT})
 
+	--bar:SetParent(zBarT)
 end
 
 --[[ Addon Init ]]
@@ -82,8 +83,9 @@ function zBar3:Init()
 	-- class
 	self.class = select(2, UnitClass("player"))
 
-	-- init grid signal
+	-- init grid stuff
 	self.showgrid = 0
+	self:InitGridUpdater()
 end
 
 function zBar3:Hook()
@@ -99,7 +101,7 @@ function zBar3:Hook()
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
-		if bar:GetID() <= 10 then
+		if bar:GetID() <= 12 then
 			for id = 1, NUM_ACTIONBAR_BUTTONS do
 				button = _G[self.buttons[bar:GetName()..id]]
 				if button then
@@ -121,7 +123,11 @@ function zBar3:Hook()
 			end
 		end
 	end
+	
+end
 
+--[[ Grid Stuff ]]
+function zBar3:InitGridUpdater()
 	-- add events for grid, must after bars initial
 	self:RegisterEvent("ACTIONBAR_SHOWGRID")
 	self:RegisterEvent("ACTIONBAR_HIDEGRID")

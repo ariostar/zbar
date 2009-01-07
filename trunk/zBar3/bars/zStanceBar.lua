@@ -1,7 +1,7 @@
 if zBar3.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zStanceBar", UIParent, "SecureFrameTemplate")
+CreateFrame("Frame", "zStanceBar", UIParent, "SecureHandlerShowHideTemplate")
 zBar3:AddPlugin(zStanceBar)
 zBar3:AddBar(zStanceBar)
 

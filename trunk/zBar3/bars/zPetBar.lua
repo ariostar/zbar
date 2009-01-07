@@ -1,7 +1,7 @@
 if zBar3.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zPetBar", UIParent, "SecureFrameTemplate")
+CreateFrame("Frame", "zPetBar", UIParent, "SecureHandlerShowHideTemplate")
 zBar3:AddPlugin(zPetBar)
 zBar3:AddBar(zPetBar)
 
@@ -10,10 +10,6 @@ function zPetBar:Load()
 	self:SetFrameStrata("LOW")
 	self:SetClampedToScreen(true)
 	self:SetWidth(30); self:SetHeight(30);
-
-	-- must be unregister when you want to hide forever
-	self:SetAttribute("unit", "pet")
-	RegisterUnitWatch(self)
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		_G["PetActionButton"..i]:SetParent(self)
@@ -31,12 +27,15 @@ function zPetBar:Load()
 	self:GetTab():GetNormalTexture():SetWidth(50)
 	self:GetTab():GetHighlightTexture():SetWidth(50)
 end
+
 -- override
+function zPetBar:UpdateAutoPop() end
+
 function zPetBar:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
-		UnregisterUnitWatch(self)
+		UnregisterStateDriver(self, "visibility")
 	else
-		RegisterUnitWatch(self)
+		RegisterStateDriver(self, "visibility", '[pet,nobonusbar:5]show;hide')
 	end
 
 	zBarT.UpdateVisibility(self)

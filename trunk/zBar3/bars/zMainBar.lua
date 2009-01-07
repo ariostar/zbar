@@ -1,7 +1,7 @@
 ﻿if zBar3.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
+CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerShowHideTemplate")
 zBar3:AddPlugin(zMainBar)
 zBar3:AddBar(zMainBar)
 
@@ -15,7 +15,7 @@ function zMainBar:Load()
 	self:SetWidth(36) self:SetHeight(36)
 
 	for id=1,NUM_ACTIONBAR_BUTTONS do
-		self:RegisterButton(_G["ActionButton"..id], id)
+		self:AddButton(_G["ActionButton"..id], id)
 		zBar3.buttons["zMainBar"..id] = "ActionButton"..id
 		_G["ActionButton"..id.."NormalTexture"]:SetWidth(60)
 		_G["ActionButton"..id.."NormalTexture"]:SetHeight(60)
@@ -23,14 +23,14 @@ function zMainBar:Load()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
-
+--[[
 	self:Execute( [[ActionButtons = table.new(self:GetChildren())]] )
 	self:SetAttribute('_onstate-actionpage',[[
 		for i, button in ipairs(ActionButtons) do
 			button:SetAttribute('action', -button:GetID() + (newstate-1) * 12)
 		end
 	]])
-
+]]
 	self:UpdateStateHeader()
 	
 	self:Hook()
@@ -43,12 +43,12 @@ end
 	Privates
 --]]
 
-function zMainBar:RegisterButton(button, id)
+function zMainBar:AddButton(button, id)
 	button:SetParent(self)
 
-	button:SetID(-id)
+	--button:SetID(-id)
 
-	button:Show()
+	--button:Show()
 	--button.Hide = function(self) self:SetAlpha(0) end
 	--button.Show = function(self) self:SetAlpha(1) end
 end
@@ -59,7 +59,7 @@ function zMainBar:Hook()
 
 	BonusActionBarFrame:Hide()
 	BonusActionBarFrame:UnregisterAllEvents()
-	BonusActionBarFrame.Show = zBar3.NOOP
+	--BonusActionBarFrame.Show = zBar3.NOOP
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
 end
@@ -97,7 +97,7 @@ function zMainBar:UpdateGrid()
 	end
 end
 
---[[ Page Mapping. partly reference to PM2 ]]
+--[[ Page Mapping ]]
 local triggers = {
 	[1] = "[mod:SELFCAST]2",
 	[2] = "[help]2",
