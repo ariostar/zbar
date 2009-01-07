@@ -4,7 +4,20 @@ local _G = getfenv(0)
 --]]
 
 -- template for common functions of bars
-zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
+zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerShowHideTemplate")
+
+-- hover to expand
+function zBarT:Init()
+	if not self.Execute then return end -- not a handler
+	self:Execute([[buttons = table.new(self:GetChildren())]])
+	self:SetAttribute('_onhide', [[
+		for i, button in ipairs(buttons) do
+			handle:WrapScript(button,"OnEnter",[[
+				self:SetTimer('Collapse')
+			]])
+		end
+	]])
+end
 
 --[[ reset profile, scale, position to DEFAULT for any bar ]]
 function zBarT:Reset(resetsaves)
@@ -72,15 +85,14 @@ end
 
 function zBarT:UpdateAutoPop()
 	local db = zBar3Data[self:GetName()]
-	local header = self:GetHeader()
-	UnregisterStateDriver(header, "visibility")
+	UnregisterStateDriver(self, "visibility")
 	if not db.inCombat then
-		header:Show()
+		self:Show()
 	else
 		if "autoPop" == db.inCombat then
-			RegisterStateDriver(header, "visibility", "[combat][harm,nodead]show;hide")
+			RegisterStateDriver(self, "visibility", "[combat][harm,nodead]show;hide")
 		elseif "autoHide" == db.inCombat then
-			RegisterStateDriver(header, "visibility", "[combat][harm,nodead]hide;show")
+			RegisterStateDriver(self, "visibility", "[combat][harm,nodead]hide;show")
 		end
 	end
 end
@@ -135,26 +147,12 @@ function zBarT:UpdateHotkeys()
 	end
 end
 
-function zBarT:GetHeader()
-	local id = self:GetID()
-	local header = _G["zBar3Header"..id]
-	if header then return header end
-
-	header = CreateFrame("Frame", "zBar3Header"..id, UIParent,"SecureHandlerStateTemplate")
-	header:SetID(id)
-
-	self:SetParent(header)
-	self:GetTab():SetParent(header)
-
-	return header
-end
-
 --[[ get localized bar name as label ]]
 function zBarT:GetLabel()
 	local label = _G[self:GetName().."Label"]
 
 	if not label then
-		label = self:GetHeader():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
+		label = self:GetTab():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
 		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 0)
 		label:SetText( zBar3.loc.Labels[self:GetName()] or self:GetName() )
 	end
@@ -185,7 +183,7 @@ function zBarT:GetTab()
 	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
 
 	tab:SetFrameRef('bar', self)
-	
+	-- collapse and expand
 	tab:SetAttribute("_onclick", [[
 		local bar = self:GetFrameRef('bar')
 		if button == 'RightButton' then
@@ -193,10 +191,10 @@ function zBarT:GetTab()
 		elseif button == 'LeftButton' then
 			if bar:IsShown() then
 				bar:Hide()
-				bar:SetAttribute('hidden', true)
+				bar:SetAttribute('collapsed', true)
 			else
 				bar:Show()
-				bar:SetAttribute('hidden', nil)
+				bar:SetAttribute('collapsed', nil)
 			end
 		end
 	]])
@@ -207,10 +205,10 @@ function zBarT:GetTab()
 	end
 
 	tab:SetAttribute("_onenter", [[local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('hidden') then bar:Show() end
+		if bar:GetAttribute('collapsed') then bar:Show() end
 	]])
 	tab:SetAttribute("_onleave", [[local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('hidden') then bar:Hide() end
+		if bar:GetAttribute('collapsed') then bar:Hide() end
 	]])
 
 	tab:SetScale(self:GetScale())

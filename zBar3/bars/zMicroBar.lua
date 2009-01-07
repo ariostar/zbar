@@ -1,5 +1,5 @@
 if zBar3.lite then return end
-CreateFrame("Frame", "zMicroBar", UIParent, "SecureFrameTemplate")
+CreateFrame("Frame", "zMicroBar", UIParent, "SecureHandlerShowHideTemplate")
 zBar3:AddPlugin(zMicroBar)
 zBar3:AddBar(zMicroBar)
 

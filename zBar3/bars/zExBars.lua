@@ -7,7 +7,7 @@ zExBars = {}
 zBar3:AddPlugin(zExBars)
 
 function zExBars:New(prefix,id,page)
-	local bar = CreateFrame("Frame", prefix..id, UIParent)
+	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureHandlerShowHideTemplate")
 	zBar3:AddBar(bar)
 
 	bar:SetFrameStrata("MEDIUM")
@@ -46,7 +46,7 @@ function zExBars:Load()
 	-- create buttons
 	local button
 	for id = 1, NUM_ZEXBAR_BUTTONS do
-		button = CreateFrame("CheckButton", "zExButton"..id,UIParent,"SecureFrameTemplate,ActionBarButtonTemplate")
+		button = CreateFrame("CheckButton", "zExButton"..id,UIParent,"ActionBarButtonTemplate")
 		_G["zExButton"..id.."NormalTexture"]:SetWidth(60)
 		_G["zExButton"..id.."NormalTexture"]:SetHeight(60)
 		_G["zExButton"..id.."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
