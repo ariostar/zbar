@@ -12,7 +12,7 @@ local bars = {
 }
 -- create and register
 for id, value in pairs(bars) do
-	zBar3:AddBar(CreateFrame("Frame",value[1],UIParent,"SecureHandlerShowHideTemplate"))
+	zBar3:AddBar(CreateFrame("Frame",value[1],UIParent,"SecureHandlerStateTemplate"))
 end
 
 function zMultiBars:Load()

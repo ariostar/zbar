@@ -1,4 +1,5 @@
 local _G = getfenv(0)
+local abs = math.abs
 
 NUM_ZEXBAR_BAR = 2
 NUM_ZEXBAR_BUTTONS = 24
@@ -7,7 +8,7 @@ zExBars = {}
 zBar3:AddPlugin(zExBars)
 
 function zExBars:New(prefix,id,page)
-	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureHandlerShowHideTemplate")
+	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureHandlerStateTemplate")
 	zBar3:AddBar(bar)
 
 	bar:SetFrameStrata("MEDIUM")
@@ -15,7 +16,7 @@ function zExBars:New(prefix,id,page)
 	bar:SetWidth(36); bar:SetHeight(36);
 	bar:SetAttribute("actionpage", page)
 
-	bar.GetButton = self.GetButton
+	bar.GetExButton = self.GetExButton
 
 	if prefix == "zShadow" then
 		bar:SetID(-id)
@@ -23,15 +24,16 @@ function zExBars:New(prefix,id,page)
 		rawset(bar, "UpdateButtons", zExBars.UpdateShadowButtons)
 	else
 		bar:SetID(id)
+		bar.isExtra = true
 		rawset(bar, "UpdateButtons", zExBars.UpdateExBarButtons)
-		local button
+		bar.GetNumButtons = self.GetNumButtons
 		for i = 1, 12 do
-			button =bar:GetButton(i)
+			local button =bar:GetExButton(i)
 			button:SetID(i)
 			button:SetParent(bar)
 		end
-		bar:GetButton(1):ClearAllPoints()
-		bar:GetButton(1):SetPoint("CENTER")
+		bar:GetExButton(1):ClearAllPoints()
+		bar:GetExButton(1):SetPoint("CENTER")
 	end
 
 	if not zBar3Data[prefix..id] then
@@ -74,34 +76,38 @@ function zExBars:Load()
 
 end
 
-function zExBars:GetButton(i)
-	if self.isShadow then return _G[zBar3.buttons[self:GetName()..i]] end
+function zExBars:GetExButton(i)
+	--if self.isShadow then return _G[zBar3.buttons[self:GetName()..i]] end
 	return _G["zExButton"..i + (self:GetID()-1)*NUM_ACTIONBAR_BUTTONS]
+end
+
+function zExBars:GetNumButtons()
+	return zBar3Data[self:GetName()].num
 end
 
 --[[ override functions ]]
 function zExBars:UpdateExBarButtons() -- for ex bars
-	local bar = self
-	zExBars:UpdateShadows(bar:GetID())
-	zBarT.UpdateButtons(_G["zShadow"..bar:GetID()])
-	zBarT.UpdateLayouts(_G["zShadow"..bar:GetID()])
+	local id = abs(self:GetID())
+	zExBars:UpdateShadows(id)
+	zBarT.UpdateButtons(_G["zShadow"..id])
+	zBarT.UpdateLayouts(_G["zShadow"..id])
 
-	zBarT.UpdateButtons(bar)
-	--zExBars:UpdateGrid(bar)
+	zBarT.UpdateButtons(self)
+	--zExBars:UpdateGrid(self)
 end
 function zExBars:UpdateShadowButtons()
-	local bar = self
-	zExBars:UpdateShadows(bar:GetID())
+	local id = abs(self:GetID())
+	zExBars:UpdateShadows(self:GetID())
 	-- since we may changed buttons' parent, need update layouts
-	zBarT.UpdateButtons(_G["zExBar"..-bar:GetID()])
-	zBarT.UpdateLayouts(_G["zExBar"..-bar:GetID()])
+	zBarT.UpdateButtons(_G["zExBar"..id])
+	zBarT.UpdateLayouts(_G["zExBar"..id])
 
-	zBarT.UpdateButtons(bar)
+	zBarT.UpdateButtons(self)
 	--zExBars:UpdateGrid(bar)
 end
 
 function zExBars:UpdateShadows(index)
-	local id = math.abs(index)
+	local id = abs(index)
 	local num = zBar3Data["zExBar"..id].num
 	local bar = _G["zExBar"..id]
 	local shadow = _G["zShadow"..id]

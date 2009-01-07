@@ -1,7 +1,7 @@
 ﻿if zBar3.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerShowHideTemplate")
+CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
 zBar3:AddPlugin(zMainBar)
 zBar3:AddBar(zMainBar)
 
@@ -23,14 +23,13 @@ function zMainBar:Load()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
---[[
 	self:Execute( [[ActionButtons = table.new(self:GetChildren())]] )
 	self:SetAttribute('_onstate-actionpage',[[
 		for i, button in ipairs(ActionButtons) do
-			button:SetAttribute('action', -button:GetID() + (newstate-1) * 12)
+			button:SetAttribute('action', abs(button:GetID()) + (newstate-1) * 12)
 		end
 	]])
-]]
+
 	self:UpdateStateHeader()
 	
 	self:Hook()
@@ -45,12 +44,7 @@ end
 
 function zMainBar:AddButton(button, id)
 	button:SetParent(self)
-
-	--button:SetID(-id)
-
-	--button:Show()
-	--button.Hide = function(self) self:SetAlpha(0) end
-	--button.Show = function(self) self:SetAlpha(1) end
+	button:SetID(-id)
 end
 
 --[[ Hooks ]]
