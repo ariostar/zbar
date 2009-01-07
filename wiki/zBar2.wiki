@@ -23,6 +23,7 @@ Maybe you want ::
     * Low memory usage 
 
 =Usage=
+
 ==Basics==
 
     * Move bar by dragging the tab, which is on top of the first button
@@ -32,23 +33,20 @@ Maybe you want ::
 
 ==You Should Konw==
 
-Free Style - when you layout buttons in free style, please hold "ctrl+alt+shift" fist, mouse enter button AFTER, if you see a box over the button then you can drag it or mouse wheel it. Enjoy! 
+===Free Style===
+ when you layout buttons in free style, please hold "ctrl+alt+shift" fist, mouse enter button AFTER, if you see a box over the button then you can drag it or mouse wheel it. Enjoy! 
 
- 
+===Stick===
+ If you drag the tab into any button, and Hold modifier keys at the same time, the bar will stick to that button. "Ctrl" will stick to Bottom, "Shift" stick to Right 
 
-Stick - If you drag the tab into any button, and Hold modifier keys at the same time, the bar will stick to that button. "Ctrl" will stick to Bottom, "Shift" stick to Right 
+===Lite===
+ Extra Bars Only - If you only want some extra buttons, then you should eable the mod "zBar2Lite", or if you don't know why no changes to default UI, you should disable the mod "zBar2Lite". Find it in addon control. 
 
- 
+===cyCircled===
+ cyCircled is supported, make sure you download the latest version of cyCircled 
 
-Lite - Extra Bars Only - If you only want some extra buttons, then you should eable the mod "zBar2Lite", or if you don't know why no changes to default UI, you should disable the mod "zBar2Lite". Find it in addon control. 
-
- 
-
-cyCircled - cyCircled is supported, make sure you download the latest version of cyCircled 
-
- 
-
-Saves - Positions are saved in SavedVariable file. U can move it to some other Account to copy your options AND positions, remember to keep the same ui scale.(you can find this file in wowdir \ WTF \ Account \ account \ realm \ character \ SavedVariables \ zBar2.lua)
+===Saves===
+ Positions are saved in SavedVariable file. U can move it to some other Account to copy your options AND positions, remember to keep the same ui scale.(you can find this file in wowdir \ WTF \ Account \ account \ realm \ character \ SavedVariables \ zBar2.lua)
 
 =Features=
 
@@ -78,11 +76,11 @@ Saves - Positions are saved in SavedVariable file. U can move it to some other A
 
     * Set num of buttons per line will queue buttons as multi line
     * Click radio buttons of "Layout" will get an special layout
-         1. Suite1: Predefined layout suite for variational num of buttons. Classic shapes.
-         2. Suite2: Another suite. Fancy shapes.
-         3. Circle: Ringed around. Set the "Button Spacing" slider to change radius.
-         4. Free: Move a button by hold Ctrl+Alt+Shift and drag it. Scale it by Mouse Wheel.
-         5. Invert: Mirror the layout Horizontally, left to right, right to left. 
+         #. Suite1: Predefined layout suite for variational num of buttons. Classic shapes.
+         #. Suite2: Another suite. Fancy shapes.
+         #. Circle: Ringed around. Set the "Button Spacing" slider to change radius.
+         #. Free: Move a button by hold Ctrl+Alt+Shift and drag it. Scale it by Mouse Wheel.
+         #. Invert: Mirror the layout Horizontally, left to right, right to left. 
 
 ==Extra bar and Shadow bar==
 
