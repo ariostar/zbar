@@ -1,4 +1,4 @@
 #summary Table of contents.
 
-  * [zBar2 About zBar2]
-  * [zBar3 About zBar3]
+  * [zBar2 zBar2 handbook]
+  * [zBar3 zBar3 develop draft]
