@@ -1,4 +1,5 @@
 #summary Intro to zBar2 on Curse.
+#labels Featured
 #sidebar TableOfContents
 
 <wiki:toc max_depth="2" />
