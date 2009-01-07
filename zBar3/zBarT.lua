@@ -4,23 +4,41 @@ local _G = getfenv(0)
 --]]
 
 -- template for common functions of bars
-zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerShowHideTemplate")
-
+zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
 -- hover to expand
-function zBarT:Init()
-	if not self.Execute then return end -- not a handler
-	self:Execute([[buttons = table.new(self:GetChildren())]])
-	self:SetAttribute('_onhide', [[
-		for i, button in ipairs(buttons) do
-			handle:WrapScript(button,"OnEnter",[[
-				self:SetTimer('Collapse')
-			]])
+function zBarT:InitHandler()
+	if self:GetID()>12 then return end -- not a handler
+	self:Execute( [[buttons = table.new(self:GetChildren())]] )
+	self:SetAttribute('_ontimer', [[
+		if self:GetAttribute('collapsed') and not self:GetAttribute('temp-expand') then
+			self:Hide()
 		end
 	]])
+	self:SetAttribute('_onstate-expand', [[
+		control:SetTimer(1, true)
+	]])
+	for i,button in ipairs({self:GetChildren()}) do
+		self:WrapScript(button, 'OnEnter', [[
+			bar = self:GetParent()
+			if bar:GetAttribute('collapsed') then
+				bar:SetAttribute('temp-expand',1)
+			end
+			return true
+		]])
+		self:WrapScript(button, 'OnLeave', [[
+			bar = self:GetParent()
+			if bar:GetAttribute('collapsed') then
+				bar:SetAttribute('temp-expand',nil)
+				bar:SetAttribute('state-expand',1)
+			end
+			return true
+		]])
+	end
 end
 
 --[[ reset profile, scale, position to DEFAULT for any bar ]]
 function zBarT:Reset(resetsaves)
+	
 	local db = zBar3Data
 	local name = self:GetName()
 	
@@ -85,6 +103,8 @@ end
 
 function zBarT:UpdateAutoPop()
 	local db = zBar3Data[self:GetName()]
+	if db.hide then return end
+	
 	UnregisterStateDriver(self, "visibility")
 	if not db.inCombat then
 		self:Show()
@@ -104,7 +124,7 @@ function zBarT:UpdateButtons()
 
 	if db.max == 0 then return end
 
-	for i = 1, db.max or NUM_ACTIONBAR_BUTTONS do
+	for i = 1, self:GetNumButtons() do
 		button = self:GetButton(i)
 		assert(button)
 		if i <= (db.num or 1) then
@@ -116,11 +136,9 @@ function zBarT:UpdateButtons()
 			or (button:GetAttribute("showgrid") > 0 or HasAction(button.action)) then
 				button:Show()
 			end
-			--button:SetAttribute("showstates", nil)
 			button:SetAttribute("statehidden", nil)
 		else
 			button:Hide()
-			--button:SetAttribute("showstates", "!*")
 			button:SetAttribute("statehidden", true)
 		end
 	end
@@ -130,7 +148,7 @@ end
 function zBarT:UpdateHotkeys()
 	local hotkey
 
-	for i = 1 , zBar3Data[self:GetName()].max or NUM_ACTIONBAR_BUTTONS do
+	for i = 1 , self:GetNumButtons() do
 		hotkey = _G[ (zBar3.buttons[self:GetName()..i] or "?? ").."HotKey"]
 		if hotkey then
 			if zBar3Data[self:GetName()].hideHotkey then
@@ -164,6 +182,10 @@ function zBarT:GetButton(id)
 	return _G[zBar3.buttons[self:GetName()..id]]
 end
 
+function zBarT:GetNumButtons()
+	return zBar3Data[self:GetName()].max or NUM_ACTIONBAR_BUTTONS
+end
+
 -- overwrite this if needed
 function zBarT:GetChildSizeAdjust(attachPoint)
 	return 0, 0
@@ -183,32 +205,32 @@ function zBarT:GetTab()
 	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
 
 	tab:SetFrameRef('bar', self)
+	tab.OnMenu = function(self, unit, button)
+		if not zBarOption then zBar3:print("Option not been loaded") return end
+		zBarOption:Openfor(this.bar)
+	end
+
 	-- collapse and expand
 	tab:SetAttribute("_onclick", [[
 		local bar = self:GetFrameRef('bar')
 		if button == 'RightButton' then
 			control:CallMethod('OnMenu')
 		elseif button == 'LeftButton' then
-			if bar:IsShown() then
-				bar:Hide()
-				bar:SetAttribute('collapsed', true)
-			else
+			if bar:GetAttribute('collapsed') then
 				bar:Show()
 				bar:SetAttribute('collapsed', nil)
+			elseif bar:IsShown() then
+				bar:Hide()
+				bar:SetAttribute('collapsed', true)
 			end
 		end
 	]])
 	
-	tab.OnMenu = function(self, unit, button)
-		if not zBarOption then zBar3:print("Option not been loaded") return end
-		zBarOption:Openfor(this.bar)
-	end
-
 	tab:SetAttribute("_onenter", [[local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('collapsed') then bar:Show() end
+		if bar:GetAttribute('collapsed') then bar:Show() bar:SetAttribute('state-expand',1) end
 	]])
 	tab:SetAttribute("_onleave", [[local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('collapsed') then bar:Hide() end
+		--if bar:GetAttribute('collapsed') then bar:Hide() end
 	]])
 
 	tab:SetScale(self:GetScale())

@@ -1,7 +1,7 @@
 if zBar3.lite then return end
 local _G = getfenv(0)
 
-CreateFrame("Frame", "zBagBar", UIParent, "SecureHandlerShowHideTemplate")
+CreateFrame("Frame", "zBagBar", UIParent, "SecureHandlerStateTemplate")
 zBar3:AddPlugin(zBagBar)
 zBar3:AddBar(zBagBar)
 
@@ -27,7 +27,7 @@ function zBagBar:Load()
 	end
 
 	-- keyring and performance bar
-	CreateFrame("Frame","zBagBarButton6",self)
+	CreateFrame("Frame","zBagBarButton6",self,"SecureFrameTemplate")
 	zBagBarButton6:SetWidth(37); zBagBarButton6:SetHeight(37);
 	zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar5"],"LEFT")
 	zBar3.buttons["zBagBar6"] = "zBagBarButton6"

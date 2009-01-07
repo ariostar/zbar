@@ -25,6 +25,9 @@ function zBar3:OnEvent()
 		for name, bar in pairs(self.bars) do
 			bar:Reset()
 		end
+		-- this must after all action button (especially extra buttons) created,
+		-- cause action button will register events while creation
+		self:InitGridUpdater()
 		-- hooks
 		self:Hook()
 		-- welcome message
@@ -82,10 +85,6 @@ function zBar3:Init()
 
 	-- class
 	self.class = select(2, UnitClass("player"))
-
-	-- init grid stuff
-	self.showgrid = 0
-	self:InitGridUpdater()
 end
 
 function zBar3:Hook()
@@ -101,7 +100,7 @@ function zBar3:Hook()
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
-		if bar:GetID() <= 12 then
+		if bar:GetID() <= 10 then
 			for id = 1, NUM_ACTIONBAR_BUTTONS do
 				button = _G[self.buttons[bar:GetName()..id]]
 				if button then
@@ -122,12 +121,13 @@ function zBar3:Hook()
 				end
 			end
 		end
+		bar:InitHandler()
 	end
-	
 end
 
 --[[ Grid Stuff ]]
 function zBar3:InitGridUpdater()
+	self.showgrid = 0
 	-- add events for grid, must after bars initial
 	self:RegisterEvent("ACTIONBAR_SHOWGRID")
 	self:RegisterEvent("ACTIONBAR_HIDEGRID")
