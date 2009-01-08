@@ -2,8 +2,6 @@
 #labels Featured
 #sidebar TableOfContents
 
-<wiki:toc max_depth="2" />
-
 =Notes=
 
     * The author is a None-English-Speaker, please bear with me when I saying something 
