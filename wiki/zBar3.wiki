@@ -1,6 +1,5 @@
 #summary Introduction of zBar version 3.
 #labels Featured
-#sidebar TableOfContents
 
 <wiki:toc max_depth="1" />
 
