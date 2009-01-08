@@ -1,6 +1,7 @@
 #summary Intro to zBar2 on Curse. Maybe not correct with the latest version for WoTLK.
 #labels Featured
-#sidebar TableOfContents
+
+<wiki:toc max_depth="2" />
 
 =Notes=
 
