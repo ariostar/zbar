@@ -5,36 +5,6 @@ local _G = getfenv(0)
 
 -- template for common functions of bars
 zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
--- hover to expand
-function zBarT:InitHandler()
-	if self:GetID()>12 then return end -- not a handler
-	self:Execute( [[buttons = table.new(self:GetChildren())]] )
-	self:SetAttribute('_ontimer', [[
-		if self:GetAttribute('collapsed') and not self:GetAttribute('temp-expand') then
-			self:Hide()
-		end
-	]])
-	self:SetAttribute('_onstate-expand', [[
-		control:SetTimer(1, true)
-	]])
-	for i,button in ipairs({self:GetChildren()}) do
-		self:WrapScript(button, 'OnEnter', [[
-			bar = self:GetParent()
-			if bar:GetAttribute('collapsed') then
-				bar:SetAttribute('temp-expand',1)
-			end
-			return true
-		]])
-		self:WrapScript(button, 'OnLeave', [[
-			bar = self:GetParent()
-			if bar:GetAttribute('collapsed') then
-				bar:SetAttribute('temp-expand',nil)
-				bar:SetAttribute('state-expand',1)
-			end
-			return true
-		]])
-	end
-end
 
 --[[ reset profile, scale, position to DEFAULT for any bar ]]
 function zBarT:Reset(resetsaves)
@@ -173,6 +143,7 @@ function zBarT:GetLabel()
 		label = self:GetTab():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
 		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 0)
 		label:SetText( zBar3.loc.Labels[self:GetName()] or self:GetName() )
+		label:Hide()
 	end
 
 	return label
@@ -199,12 +170,18 @@ function zBarT:GetTab()
 
 	tab = CreateFrame("Button", "zTab"..id, UIParent, "zBarTabTemplate")
 	tab:SetID(id)
+	tab.bar = self
+	tab:SetWidth(self:GetWidth())
+	tab:SetScale(self:GetScale())
+	tab:SetFrameLevel(self:GetFrameLevel() + 5)
+
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	tab:SetScript("OnDragStart", function(self) zTab:OnDragStart(self) end)
 	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
 
 	tab:SetFrameRef('bar', self)
+	tab:SetAttribute('label', self:GetLabel())
 	tab.OnMenu = function(self, unit, button)
 		if not zBarOption then zBar3:print("Option not been loaded") return end
 		zBarOption:Openfor(this.bar)
@@ -226,19 +203,48 @@ function zBarT:GetTab()
 		end
 	]])
 	
-	tab:SetAttribute("_onenter", [[local bar = self:GetFrameRef('bar')
+	tab.ShowLabel = function(self, show)
+		if show then UIFrameFadeIn(self.bar:GetLabel(), 0.2, 0, 1)
+		else UIFrameFadeOut(self.bar:GetLabel(), 1, 1, 0) end
+	end
+	
+	tab:SetAttribute("_onenter", [[
+		local bar = self:GetFrameRef('bar')
 		if bar:GetAttribute('collapsed') then bar:Show() bar:SetAttribute('state-expand',1) end
+		control:CallMethod('ShowLabel', true)
 	]])
-	tab:SetAttribute("_onleave", [[local bar = self:GetFrameRef('bar')
-		--if bar:GetAttribute('collapsed') then bar:Hide() end
-	]])
-
-	tab:SetScale(self:GetScale())
-	tab:SetFrameLevel(self:GetFrameLevel() + 5)
-
-	tab:SetWidth(self:GetWidth())
-
-	tab.bar = self
+	tab:SetAttribute("_onleave", [[control:CallMethod('ShowLabel', false)]])
 
 	return tab
+end
+
+-- hover to expand
+function zBarT:InitHoverHandler()
+	if self:GetID()>12 then return end -- not a handler
+	self:Execute( [[buttons = table.new(self:GetChildren())]] )
+	self:SetAttribute('_ontimer', [[
+		if self:GetAttribute('collapsed') and not self:GetAttribute('temp-expand') then
+			self:Hide()
+		end
+	]])
+	self:SetAttribute('_onstate-expand', [[
+		control:SetTimer(1, true)
+	]])
+	for i,button in ipairs({self:GetChildren()}) do
+		self:WrapScript(button, 'OnEnter', [[
+			bar = self:GetParent()
+			if bar:GetAttribute('collapsed') then
+				bar:SetAttribute('temp-expand',1)
+			end
+			return true
+		]])
+		self:WrapScript(button, 'OnLeave', [[
+			bar = self:GetParent()
+			if bar:GetAttribute('collapsed') then
+				bar:SetAttribute('temp-expand',nil)
+				bar:SetAttribute('state-expand',1)
+			end
+			return true
+		]])
+	end
 end

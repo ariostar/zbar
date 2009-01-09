@@ -32,6 +32,8 @@ function zTab:OnDragStart(self)
 			_G[name.."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 		end
 	end
+
+	if zCastBar then zCastBar:SetShowTexture(true) end
 end
 
 -- darg stop
@@ -45,6 +47,8 @@ function zTab:OnDragStop(self)
 	end
 
 	if InCombatLockdown() then return end
+
+	if zCastBar then zCastBar:SetShowTexture(false) end
 
 	local attachPoint = nil
 	if IsControlKeyDown() then

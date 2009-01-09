@@ -25,9 +25,10 @@ function zBar3:OnEvent()
 		for name, bar in pairs(self.bars) do
 			bar:Reset()
 		end
-		-- this must after all action button (especially extra buttons) created,
-		-- cause action button will register events while creation
-		self:InitGridUpdater()
+		-- init grid updater
+		if not (LibStub and LibStub('LibButtonFacade', true)) then
+			self:InitGridUpdater()
+		end
 		-- hooks
 		self:Hook()
 		-- welcome message
@@ -121,13 +122,15 @@ function zBar3:Hook()
 				end
 			end
 		end
-		bar:InitHandler()
+		bar:InitHoverHandler()
 	end
 end
 
 --[[ Grid Stuff ]]
+-- this must after all action button (especially extra buttons) created,
+-- cause action button will register events while creation
 function zBar3:InitGridUpdater()
-	self.showgrid = 0
+	self.showgrid = MultiBarLeftButton1:GetAttribute("showgrid")
 	-- add events for grid, must after bars initial
 	self:RegisterEvent("ACTIONBAR_SHOWGRID")
 	self:RegisterEvent("ACTIONBAR_HIDEGRID")
@@ -160,7 +163,8 @@ end
 
 function zBar3:Update(event)
 	-- event stuff
-	if event == "ACTIONBAR_SHOWGRID" then
+	if event == "PLAYER_ENTERING_WORLD" then
+	elseif event == "ACTIONBAR_SHOWGRID" then
 		self:IncGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" then
 		self:DecGrid()

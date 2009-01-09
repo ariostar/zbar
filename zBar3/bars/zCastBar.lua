@@ -3,14 +3,17 @@ zBar3:AddPlugin(zCastBar)
 zBar3:AddBar(zCastBar)
 
 function zCastBar:Load()
-	zCastBar:SetID(16)
-	zCastBar:SetWidth(195); zCastBar:SetHeight(13)
+	self:SetID(16)
+	self:SetWidth(34)
+	self:SetHeight(13)
 
 	-- positon of CastingBarFrame and FramerateLabel
+	CastingBarFrame:SetParent(self)
 	CastingBarFrame:ClearAllPoints()
 	CastingBarFrame:SetPoint("TOP",zCastBar,0,-5)
+	FramerateLabel:SetParent(self)
 	FramerateLabel:ClearAllPoints()
-	FramerateLabel:SetPoint("BOTTOM",zCastBar,"TOP")
+	FramerateLabel:SetPoint("BOTTOM",self:GetLabel(),"TOP")
 
 	-- skin
 	CastingBarFrameBorder:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
@@ -62,5 +65,15 @@ function zCastBar:UpdateLayouts()
 		CastingBarFrameIcon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
 	else
 		CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
+	end
+end
+
+function zCastBar:SetShowTexture(show)
+	if show then
+		CastingBarFrame.fadeOut = nil
+		CastingBarFrame:Show()
+		CastingBarFrame:SetAlpha(1)
+	else
+		CastingBarFrame:Hide()
 	end
 end
