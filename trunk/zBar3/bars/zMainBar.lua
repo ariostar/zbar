@@ -49,29 +49,10 @@ end
 
 --[[ Hooks ]]
 function zMainBar:Hook()
-	hooksecurefunc("ActionButton_UpdateHotkeys", zMainBar.UpdateHotkey)
-
-	BonusActionBarFrame:Hide()
 	BonusActionBarFrame:UnregisterAllEvents()
-	--BonusActionBarFrame.Show = zBar3.NOOP
+	BonusActionBarFrame:Hide()
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
-end
-
-function zMainBar:UpdateHotkey()
-	if this:GetParent() == zMainBar then
-		local hotkey = _G[this:GetName().."HotKey"]
-		local text = GetBindingText(GetBindingKey(this:GetName()), "KEY_", 1)
-		if ( text == "" ) then
-			hotkey:SetText(RANGE_INDICATOR)
-			hotkey:SetPoint("TOPLEFT", this, "TOPLEFT", -12, -2);
-			hotkey:Hide()
-		else
-			hotkey:SetText(text)
-			hotkey:SetPoint("TOPLEFT", this, "TOPLEFT", -2, -2)
-			hotkey:Show()
-		end
-	end
 end
 
 function zMainBar:UpdateGrid()

@@ -11,12 +11,12 @@ function zXPBar:Load()
 	zXPBar:SetMovable(true)
 	zXPBar:SetClampedToScreen(true)
 	zXPBar:SetFrameStrata("BACKGROUND")
-	zXPBar:SetWidth(512); zXPBar:SetHeight(XPHeight)
+	zXPBar:SetWidth(34); zXPBar:SetHeight(36)
 
 	--[[ XP Bar ]]
 	MainMenuExpBar:SetParent(zXPBar)
 	MainMenuExpBar:ClearAllPoints()
-	MainMenuExpBar:SetPoint("CENTER")
+	MainMenuExpBar:SetPoint("BOTTOM")
 	MainMenuExpBar:SetWidth(512) MainMenuExpBar:SetHeight(XPHeight)
 
 	-- text
@@ -84,16 +84,21 @@ local function OnLeave()
 	GameTooltip:Hide()
 end
 function zXPBar:Hook()
+	local NOOP = zBar3.NOOP
+
+	self:GetTab():SetScale(1)
+	self:GetTab().SetScale = NOOP
+
 	MainMenuExpBar:HookScript("OnEnter", OnEnter)
 	MainMenuExpBar:HookScript("OnLeave", OnLeave)
 	ReputationWatchBar:HookScript("OnEnter", OnEnter)
 	ReputationWatchBar:HookScript("OnLeave", OnLeave)
 
 	--[[ Override when ReputationWatchBar Updates ]]
-	MainMenuExpBar.ClearAllPoints = zBar3.NOOP
-	MainMenuExpBar.SetPoint = zBar3.NOOP
-	ReputationWatchBar.ClearAllPoints = zBar3.NOOP
-	ReputationWatchBar.SetPoint = zBar3.NOOP
+	MainMenuExpBar.ClearAllPoints = NOOP
+	MainMenuExpBar.SetPoint = NOOP
+	ReputationWatchBar.ClearAllPoints = NOOP
+	ReputationWatchBar.SetPoint = NOOP
 
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
 		local name, reaction = GetWatchedFactionInfo()

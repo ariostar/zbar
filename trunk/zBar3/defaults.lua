@@ -102,7 +102,7 @@ zBar3.defaults = {
 	},
 	["zXPBar"] = {
 		saves = {num = 3, max = 3, scale=0.422,},
-		pos = {"BOTTOM",230, 333-24/0.422},
+		pos = {"BOTTOM",98, 148-24},
 	},
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},

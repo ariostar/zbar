@@ -10,18 +10,17 @@ function zButtonFacade:Load()
 	for name, bar in pairs(zBar3.bars) do
 		if bar:GetID() < 13 then
 			local group = LBF:Group('zBar3', name)
-			if zBar3Data.ButtonFacade and zBar3Data.ButtonFacade[name] then
-				local db = zBar3Data.ButtonFacade[name]
+			local db = zBar3Data.ButtonFacade and zBar3Data.ButtonFacade[name]
+			if db then
 				group:Skin(db.SkinID,db.Gloss,db.Backdrop,db.Colors)
-			end
-			for i = 1, zBar3.defaults[name].saves.max or NUM_ACTIONBAR_BUTTONS do
-				local button = _G[zBar3.buttons[name..i]]
-				if button then
-					group:AddButton(button)
+				for i = 1, bar:GetNumButtons() do
+					group:AddButton(bar:GetButton(i))
 				end
 			end
 		end
 	end
+
+	zBar3:InitGridUpdater()
 end
 
 function zButtonFacade:SkinCallback(SkinID,Gloss,Backdrop,Group,Button,Colors)
