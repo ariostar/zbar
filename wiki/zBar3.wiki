@@ -28,3 +28,4 @@ List of features in my mind,
   * Tabbed option page: global, bar, other
   * (Mybe we don't like a tabbed option panel, want see them all in one time)
   * unlock all bar, open binding page
+  * 24 buttons for zMainbar and/or Extra bars
