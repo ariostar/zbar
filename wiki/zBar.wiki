@@ -1,0 +1,7 @@
+#summary The primal zBar.
+
+= History =
+
+zBar is an action bar mod for World of Warcraft. The project started at 2006. At that time, zBar only have 4 extra bars which can be move, scale, transparent, many layout, auto pop/hide ...
+
+The addon was only published in China, most people don't know it.
