@@ -1,0 +1,9 @@
+- hover on tab to show bar name, with fade in/out animate
+- XP-bar's drag tab keeps normal size when scale
+- cast-bar is visible while dragging
+- fix: cast-bar scale issue
+- fix: hotkey text for zMainBar
+- fix: initial and grid stuff for ButtonFacade support
+
+
+- Auto page will trigger when SelfCast key press, not a settled Alt key
