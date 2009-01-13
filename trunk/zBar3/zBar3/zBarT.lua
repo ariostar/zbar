@@ -183,7 +183,14 @@ function zBarT:GetTab()
 	tab:SetFrameRef('bar', self)
 	tab:SetAttribute('label', self:GetLabel())
 	tab.OnMenu = function(self, unit, button)
-		if not zBarOption then zBar3:print("Option not been loaded") return end
+		if not zBarOption then
+			local name = 'zBar3Config'
+			local loaded, reason = LoadAddOn(name)
+			if ( not loaded ) then
+				message(format(ADDON_LOAD_FAILED, name, _G["ADDON_"..reason]))
+				return
+			end
+		end
 		zBarOption:Openfor(this.bar)
 	end
 
