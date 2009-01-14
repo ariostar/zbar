@@ -3,7 +3,7 @@ local _G = getfenv(0)
 local format = string.format
 
 CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
-zBar3:AddPlugin(zMainBar)
+zBar3:AddPlugin(zMainBar, zBar3FullMode)
 zBar3:AddBar(zMainBar)
 
 --[[

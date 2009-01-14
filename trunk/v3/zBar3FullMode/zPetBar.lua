@@ -2,7 +2,7 @@ if zBar3.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zPetBar", UIParent, "SecureHandlerStateTemplate")
-zBar3:AddPlugin(zPetBar)
+zBar3:AddPlugin(zPetBar, zBar3FullMode)
 zBar3:AddBar(zPetBar)
 
 function zPetBar:Load()

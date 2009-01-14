@@ -189,6 +189,8 @@ function zBarT:GetTab()
 			if ( not loaded ) then
 				message(format(ADDON_LOAD_FAILED, name, _G["ADDON_"..reason]))
 				return
+			else
+				zBarOption:Load()
 			end
 		end
 		zBarOption:Openfor(this.bar)

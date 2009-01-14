@@ -2,7 +2,7 @@ if zBar3.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zBagBar", UIParent, "SecureHandlerStateTemplate")
-zBar3:AddPlugin(zBagBar)
+zBar3:AddPlugin(zBagBar, zBar3FullMode)
 zBar3:AddBar(zBagBar)
 
 function zBagBar:Load()
@@ -13,6 +13,8 @@ function zBagBar:Load()
 
 	-- bag packs
 	MainMenuBarBackpackButton:SetParent(self)
+	MainMenuBarBackpackButton:SetWidth(36)
+	MainMenuBarBackpackButton:SetHeight(36)
 	zBar3.buttons["zBagBar1"] = "MainMenuBarBackpackButton"
 	MainMenuBarBackpackButtonNormalTexture:SetWidth(60)
 	MainMenuBarBackpackButtonNormalTexture:SetHeight(60)
@@ -21,6 +23,8 @@ function zBagBar:Load()
 
 	for i=0,3 do
 		_G["CharacterBag"..i.."Slot"]:SetParent(self)
+		_G["CharacterBag"..i.."Slot"]:SetWidth(36)
+		_G["CharacterBag"..i.."Slot"]:SetHeight(36)
 		zBar3.buttons["zBagBar"..(2+i)] = "CharacterBag"..i.."Slot"
 		_G["CharacterBag"..i.."SlotNormalTexture"]:SetWidth(60)
 		_G["CharacterBag"..i.."SlotNormalTexture"]:SetHeight(60)
@@ -28,13 +32,13 @@ function zBagBar:Load()
 
 	-- keyring and performance bar
 	CreateFrame("Frame","zBagBarButton6",self,"SecureFrameTemplate")
-	zBagBarButton6:SetWidth(37); zBagBarButton6:SetHeight(37);
+	zBagBarButton6:SetWidth(36); zBagBarButton6:SetHeight(36);
 	zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar5"],"LEFT")
 	zBar3.buttons["zBagBar6"] = "zBagBarButton6"
 
 	KeyRingButton:SetParent(zBagBarButton6)
 	KeyRingButton:SetFrameLevel(1)
-	KeyRingButton:SetHeight(37)
+	KeyRingButton:SetHeight(36)
 	KeyRingButton:ClearAllPoints()
 	KeyRingButton:SetPoint("RIGHT",zBagBarButton6)
 	KeyRingButton:Show()

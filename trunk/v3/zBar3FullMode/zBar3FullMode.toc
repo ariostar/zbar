@@ -6,12 +6,14 @@
 ## RequiredDeps: zBar3
 ## LoadOnDemand: 1
 
+zBar3FullMode.lua
+
+zMainBar.lua
+zPossessBar.lua
+
 zPetBar.lua
 zStanceBar.lua
 
 zBagBar.lua
 zMicroBar.lua
 zXPBar.lua
-
-zMainBar.lua
-zPossessBar.lua
