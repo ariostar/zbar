@@ -93,7 +93,6 @@ function zExBars:UpdateExBarButtons() -- for ex bars
 	zBarT.UpdateLayouts(_G["zShadow"..id])
 
 	zBarT.UpdateButtons(self)
-	--zExBars:UpdateGrid(self)
 end
 function zExBars:UpdateShadowButtons()
 	local id = abs(self:GetID())
@@ -103,7 +102,6 @@ function zExBars:UpdateShadowButtons()
 	zBarT.UpdateLayouts(_G["zExBar"..id])
 
 	zBarT.UpdateButtons(self)
-	--zExBars:UpdateGrid(bar)
 end
 
 function zExBars:UpdateShadows(index)
@@ -140,19 +138,10 @@ function zExBars:UpdateShadows(index)
 	end
 end
 
-function zExBars:UpdateGrid(bar)
+function zExBars:UpdateGrid()
 	-- in combat we can't let it be shown or hidden
 	if InCombatLockdown() then return end
 
-	if bar then -- update for bar
-		for i=1, zBar3Data[bar:GetName()].num do
-			bar:GetButton(i):SetAttribute("showgrid", zBar3.showgrid)
-			if zBar3.showgrid > 0 then
-				bar:GetButton(i):Show()
-			end
-		end
-		return
-	end
 	-- update all buttons (if not given a bar)
 	local button
 	for i=1, NUM_ZEXBAR_BUTTONS do
@@ -162,6 +151,7 @@ function zExBars:UpdateGrid(bar)
 		if zBar3.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
 				button:Show()
+				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 			end
 		elseif not HasAction(button.action) then
 			button:Hide()

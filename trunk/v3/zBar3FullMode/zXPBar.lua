@@ -1,9 +1,8 @@
-if zBar3.lite then return end
 local _G = getfenv(0)
 local XPHeight = 20
 
 CreateFrame("Frame","zXPBar",UIParent,"SecureFrameTemplate")
-zBar3:AddPlugin(zXPBar, zBar3FullMode)
+zBar3:AddPlugin(zXPBar, zMainBar)
 zBar3:AddBar(zXPBar)
 
 function zXPBar:Load()

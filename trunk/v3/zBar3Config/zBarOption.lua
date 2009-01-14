@@ -11,28 +11,6 @@ function zBarOption:Load()
 	self:SetToplevel(true)
 	self:SetFrameStrata("DIALOG")
 	self:SetClampedToScreen(true)
-
-	SlashCmdList["ZBAR"] = function(msg)
-		local offset = tonumber(msg)
-		for name,bar in pairs(zBar3.bars) do
-			if msg == "resetall" then
-				bar:Reset(true)
-			elseif offset then
-				local pos = zBar3Data[bar:GetName()].pos or zBar3:GetDefault(bar, "pos")
-				bar:GetTab():ClearAllPoints()
-				if type(pos[2]) == "string" then
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetScale())
-				else
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+offset/ bar:GetScale())
-				end
-				zTab:SavePosition(bar:GetTab())
-			else
-				zBarOption:Openfor(bar)
-				return
-			end
-		end
-	end
-	SLASH_ZBAR1 = "/zbar"
 end
 
 function zBarOption:Openfor(bar)
