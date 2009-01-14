@@ -14,7 +14,7 @@ It's still developing and intend to be
   * More easier to use
 
 = Implemented =
-
+  * structure changed, addon divided into three part: Extra bars, Main Replacement, Config panel
   * hover on tab to show bar name, with fade in/out animate
   * click on tab to collapse a shown bar, hover on tab to expand it
 
