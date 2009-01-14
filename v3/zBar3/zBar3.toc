@@ -27,21 +27,9 @@ locale\tw.lua
 locale\en.lua
 
 bars\zExBars.lua
-
 bars\zMultiBars.lua
-bars\zPetBar.lua
-bars\zStanceBar.lua
-
-bars\zBagBar.lua
-bars\zMicroBar.lua
-bars\zXPBar.lua
-
-bars\zMainBar.lua
-bars\zPossessBar.lua
 
 bars\zCastBar.lua
 bars\zChat.lua
-
-option\zBarOption.lua
 
 skin\zButtonFacade.lua

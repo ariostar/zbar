@@ -2,7 +2,7 @@ if zBar3.lite then return end
 local _G = getfenv(0)
 
 CreateFrame("Frame", "zPossessBar", UIParent, "SecureHandlerStateTemplate")
-zBar3:AddPlugin(zPossessBar)
+zBar3:AddPlugin(zPossessBar, zBar3FullMode)
 zBar3:AddBar(zPossessBar)
 
 function zPossessBar:Load()
