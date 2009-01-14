@@ -1,5 +1,4 @@
-﻿if zBar3.lite then return end
-local _G = getfenv(0)
+﻿local _G = getfenv(0)
 local format = string.format
 
 CreateFrame("Frame", "zMainBar", UIParent, "SecureHandlerStateTemplate")
@@ -54,6 +53,12 @@ function zMainBar:Hook()
 	BonusActionBarFrame:Hide()
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
+
+	if VehicleMenuBar then
+		VehicleMenuBar:SetFrameStrata("HIGH")
+		BonusActionBarFrame:SetAttribute('unit','vehicle')
+		RegisterUnitWatch(BonusActionBarFrame)
+	end
 end
 
 function zMainBar:UpdateGrid()
@@ -64,8 +69,8 @@ function zMainBar:UpdateGrid()
 		button:SetAttribute("showgrid", zBar3.showgrid)
 		if zBar3.showgrid > 0 then
 			if not button:GetAttribute("statehidden") then
-				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 				button:Show();
+				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
 			end
 		elseif not HasAction(button.action) then
 			button:Hide();
@@ -89,7 +94,7 @@ function zMainBar:GetStateCommand()
 	end
 
 	if zBar3Data["catStealth"] then
-		header = header .. "[bar:1,stealth]10;"
+		header = header .. "[bonusbar:1,stealth]10;"
 	end
 
 	for i=1,4 do

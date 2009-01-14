@@ -26,12 +26,15 @@ function zBar3:OnEvent()
 		for name, bar in pairs(self.bars) do
 			bar:Reset()
 		end
-		-- init grid updater
-		if not (LibStub and LibStub('LibButtonFacade', true)) then
-			self:InitGridUpdater()
-		end
+		-- buttonfacade support
+		zButtonFacade:Load()
+			-- init grid updater
+		self:InitGridUpdater()
 		-- hooks
 		self:Hook()
+
+		-- register slash command
+		zBar3:RegisterSlash()
 		-- welcome message
 		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
 	else
@@ -47,7 +50,7 @@ function zBar3:AddPlugin(obj, afterWho)
 	if afterWho then
 		for k,v in ipairs(self.plugins) do
 			if v == afterWho then
-				table.insert(self.plugins, k, obj)
+				table.insert(self.plugins, k+1, obj)
 				return
 			end
 		end
@@ -174,4 +177,42 @@ function zBar3:Update(event)
 	for i, func in ipairs(self.gridUpdaters) do
 		if func then func() end
 	end
+end
+
+function zBar3:Config(bar)
+	if not zBarOption then
+		local name = 'zBar3Config'
+		local loaded, reason = LoadAddOn(name)
+		if ( not loaded ) then
+			message(format(ADDON_LOAD_FAILED, name, _G["ADDON_"..reason]))
+			return
+		else
+			zBarOption:Load()
+		end
+	end
+	zBarOption:Openfor(bar)
+end
+
+function zBar3:RegisterSlash()
+	SlashCmdList["ZBAR"] = function(msg)
+		local offset = tonumber(msg)
+		for name,bar in pairs(zBar3.bars) do
+			if msg == "resetall" then
+				bar:Reset(true)
+			elseif offset then
+				local pos = zBar3Data[bar:GetName()].pos or zBar3:GetDefault(bar, "pos")
+				bar:GetTab():ClearAllPoints()
+				if type(pos[2]) == "string" then
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetScale())
+				else
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+offset/ bar:GetScale())
+				end
+				zTab:SavePosition(bar:GetTab())
+			else
+				zBar3:Config(bar)
+				return
+			end
+		end
+	end
+	SLASH_ZBAR1 = "/zbar"
 end
