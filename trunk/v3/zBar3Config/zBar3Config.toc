@@ -6,4 +6,8 @@
 ## RequiredDeps: zBar3
 ## LoadOnDemand: 1
 
+locale\cn.lua
+locale\tw.lua
+locale\en.lua
+
 zBarOption.lua
