@@ -1,8 +1,8 @@
 local _G = getfenv(0)
 local abs = math.abs
 
-NUM_ZEXBAR_BAR = 2
-NUM_ZEXBAR_BUTTONS = 24
+local NUM_ZEXBAR_BAR = 2
+local NUM_ZEXBAR_BUTTONS = 24
 
 zExBars = {}
 zBar3:AddPlugin(zExBars)
@@ -41,6 +41,9 @@ function zExBars:New(prefix,id,page)
 		zBar3Data[prefix..id].pos = zBar3:GetDefault(bar,"pos")
 	end
 
+	-- grid stuff
+	zBar3:RegisterGridUpdater(bar)
+
 	return bar
 end
 
@@ -70,10 +73,6 @@ function zExBars:Load()
 
 		zExBars:UpdateShadows(id)
 	end
-
-	-- grid stuff
-	zBar3:RegisterGridUpdater(zExBars.UpdateGrid)
-
 end
 
 function zExBars:GetExButton(i)
@@ -135,27 +134,6 @@ function zExBars:UpdateShadows(index)
 	if shadow:GetButton(1) then
 		shadow:GetButton(1):ClearAllPoints()
 		shadow:GetButton(1):SetPoint("CENTER")
-	end
-end
-
-function zExBars:UpdateGrid()
-	-- in combat we can't let it be shown or hidden
-	if InCombatLockdown() then return end
-
-	-- update all buttons (if not given a bar)
-	local button
-	for i=1, NUM_ZEXBAR_BUTTONS do
-		button = _G["zExButton"..i]
-		button:SetAttribute("showgrid", zBar3.showgrid)
-
-		if zBar3.showgrid > 0 then
-			if not button:GetAttribute("statehidden") then
-				button:Show()
-				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
-			end
-		elseif not HasAction(button.action) then
-			button:Hide()
-		end
 	end
 end
 

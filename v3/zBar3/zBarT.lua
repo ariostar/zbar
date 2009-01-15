@@ -135,6 +135,23 @@ function zBarT:UpdateHotkeys()
 	end
 end
 
+function zBarT:UpdateGrid()
+	-- in combat we can't let it be shown or hidden
+	if InCombatLockdown() then return end
+	for i=1, self:GetNumButtons() do
+		local button = self:GetButton(i)
+		button:SetAttribute("showgrid", zBar3.showgrid)
+		if zBar3.showgrid > 0 then
+			if not button:GetAttribute("statehidden") then
+				button:Show();
+				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
+			end
+		elseif not HasAction(button.action) then
+			button:Hide();
+		end
+	end
+end
+
 --[[ get localized bar name as label ]]
 function zBarT:GetLabel()
 	local label = _G[self:GetName().."Label"]

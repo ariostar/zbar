@@ -35,7 +35,7 @@ function zMainBar:Load()
 	self:Hook()
 
 	-- grid stuff
-	zBar3:RegisterGridUpdater(self.UpdateGrid)
+	zBar3:RegisterGridUpdater(self)
 end
 
 --[[
@@ -61,44 +61,20 @@ function zMainBar:Hook()
 	end
 end
 
-function zMainBar:UpdateGrid()
-	-- in combat we can't let it be shown or hidden
-	if InCombatLockdown() then return end
-	for i=1, 12 do
-		local button = _G["ActionButton"..i]
-		button:SetAttribute("showgrid", zBar3.showgrid)
-		if zBar3.showgrid > 0 then
-			if not button:GetAttribute("statehidden") then
-				button:Show();
-				_G[button:GetName().."NormalTexture"]:SetVertexColor(1.0, 1.0, 1.0, 0.5)
-			end
-		elseif not HasAction(button.action) then
-			button:Hide();
-		end
-	end
-end
-
 --[[ Page Mapping ]]
-local triggers = {
-	[1] = "[mod:SELFCAST]2",
-	[2] = "[help]2",
-}
 function zMainBar:GetStateCommand()
 	local header, state = "[bonusbar:5]11;", ""
 	
 	if zBar3Data["pageTrigger"] then
-		for k,v in pairs(triggers) do
-			state = v .. ";"
-			header = header .. state
-		end
+		header = header .. '[mod:SELFCAST]2;[help]2;'
 	end
 
 	if zBar3Data["catStealth"] then
-		header = header .. "[bonusbar:1,stealth]10;"
+		header = header .. "[bar:1,bonusbar:1,stealth]10;"
 	end
 
 	for i=1,4 do
-		state = format('[bonusbar:%d]%d;', i, i+6)
+		state = format('[bar:1,bonusbar:%d]%d;', i, i+6)
 		header = header .. state
 	end
 

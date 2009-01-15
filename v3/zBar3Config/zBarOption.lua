@@ -5,7 +5,7 @@ zBar3:AddPlugin(zBarOption)
 
 --[[ functional ]]
 function zBarOption:Load()
-	self:SetWidth(320); self:SetHeight(385); self:SetHeight(400);
+	self:SetWidth(350); self:SetHeight(385); self:SetHeight(400);
 	self:SetPoint("CENTER")
 	self:SetMovable(true)
 	self:SetToplevel(true)
@@ -86,7 +86,7 @@ function zBarOption:CheckReady()
 		elseif mod(id, 4) == 1 then
 			button:SetPoint("TOP","zBarOptionBar"..self.bars[id-4],"BOTTOM")
 		else
-			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",55,0)
+			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",62,0)
 		end
 
 		button:SetScript("OnClick", function()
@@ -275,7 +275,7 @@ zBarOption.labels = {
 	["Title"] = {"GameFontNormalLarge",0.12,0.66,1,"TOP",0,-10},
 	["SelectBar"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-30},
 	["Attribute"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-120},
-	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",100,-120},
+	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",120,-120},
 	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-228},
 	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-265},
 }
@@ -321,7 +321,7 @@ zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	},
 	{-- auto-hide mode
 		name="AutoHide",var="inCombat",value="autoHide",radio = true,
-		pos={"TOPLEFT","zBarOptionInCombat","BOTTOMLEFT",85,0},
+		pos={"TOPLEFT","zBarOptionInCombat","BOTTOMLEFT",100,0},
 		OnChecked=function()
 			zBarOptionAutoPop:SetChecked(false)
 			zBarOption.bar:UpdateAutoPop()
