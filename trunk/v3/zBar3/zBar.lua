@@ -151,8 +151,8 @@ function zBar3:InitGridUpdater()
 end
 
 zBar3.gridUpdaters = {}
-function zBar3:RegisterGridUpdater(func)
-	table.insert(self.gridUpdaters, func)
+function zBar3:RegisterGridUpdater(bar)
+	table.insert(self.gridUpdaters, bar)
 end
 
 function zBar3:IncGrid()
@@ -174,8 +174,8 @@ function zBar3:Update(event)
 		self:DecGrid()
 	end
 	-- some other updates
-	for i, func in ipairs(self.gridUpdaters) do
-		if func then func() end
+	for i, bar in ipairs(self.gridUpdaters) do
+		bar:UpdateGrid()
 	end
 end
 

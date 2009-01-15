@@ -11,7 +11,7 @@ local bars = {
 	[6] = {"zMultiBL","MultiBarBottomLeft"},
 }
 -- create and register
-for id, value in pairs(bars) do
+for i, value in pairs(bars) do
 	zBar3:AddBar(CreateFrame("Frame",value[1],UIParent,"SecureHandlerStateTemplate"))
 end
 
@@ -26,7 +26,6 @@ function zMultiBars:Load()
 		bar:SetAttribute("actionpage",k)
 		
 		for i = 1, 12 do
-			--bar:SetAttribute("addchild", _G[v[2].."Button"..i])
 			_G[v[2].."Button"..i]:SetParent(bar)
 			zBar3.buttons[v[1]..i] = v[2].."Button"..i
 			_G[v[2].."Button"..i.."NormalTexture"]:SetWidth(60)

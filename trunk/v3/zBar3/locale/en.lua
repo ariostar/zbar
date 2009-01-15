@@ -10,7 +10,7 @@ if not zBar3.loc then
 	}
 
 	loc.Option = {
-		Title = "zBar Option",
+		Title = "zBar Settings",
 		SelectBar	= "Select Bar",
 		Attribute	= "Attribute",
 		Layout		= "Layout",
@@ -18,10 +18,10 @@ if not zBar3.loc then
 		Commons = "Commons",
 		Reset    = "Reset Bar",
 
-		Hide = "Hide",
-		Label = "Label",
-		Lock = "Lock",
-		HotKey = "noHotkey",
+		Hide = "Hide Bar",
+		Label = "Show Label",
+		Lock = "Hide Tab",
+		HotKey = "Hide Hotkey",
 
 		AutoPop = "AutoPop",
 		AutoHide = "AutoHide",
@@ -34,7 +34,7 @@ if not zBar3.loc then
 
 		HideTip = "Hide Tooltip",
 		LockButtons = "Lock All Buttons",
-		HideGrid = "Hide Empty Buttons",
+		HideGrid = "Hide Blank Buttons",
 		PageTrigger = "Auto Page",
 		CatStealth = "Swich page when stealth for Druid cat form",
 
@@ -42,7 +42,7 @@ if not zBar3.loc then
 		Inset = "Button Spacing",
 		Num = "Num of Buttons",
 		NumPerLine = "Num per Line",
-		Alpha = "Alpha",
+		Alpha = "Opacity",
 	}
 
 	loc.Tips = {
@@ -57,15 +57,15 @@ if not zBar3.loc then
 		Suite1		= "Classic Shapes\nTry addjust Button Spacing when num is 12",
 		Suite2		= "Fancy Shapes\nTry addjust Button Spacing when num is 12",
 		Circle		= "Ringed around. \nSet the Button Spacing to change radius",
-		Free			= "Moves when dragging and hold Ctrl+Alt+Shift\nScale on mouse wheel",
+		Free			= "Hold Ctrl+Alt+Shift, then drag button to move. Mouse wheel to scale it",
 		Invert		= "Mirror it horizontally, left to right, right to left",
 
 		HideTip		= "Show / Hide Tooltips",
-		LockButtons	= "Lock All Buttons",
-		HideGrid		= "Hide Grid of Empty Buttons",
+		LockButtons	= "Hold shift key to pick up an action when locked",
+		HideGrid		= "Hide blank buttons",
 		PageTrigger = "Auto switch page of MainBar While Alt key down or has Assistable target",
 
-		Scale			= "Drag slider, Change Scale to appropriate size",
+		Scale			= "Zoom the bar",
 		Inset			= "Adjust button spacing between each other",
 		Num				= "Number of Buttons to show in bar\nIf this is Extra Bar, then the Shadow bar of this will Change it's Max Num",
 		NumPerLine	= "Set Number of Buttons per Line\nSort Buttons Vertical / Horizontal / Multi Line",
