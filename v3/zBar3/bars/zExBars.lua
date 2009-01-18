@@ -1,8 +1,8 @@
 local _G = getfenv(0)
 local abs = math.abs
 
-local NUM_ZEXBAR_BAR = 2
-local NUM_ZEXBAR_BUTTONS = 24
+local NUM_ZEXBAR_BAR = 4
+local NUM_ZEXBAR_BUTTONS = 48
 
 zExBars = {}
 zBar3:AddPlugin(zExBars)
@@ -63,7 +63,6 @@ function zExBars:Load()
 	for id = 1, NUM_ZEXBAR_BAR do
 		page = 11 - id
 		if id == 2 then
-			if zBar3.class == "DRUID" then page = 8 end
 			if zBar3.class == "WARRIOR" then page = 1 end
 		end
 		-- create normal bar
@@ -76,7 +75,6 @@ function zExBars:Load()
 end
 
 function zExBars:GetExButton(i)
-	--if self.isShadow then return _G[zBar3.buttons[self:GetName()..i]] end
 	return _G["zExButton"..i + (self:GetID()-1)*NUM_ACTIONBAR_BUTTONS]
 end
 
