@@ -286,6 +286,12 @@ zBarOption.bars = { --[[ bar name and order ]]
 	"zExBar1", "zShadow1", "zExBar2", "zShadow2",
 }
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
+	{-- switch full/lite mode
+		name="FullMode",var='fullmode',common=true,
+		pos={'TOPRIGHT','zBarOption','TOPRIGHT',-88,-30},
+		OnChecked=ReloadUI,
+		UnChecked=ReloadUI,
+	},
 	{-- show / hide bar
 		name="Hide",var="hide",pos={"TOPLEFT","zBarOptionAttribute","BOTTOMLEFT",0,0},
 		OnChecked=function() zBarOption.bar:UpdateVisibility() end,

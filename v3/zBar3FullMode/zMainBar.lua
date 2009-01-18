@@ -15,7 +15,7 @@ function zMainBar:Load()
 	self:SetWidth(36) self:SetHeight(36)
 
 	for id=1,NUM_ACTIONBAR_BUTTONS do
-		self:AddButton(_G["ActionButton"..id], id)
+		_G["ActionButton"..id]:SetParent(self)
 		zBar3.buttons["zMainBar"..id] = "ActionButton"..id
 		_G["ActionButton"..id.."NormalTexture"]:SetWidth(60)
 		_G["ActionButton"..id.."NormalTexture"]:SetHeight(60)
@@ -23,10 +23,11 @@ function zMainBar:Load()
 	ActionButton1:ClearAllPoints()
 	ActionButton1:SetPoint("CENTER")
 
-	self:Execute( [[ActionButtons = table.new(self:GetChildren())]] )
+	self:Execute([[ActionButtons = table.new(self:GetChildren())]])
 	self:SetAttribute('_onstate-actionpage',[[
+		self:SetAttribute('actionpage', newstate)
 		for i, button in ipairs(ActionButtons) do
-			button:SetAttribute('action', abs(button:GetID()) + (newstate-1) * 12)
+			button:SetAttribute('refresh', nil)
 		end
 	]])
 
@@ -38,15 +39,6 @@ function zMainBar:Load()
 	zBar3:RegisterGridUpdater(self)
 end
 
---[[
-	Privates
---]]
-
-function zMainBar:AddButton(button, id)
-	button:SetParent(self)
-	button:SetID(-id)
-end
-
 --[[ Hooks ]]
 function zMainBar:Hook()
 	BonusActionBarFrame:UnregisterAllEvents()
@@ -56,34 +48,31 @@ function zMainBar:Hook()
 
 	if VehicleMenuBar then
 		VehicleMenuBar:SetFrameStrata("HIGH")
-		BonusActionBarFrame:SetAttribute('unit','vehicle')
-		RegisterUnitWatch(BonusActionBarFrame)
+		RegisterStateDriver(BonusActionBarFrame, "visibility", "[target=vehicle,exists]show;hide")
 	end
 end
 
 --[[ Page Mapping ]]
 function zMainBar:GetStateCommand()
-	local header, state = "[bonusbar:5]11;", ""
+	local header = "[bonusbar:5]11;"
 	
 	if zBar3Data["pageTrigger"] then
 		header = header .. '[mod:SELFCAST]2;[help]2;'
 	end
 
+	for i=2,6 do
+		header = header .. format("[bar:%d]%d;", i, i)
+	end
+
 	if zBar3Data["catStealth"] then
-		header = header .. "[bar:1,bonusbar:1,stealth]10;"
+		header = header .. "[bonusbar:1,stealth]10;"
 	end
 
 	for i=1,4 do
-		state = format('[bar:1,bonusbar:%d]%d;', i, i+6)
-		header = header .. state
+		header = header .. format('[bonusbar:%d]%d;', i, i+6)
 	end
 
-	for i=1,6 do
-		state = format("[bar:%d]%d;", i, i)
-		header = header .. state
-	end
-
-	return header .. "0"
+	return header .. "1"
 end
 
 function zMainBar:UpdateStateHeader()

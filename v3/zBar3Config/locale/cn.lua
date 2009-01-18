@@ -10,6 +10,8 @@
 		Commons = "公共属性",
 		Reset    = "重置动作条",
 
+		FullMode = "完整模式",
+
 		Hide = "隐藏",
 		Label = "名字",
 		Lock = "锁定",
@@ -38,6 +40,8 @@
 	}
 
 	loc.Tips = {
+		FullMode= '替换主动作条，不勾选为精简模式',
+
 		Hide		= "显示 / 隐藏 动作条",
 		Label	= "显示 / 隐藏 动作条的名字",
 		Lock		= "锁定动作条，并隐藏标签",

@@ -9,6 +9,7 @@ if zBar3.loc and zBar3.loc.language == 'en' then
 		InCombat = "In Combat",
 		Commons = "Commons",
 		Reset    = "Reset Bar",
+		FullMode = "Full Mode",
 
 		Hide = "Hide Bar",
 		Label = "Show Label",
@@ -38,6 +39,8 @@ if zBar3.loc and zBar3.loc.language == 'en' then
 	}
 
 	loc.Tips = {
+		FullMode= 'Full mode replace all bars, Lite mode only has extra bars',
+
 		Hide		= "Show / Hide this bar",
 		Label	= "Show / Hide name of this bar",
 		Lock		= "Lock bar and hide tab",

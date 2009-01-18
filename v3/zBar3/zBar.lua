@@ -15,7 +15,6 @@ end
 --[[ Event ]]
 function zBar3:OnEvent()
 	if event == "PLAYER_LOGIN" then
-		LoadAddOn("zBar3FullMode")
 		-- self init
 		self:Init()
 		-- plugins init
@@ -76,10 +75,15 @@ function zBar3:Init()
 	self.author  = GetAddOnMetadata("zBar3", "Author")
 
 	-- data
-	zBar3Data = zBar3Data or { version = zBar3.version,}
+	zBar3Data = zBar3Data or {
+		version = zBar3.version,
+		fullmode= 1,
+	}
 
-	-- Lite mode state
-	self.lite = select(4, GetAddOnInfo("zBar3Lite"))
+	-- Lite mode or Full mode
+	if zBar3Data.fullmode then
+		LoadAddOn("zBar3FullMode")
+	end
 
 	-- function that does nothing
 	self.NOOP = function() end
@@ -167,15 +171,14 @@ end
 
 function zBar3:Update(event)
 	-- event stuff
-	if event == "PLAYER_ENTERING_WORLD" then
-	elseif event == "ACTIONBAR_SHOWGRID" then
+	if event == "ACTIONBAR_SHOWGRID" then
 		self:IncGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" then
 		self:DecGrid()
-	end
-	-- some other updates
-	for i, bar in ipairs(self.gridUpdaters) do
-		bar:UpdateGrid()
+	else
+		for i, bar in ipairs(self.gridUpdaters) do
+			bar:UpdateGrid()
+		end
 	end
 end
 
