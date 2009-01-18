@@ -5,7 +5,7 @@ zBar3:AddPlugin(zBarOption)
 
 --[[ functional ]]
 function zBarOption:Load()
-	self:SetWidth(350); self:SetHeight(385); self:SetHeight(400);
+	self:SetWidth(350); self:SetHeight(415);
 	self:SetPoint("CENTER")
 	self:SetMovable(true)
 	self:SetToplevel(true)
@@ -98,7 +98,7 @@ function zBarOption:CheckReady()
 	-- reset button
 	button = CreateFrame("Button","zBarOptionResetButton",self,"UIPanelButtonTemplate2")
 	button:SetWidth(110); button:SetHeight(20);
-	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-125)
+	button:SetPoint("TOPRIGHT","zBarOption","TOPRIGHT",-20,-140)
 	button:SetText(zBar3.loc.Option.Reset)
 	button:SetScript("OnClick", function() zBarOption.bar:Reset(true) zBarOption:LoadOptions() end)
 
@@ -274,16 +274,17 @@ zBarOption.labels = {
 	-- font, color-red, color-green, color-blue, pos, offset-x, offset-y
 	["Title"] = {"GameFontNormalLarge",0.12,0.66,1,"TOP",0,-10},
 	["SelectBar"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-30},
-	["Attribute"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-120},
-	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",120,-120},
-	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-228},
-	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-265},
+	["Attribute"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-135},
+	["Layout"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",120,-135},
+	["InCombat"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-243},
+	["Commons"] = {"GameFontNormalLarge",1.0,0.7,0.1,"TOPLEFT",10,-280},
 }
 zBarOption.bars = { --[[ bar name and order ]]
 	"zMultiBL", "zMultiBR", "zMultiR2", "zMultiR1",
 	"zMainBar", "zPetBar", "zStanceBar", "zBagBar",
 	"zMicroBar", "zXPBar", "zCastBar", "zPossessBar",
 	"zExBar1", "zShadow1", "zExBar2", "zShadow2",
+	"zExBar3", "zShadow3", "zExBar4", "zShadow4",
 }
 zBarOption.buttons = { --[[ Check Buttons - for attribute setting ]]
 	{-- switch full/lite mode
@@ -444,7 +445,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 	[1] = {-- num of buttons
 		name="Num",
 		var="num", min=1, max=12, step=1,
-		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-170},
+		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-185},
 		setFunc = function()
 			zBar3Data[zBarOption.bar:GetName()].num = this:GetValue()
 			zBarOption.bar:UpdateButtons()
