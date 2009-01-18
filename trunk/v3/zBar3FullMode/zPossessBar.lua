@@ -10,7 +10,7 @@ function zPossessBar:Load()
 	self:SetClampedToScreen(true)
 	self:SetWidth(30); self:SetHeight(30)
 
-	RegisterStateDriver(self, "visibility", "[bonusbar:5]show;hide")
+	RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
 	
 	-- create and add buttons
 	for i = 1, 2 do
@@ -34,7 +34,7 @@ function zPossessBar:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		UnregisterStateDriver(self, "visibility")
 	else
-		RegisterStateDriver(self, "visibility", "[bonusbar:5]show;hide")
+		RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
 	end
 
 	zBarT.UpdateVisibility(self)

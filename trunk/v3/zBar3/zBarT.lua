@@ -208,6 +208,7 @@ function zBarT:GetTab()
 		local bar = self:GetFrameRef('bar')
 		if button == 'RightButton' then
 			control:CallMethod('OnMenu')
+			control:CallMethod('ShowLabel', nil)
 		elseif button == 'LeftButton' then
 			if bar:GetAttribute('collapsed') then
 				bar:Show()
