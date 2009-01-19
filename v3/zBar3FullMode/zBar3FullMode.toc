@@ -9,6 +9,7 @@
 zBar3FullMode.lua
 
 zMainBar.lua
+zMultiBars.lua
 zPossessBar.lua
 
 zPetBar.lua

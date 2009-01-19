@@ -27,7 +27,6 @@ locale\tw.lua
 locale\en.lua
 
 bars\zExBars.lua
-bars\zMultiBars.lua
 
 bars\zCastBar.lua
 bars\zChat.lua

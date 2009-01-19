@@ -10,6 +10,22 @@ function zBar3FullMode:Load()
 		saves = {linenum = 12, hideTab=true,},
 		pos = {"BOTTOM",-100,60-24},
 	}
+	["zMultiR2"] = {
+		saves = {linenum = 1,},
+		pos ={"BOTTOMRIGHT",-47,500},
+	},
+	["zMultiR1"] = {
+		saves = {linenum = 1,},
+		pos ={"BOTTOMRIGHT",-7,500},
+	},
+	["zMultiBR"] = {
+		saves = {linenum = 12, hideTab=true,},
+		pos ={"BOTTOM",-100,138},
+	},
+	["zMultiBL"] = {
+		saves = {linenum = 12, hideTab=true,},
+		pos ={"BOTTOM",-100,102},
+	},
 	zBar3.defaults["zPetBar"] = {
 		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,
 			hideTab=true,hideHotkey=true,},

@@ -10,4 +10,5 @@ locale\cn.lua
 locale\tw.lua
 locale\en.lua
 
+Templates.xml
 zBarOption.lua

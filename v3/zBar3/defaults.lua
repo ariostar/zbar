@@ -53,23 +53,6 @@ zBar3.defaults = {
 	["zExBar4"] = { saves = { num=6,linenum=1,},pos = {"CENTER",-108,72},},
 	["zShadow4"] = { saves = {num=6,linenum=1, max=6,},pos = {"CENTER",-72,72},},
 
-	["zMultiR2"] = {
-		saves = {linenum = 1,},
-		pos ={"BOTTOMRIGHT",-47,500},
-	},
-	["zMultiR1"] = {
-		saves = {linenum = 1,},
-		pos ={"BOTTOMRIGHT",-7,500},
-	},
-	["zMultiBR"] = {
-		saves = {linenum = 12, hideTab=true,},
-		pos ={"BOTTOM",-100,138},
-	},
-	["zMultiBL"] = {
-		saves = {linenum = 12, hideTab=true,},
-		pos ={"BOTTOM",-100,102},
-	},
-
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},
 		pos={"BOTTOM",0,205-24},
