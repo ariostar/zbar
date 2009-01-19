@@ -1,8 +1,7 @@
-﻿if zBar3.lite then return end
-local _G = getfenv(0)
+﻿local _G = getfenv(0)
 
 zMultiBars = {}
-zBar3:AddPlugin(zMultiBars)
+zBar3:AddPlugin(zMultiBars, zMainBar)
 
 local bars = {
 	[3] = {"zMultiR1","MultiBarRight"},
