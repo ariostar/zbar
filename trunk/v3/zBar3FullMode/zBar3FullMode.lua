@@ -3,29 +3,27 @@ zBar3:AddPlugin(zBar3FullMode, zExBars)
 
 function zBar3FullMode:Load()
 	-- zBar3 defaults
-	zBar3.defaults.zMultiBR.pos ={"BOTTOM",-100,132-24}
-	zBar3.defaults.zMultiBL.pos ={"BOTTOM",-100,96-24}
-	
+
 	zBar3.defaults["zMainBar"] = {
 		saves = {linenum = 12, hideTab=true,},
 		pos = {"BOTTOM",-100,60-24},
 	}
-	["zMultiR2"] = {
+	zBar3.defaults["zMultiR2"] = {
 		saves = {linenum = 1,},
 		pos ={"BOTTOMRIGHT",-47,500},
-	},
-	["zMultiR1"] = {
+	}
+	zBar3.defaults["zMultiR1"] = {
 		saves = {linenum = 1,},
 		pos ={"BOTTOMRIGHT",-7,500},
-	},
-	["zMultiBR"] = {
+	}
+	zBar3.defaults["zMultiBR"] = {
 		saves = {linenum = 12, hideTab=true,},
-		pos ={"BOTTOM",-100,138},
-	},
-	["zMultiBL"] = {
+		pos ={"BOTTOM",-100,132-24},
+	}
+	zBar3.defaults["zMultiBL"] = {
 		saves = {linenum = 12, hideTab=true,},
-		pos ={"BOTTOM",-100,102},
-	},
+		pos ={"BOTTOM",-100,-100,96-24},
+	}
 	zBar3.defaults["zPetBar"] = {
 		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,
 			hideTab=true,hideHotkey=true,},

@@ -48,6 +48,7 @@ function zMainBar:Hook()
 
 	if VehicleMenuBar then
 		VehicleMenuBar:SetFrameStrata("HIGH")
+		VehicleMenuBar:SetFrameLevel(zMainBar:GetFrameLevel() + 5)
 		RegisterStateDriver(BonusActionBarFrame, "visibility", "[target=vehicle,exists]show;hide")
 	end
 end
@@ -55,7 +56,7 @@ end
 --[[ Page Mapping ]]
 function zMainBar:GetStateCommand()
 	local header = "[bonusbar:5]11;"
-	
+
 	if zBar3Data["pageTrigger"] then
 		header = header .. '[mod:SELFCAST]2;[help]2;'
 	end

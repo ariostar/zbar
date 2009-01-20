@@ -1,5 +1,5 @@
 --[[ Create ]]
-zBar3 = CreateFrame("Frame",nil,UIParent)
+zBar3 = CreateFrame("Frame",nil,UIParent,"SecureFrameTemplate")
 zBar3:RegisterEvent("PLAYER_LOGIN")
 
 --[[ Tables ]]
