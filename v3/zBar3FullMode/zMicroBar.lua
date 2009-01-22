@@ -75,15 +75,19 @@ function zMicroBar:UpdateButtons()
 	self:UnHook()
 
 	zBarT.UpdateButtons(self)
+
 	local name = self:GetName()
-	for i = 2, zBar3Data[name].max or NUM_ACTIONBAR_BUTTONS do
-		if _G[zBar3.buttons[name..i]]:GetAttribute("statehidden") then
-			_G[zBar3.buttons[name..i]]:SetParent(zBar3.hiddenFrame)
+	for i = 1, zMicroBar:GetNumButtons() do
+		local button = zMicroBar:GetButton(i)
+		if button:GetAttribute("statehidden") then
+			button:SetParent(zBar3.hiddenFrame)
 		else
-			_G[zBar3.buttons[name..i]]:SetParent(self)
-			_G[zBar3.buttons[name..i]]:Show()
+			button:SetParent(self)
+			button:Show()
 		end
 	end
+	zMicroBar:GetButton(1):ClearAllPoints()
+	zMicroBar:GetButton(1):SetPoint("BOTTOM")
 
 	self:Hook()
 end
@@ -91,6 +95,7 @@ end
 function zMicroBar:UpdateLayouts()
 	self:UnHook()
 
+	
 	zBarT.UpdateLayouts(self)
 
 	self:Hook()
