@@ -22,7 +22,7 @@ function zBar3FullMode:Load()
 	}
 	zBar3.defaults["zMultiBL"] = {
 		saves = {linenum = 12, hideTab=true,},
-		pos ={"BOTTOM",-100,-100,96-24},
+		pos ={"BOTTOM",-100,96-24},
 	}
 	zBar3.defaults["zPetBar"] = {
 		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,

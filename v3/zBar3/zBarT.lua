@@ -171,7 +171,7 @@ function zBarT:GetButton(id)
 end
 
 function zBarT:GetNumButtons()
-	return zBar3Data[self:GetName()].max or NUM_ACTIONBAR_BUTTONS
+	return zBar3.defaults[self:GetName()].saves.max or NUM_ACTIONBAR_BUTTONS
 end
 
 -- overwrite this if needed
