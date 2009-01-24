@@ -76,7 +76,6 @@ function zMicroBar:UpdateButtons()
 
 	zBarT.UpdateButtons(self)
 
-	local name = self:GetName()
 	for i = 1, zMicroBar:GetNumButtons() do
 		local button = zMicroBar:GetButton(i)
 		if button:GetAttribute("statehidden") then
@@ -95,7 +94,6 @@ end
 function zMicroBar:UpdateLayouts()
 	self:UnHook()
 
-	
 	zBarT.UpdateLayouts(self)
 
 	self:Hook()
