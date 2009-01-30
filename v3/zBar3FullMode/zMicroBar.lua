@@ -49,7 +49,7 @@ end
 function zMicroBar:Hook()
 	if self.hooked then return end
 	self.hooked = 1
-	for i = 1, self:GetNumButtons() do
+	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
 		local button = self:GetButton(i)
 		button.zClearAllPoints = button.ClearAllPoints
 		button.ClearAllPoints = zBar3.NOOP
@@ -64,7 +64,7 @@ function zMicroBar:UnHook()
 	if not self.hooked then return end
 	self.hooked = nil
 	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
-		local button = _G[zBar3.buttons['zMicroBar'..i]]
+		local button = self:GetButton(i)
 		button.ClearAllPoints = button.zClearAllPoints
 		button.SetPoint = button.zSetPoint
 		button.SetParent = button.zSetParent
@@ -76,8 +76,8 @@ function zMicroBar:UpdateButtons()
 
 	zBarT.UpdateButtons(self)
 
-	for i = 1, zMicroBar:GetNumButtons() do
-		local button = zMicroBar:GetButton(i)
+	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
+		local button = self:GetButton(i)
 		if button:GetAttribute("statehidden") then
 			button:SetParent(zBar3.hiddenFrame)
 		else

@@ -27,7 +27,7 @@ function zBar3:OnEvent()
 		end
 		-- buttonfacade support
 		zButtonFacade:Load()
-			-- init grid updater
+		-- init grid updater
 		self:InitGridUpdater()
 		-- hooks
 		self:Hook()
