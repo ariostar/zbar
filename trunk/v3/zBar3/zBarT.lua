@@ -61,8 +61,14 @@ end
 function zBarT:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		self:Hide()
+		if self:GetID()<15 then
+			self:SetAttribute('collapsed', true)
+		end
 	else
 		self:Show()
+		if self:GetID()<15 then
+			self:SetAttribute('collapsed', nil)
+		end
 	end
 	if zBar3Data[self:GetName()].hideTab then
 		self:GetTab():Hide()
@@ -237,8 +243,8 @@ end
 
 -- hover to expand
 function zBarT:InitHoverHandler()
-	if self:GetID()>12 then return end -- not a handler
-	self:Execute( [[buttons = table.new(self:GetChildren())]] )
+	if self:GetID()>14 then return end -- not a handler
+
 	self:SetAttribute('_ontimer', [[
 		if self:GetAttribute('collapsed') and not self:GetAttribute('temp-expand') then
 			self:Hide()
@@ -247,13 +253,13 @@ function zBarT:InitHoverHandler()
 	self:SetAttribute('_onstate-expand', [[
 		control:SetTimer(1, true)
 	]])
+
 	for i,button in ipairs({self:GetChildren()}) do
 		self:WrapScript(button, 'OnEnter', [[
 			bar = self:GetParent()
 			if bar:GetAttribute('collapsed') then
 				bar:SetAttribute('temp-expand',1)
 			end
-			return true
 		]])
 		self:WrapScript(button, 'OnLeave', [[
 			bar = self:GetParent()
@@ -261,7 +267,6 @@ function zBarT:InitHoverHandler()
 				bar:SetAttribute('temp-expand',nil)
 				bar:SetAttribute('state-expand',1)
 			end
-			return true
 		]])
 	end
 end

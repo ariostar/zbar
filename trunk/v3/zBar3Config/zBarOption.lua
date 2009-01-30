@@ -154,7 +154,8 @@ function zBarOption:CheckReady()
 		slider:SetValueStep(value.step)
 		slider:SetScript("OnValueChanged", value.setFunc)
 
-		_G["zBarOptionSlider"..id.."Text"]:SetText(zBar3.loc.Option[value.name])
+		slider.text = _G["zBarOptionSlider"..id.."Text"]
+		slider.text:SetText(zBar3.loc.Option[value.name])
 		slider.tooltipText = zBar3.loc.Tips[value.name]
 
 		if value.factor then
@@ -165,6 +166,7 @@ function zBarOption:CheckReady()
 			_G["zBarOptionSlider"..id.."High"]:SetText(value.max)
 		end
 	end
+	-- edit box for scale input
 	CreateFrame("EditBox","zBarOptionSlider3EditBox",zBarOptionSlider3,"InputBoxTemplate")
 	zBarOptionSlider3EditBox:SetWidth(30) zBarOptionSlider3EditBox:SetHeight(20)
 	zBarOptionSlider3EditBox:SetAutoFocus(true)
@@ -172,7 +174,7 @@ function zBarOption:CheckReady()
 	zBarOptionSlider3EditBox:SetMaxLetters(3)
 	zBarOptionSlider3EditBox:SetFocus(true)
 	zBarOptionSlider3EditBox:SetPoint("LEFT",zBarOptionSlider3Text,"RIGHT",6,0)
-
+	
 	zBarOptionSlider3EditBox:SetScript("OnEnterPressed", function()
 		zBarOptionSlider3:SetValue(this:GetNumber()*0.01)
 	end)
@@ -496,11 +498,12 @@ zBarOption.sliders = { --[[ Sliders ]]
 	},
 	[4] = {-- button spacing
 		name="Inset",
-		var="inset", min=0, max=30, step=1,
+		var="inset", min=-10, max=30, step=1,
 		pos={"TOP","zBarOptionSlider3","BOTTOM",0,-25},
-		setFunc = function()
+		setFunc = function(self)
 			zBar3Data[zBarOption.bar:GetName()].inset = this:GetValue()
 			zBarOption.bar:UpdateLayouts()
+			self.text:SetText(zBar3.loc.Option.Inset.." |cff00FF00"..self:GetValue().."|r")
 		end
 	},
 	[5] = {-- alpha
