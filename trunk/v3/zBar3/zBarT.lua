@@ -217,6 +217,7 @@ function zBarT:GetTab()
 			control:CallMethod('ShowLabel', nil)
 		elseif button == 'LeftButton' then
 			if bar:GetAttribute('collapsed') then
+				bar:UnregisterAutoHide()
 				bar:Show()
 				bar:SetAttribute('collapsed', nil)
 			elseif bar:IsShown() then
@@ -233,10 +234,17 @@ function zBarT:GetTab()
 	
 	tab:SetAttribute("_onenter", [[
 		local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('collapsed') then bar:Show() bar:SetAttribute('state-expand',1) end
 		control:CallMethod('ShowLabel', true)
+		if bar:GetAttribute('collapsed') then
+			bar:SetAttribute('state-expand',true)
+		end
 	]])
-	tab:SetAttribute("_onleave", [[control:CallMethod('ShowLabel', false)]])
+	tab:SetAttribute("_onleave", [[
+		control:CallMethod('ShowLabel', false)
+		local bar = self:GetFrameRef('bar')
+		if bar:GetAttribute('collapsed') then
+		end
+	]])
 
 	return tab
 end
@@ -245,28 +253,35 @@ end
 function zBarT:InitHoverHandler()
 	if self:GetID()>14 then return end -- not a handler
 
-	self:SetAttribute('_ontimer', [[
-		if self:GetAttribute('collapsed') and not self:GetAttribute('temp-expand') then
-			self:Hide()
-		end
-	]])
 	self:SetAttribute('_onstate-expand', [[
-		control:SetTimer(1, true)
+		self:UnregisterAutoHide()
+		self:RegisterAutoHide(1)
+		local kids = newtable(self:GetChildren())
+		for _,child in ipairs(kids) do
+			p,_,_,x,y = child:GetPoint(1)
+			if child:IsShown() and not (p=='CENTER' and x==0 and y==0) then
+				self:AddToAutoHide(child)
+			end
+		end
+		self:Show()
 	]])
 
 	for i,button in ipairs({self:GetChildren()}) do
 		self:WrapScript(button, 'OnEnter', [[
 			bar = self:GetParent()
 			if bar:GetAttribute('collapsed') then
-				bar:SetAttribute('temp-expand',1)
+				bar:SetAttribute('state-expand',true)
 			end
 		]])
-		self:WrapScript(button, 'OnLeave', [[
-			bar = self:GetParent()
-			if bar:GetAttribute('collapsed') then
-				bar:SetAttribute('temp-expand',nil)
-				bar:SetAttribute('state-expand',1)
-			end
-		]])
+--~ 		self:WrapScript(button, 'OnLeave', [[
+--~ 		]])
+		if self:GetID() < 11 then
+			self:WrapScript(button, 'OnClick', [[
+				bar = self:GetParent()
+				if bar:GetAttribute('collapsed') then
+					bar:Hide()
+				end
+			]])
+		end
 	end
 end
