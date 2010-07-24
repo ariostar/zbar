@@ -206,9 +206,9 @@ function zBar3:RegisterSlash()
 				local pos = zBar3Data[bar:GetName()].pos or zBar3:GetDefault(bar, "pos")
 				bar:GetTab():ClearAllPoints()
 				if type(pos[2]) == "string" then
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetScale())
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetTab():GetScale())
 				else
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+offset/ bar:GetScale())
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+offset/ bar:GetTab():GetScale())
 				end
 				zTab:SavePosition(bar:GetTab())
 			else

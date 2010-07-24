@@ -45,12 +45,13 @@ function zMainBar:Hook()
 	BonusActionBarFrame:Hide()
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
-
+--[[这段代码会导致污染
 	if VehicleMenuBar then
 		VehicleMenuBar:SetFrameStrata("HIGH")
 		VehicleMenuBar:SetFrameLevel(zMainBar:GetFrameLevel() + 5)
 		RegisterStateDriver(BonusActionBarFrame, "visibility", "[target=vehicle,exists]show;hide")
 	end
+]]
 end
 
 --[[ Page Mapping ]]
