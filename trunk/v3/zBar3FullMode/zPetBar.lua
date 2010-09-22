@@ -14,11 +14,13 @@ function zPetBar:Load()
 		_G["PetActionButton"..i]:SetParent(self)
 		zBar3.buttons["zPetBar"..i] = "PetActionButton"..i
 		--_G["PetActionButton"..i]:RegisterEvent("UPDATE_BINDINGS")
+--[[
 		_G["PetActionButton"..i]:RegisterEvent("PLAYER_ENTERING_WORLD")
 		_G["PetActionButton"..i]:SetScript("OnEvent", function()
 			local key = GetBindingKey("BONUSACTIONBUTTON"..this:GetID())
 			_G[this:GetName().."HotKey"]:SetText(GetBindingText(key,1,1))
 		end)
+]]
 	end
 	PetActionButton1:ClearAllPoints()
 	PetActionButton1:SetPoint("CENTER")

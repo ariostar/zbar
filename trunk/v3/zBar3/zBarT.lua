@@ -209,6 +209,11 @@ function zBarT:GetTab()
 		zBar3:Config(this.bar)
 	end
 
+	tab.ShowLabel = function(self, show)
+		if show then UIFrameFadeIn(self.bar:GetLabel(), 0.2, 0, 1)
+		else UIFrameFadeOut(self.bar:GetLabel(), 1, 1, 0) end
+	end
+	
 	-- collapse and expand
 	tab:SetAttribute("_onclick", [[
 		local bar = self:GetFrameRef('bar')
@@ -217,71 +222,32 @@ function zBarT:GetTab()
 			control:CallMethod('ShowLabel', nil)
 		elseif button == 'LeftButton' then
 			if bar:GetAttribute('collapsed') then
-				bar:UnregisterAutoHide()
 				bar:Show()
 				bar:SetAttribute('collapsed', nil)
-			elseif bar:IsShown() then
+				bar:UnregisterAutoHide()
+			else
 				bar:Hide()
 				bar:SetAttribute('collapsed', true)
 			end
 		end
 	]])
-	
-	tab.ShowLabel = function(self, show)
-		if show then UIFrameFadeIn(self.bar:GetLabel(), 0.2, 0, 1)
-		else UIFrameFadeOut(self.bar:GetLabel(), 1, 1, 0) end
-	end
-	
 	tab:SetAttribute("_onenter", [[
-		local bar = self:GetFrameRef('bar')
 		control:CallMethod('ShowLabel', true)
+		local bar = self:GetFrameRef('bar')
 		if bar:GetAttribute('collapsed') then
-			bar:SetAttribute('state-expand',true)
+			bar:Show()
+			bar:UnregisterAutoHide()
+			bar:RegisterAutoHide(1)
+			bar:AddToAutoHide(self)
+			local buttons = bar:GetChildList(table.new())
+			for _,btn in pairs(buttons) do
+				bar:AddToAutoHide(btn)
+			end
 		end
 	]])
 	tab:SetAttribute("_onleave", [[
 		control:CallMethod('ShowLabel', false)
-		local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('collapsed') then
-		end
 	]])
 
 	return tab
-end
-
--- hover to expand
-function zBarT:InitHoverHandler()
-	if self:GetID()>14 then return end -- not a handler
-
-	self:SetAttribute('_onstate-expand', [[
-		self:UnregisterAutoHide()
-		self:RegisterAutoHide(1)
-		local kids = newtable(self:GetChildren())
-		for _,child in ipairs(kids) do
-			p,_,_,x,y = child:GetPoint(1)
-			if child:IsShown() and not (p=='CENTER' and x==0 and y==0) then
-				self:AddToAutoHide(child)
-			end
-		end
-		self:Show()
-	]])
-
-	for i,button in ipairs({self:GetChildren()}) do
-		self:WrapScript(button, 'OnEnter', [[
-			bar = self:GetParent()
-			if bar:GetAttribute('collapsed') then
-				bar:SetAttribute('state-expand',true)
-			end
-		]])
---~ 		self:WrapScript(button, 'OnLeave', [[
---~ 		]])
-		if self:GetID() < 11 then
-			self:WrapScript(button, 'OnClick', [[
-				bar = self:GetParent()
-				if bar:GetAttribute('collapsed') then
-					bar:Hide()
-				end
-			]])
-		end
-	end
 end

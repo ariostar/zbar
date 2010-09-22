@@ -5,21 +5,21 @@ zBar3:AddPlugin(zVehicleBar, zMainBar)
 
 local OnMainMenuBarHide = function(self)
 	if MainMenuBar.state == "vehicle" then
-		zMicroBar:UnHook()
+		--zMicroBar:UnHook()
 	end
 end
 
 local OnVehicleMenuBarHide = function(self)
 	if zVehicleBar.state == "vehicle" then
-		zVehicleBar.state = "player"
-		zMicroBar:UpdateButtons()
-		zMicroBar:UpdateLayouts()
+		--zVehicleBar.state = "player"
+		--zMicroBar:UpdateButtons()
+		--zMicroBar:UpdateLayouts()
 	end
 end
 
 local postVehicleArt = function(self)
 	zVehicleBar.state = "vehicle"
-	zMicroBar:Hook()
+	--zMicroBar:Hook()
 end
 
 local postPlayerArt = function(self)
@@ -28,17 +28,17 @@ end
 
 function zVehicleBar:Load()
 	if zMicroBar then
-		hooksecurefunc(MainMenuBar, "Hide", OnMainMenuBarHide)
-		hooksecurefunc(VehicleMenuBar, "Hide", OnVehicleMenuBarHide)
-		hooksecurefunc("MainMenuBar_ToVehicleArt",postVehicleArt)
-		hooksecurefunc("MainMenuBar_ToPlayerArt",postPlayerArt)
+		--hooksecurefunc(MainMenuBar, "Hide", OnMainMenuBarHide)
+		--hooksecurefunc(VehicleMenuBar, "Hide", OnVehicleMenuBarHide)
+		--hooksecurefunc("MainMenuBar_ToVehicleArt",postVehicleArt)
+		--hooksecurefunc("MainMenuBar_ToPlayerArt",postPlayerArt)
 	end
 	for name,bar in pairs(zBar3.bars) do
 		if (bar:GetID() > 4) then -- not extra bars
 			bar:SetParent(zBar3)
 		end
 	end
-	RegisterStateDriver(zBar3, "visibility", "[target=vehicle,exists]hide;show")
+	RegisterStateDriver(zBar3, "visibility", "[bonusbar:5]hide;show")
 end
 
 function zVehicleBar:Test()
