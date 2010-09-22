@@ -43,15 +43,15 @@ end
 -- zBar3 defaults
 zBar3.defaults = {
 	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},
-	["zExBar1"] = { saves = { num=6,linenum=1,},pos = {"CENTER",36,72},},
-	["zShadow1"] = { saves = {num=6,linenum=1, max=6,},pos = {"CENTER",72,72},},
-	["zExBar2"] = { saves = { num=6,linenum=1,},pos = {"CENTER",-36,72},},
-	["zShadow2"] = { saves = {num=6,linenum=1, max=6,},pos = {"CENTER",0,72},},
+	["zExBar1"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",36,72},},
+	["zShadow1"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",72,72},},
+	["zExBar2"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",-36,72},},
+	["zShadow2"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",0,72},},
 
-	["zExBar3"] = { saves = { num=6,linenum=1,},pos = {"CENTER",108,72},},
-	["zShadow3"] = { saves = {num=6,linenum=1, max=6,},pos = {"CENTER",144,72},},
-	["zExBar4"] = { saves = { num=6,linenum=1,},pos = {"CENTER",-108,72},},
-	["zShadow4"] = { saves = {num=6,linenum=1, max=6,},pos = {"CENTER",-72,72},},
+	["zExBar3"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",108,72},},
+	["zShadow3"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",144,72},},
+	["zExBar4"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",-108,72},},
+	["zShadow4"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",-72,72},},
 
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},

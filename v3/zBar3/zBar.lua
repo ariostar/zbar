@@ -97,6 +97,7 @@ function zBar3:Init()
 end
 
 function zBar3:Hook()
+--[[
 	-- remove that '?' thing
 	for id, name in pairs(self.buttons) do
 		local hotkey = _G[name.."HotKey"]
@@ -105,7 +106,7 @@ function zBar3:Hook()
 		end
 	end
 	RANGE_INDICATOR = "  "
-
+]]
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
@@ -130,7 +131,6 @@ function zBar3:Hook()
 				end
 			end
 		end
-		bar:InitHoverHandler()
 	end
 end
 
