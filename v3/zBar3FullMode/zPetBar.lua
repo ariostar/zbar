@@ -36,7 +36,7 @@ function zPetBar:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		UnregisterStateDriver(self, "visibility")
 	else
-		RegisterStateDriver(self, "visibility", '[target=pet,exists,nodead,help,nobonusbar:5]show;hide')
+		RegisterStateDriver(self, "visibility", '[target=pet,exists,nodead,nobonusbar:5]show;hide')
 	end
 
 	zBarT.UpdateVisibility(self)

@@ -206,7 +206,7 @@ function zBarT:GetTab()
 	tab:SetFrameRef('bar', self)
 	tab:SetAttribute('label', self:GetLabel())
 	tab.OnMenu = function(self, unit, button)
-		zBar3:Config(this.bar)
+		zBar3:Config(self.bar)
 	end
 
 	tab.ShowLabel = function(self, show)

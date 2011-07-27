@@ -13,10 +13,10 @@ function zStanceBar:Load()
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		zBar3.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
 		_G["ShapeshiftButton"..i]:SetParent(self)
-		_G["ShapeshiftButton"..i.."NormalTexture"]:SetPoint("CENTER")
+		_G["ShapeshiftButton"..i]:GetNormalTexture():SetPoint("CENTER")
 		_G["ShapeshiftButton"..i]:RegisterEvent("UPDATE_BINDINGS")
 		_G["ShapeshiftButton"..i]:RegisterEvent("PLAYER_ENTERING_WORLD")
-		_G["ShapeshiftButton"..i]:SetScript("OnEvent", function()
+		_G["ShapeshiftButton"..i]:SetScript("OnEvent", function(this)
 			local key = GetBindingKey(this:GetName())
 			_G[this:GetName().."HotKey"]:SetText(GetBindingText(key,1,1))
 		end)
@@ -61,10 +61,10 @@ function zStanceBar:Hook()
 	end
 	hooksecurefunc("ShapeshiftBar_Update", zStanceBar.UpdateNums)
 	hooksecurefunc("UIParent_ManageFramePositions", function()
-		if 50 ~= ShapeshiftButton1NormalTexture:GetWidth() then
+		if 50 ~= _G["ShapeshiftButton1"]:GetNormalTexture():GetWidth() then
 			for i = 1, GetNumShapeshiftForms() do
-				_G["ShapeshiftButton"..i.."NormalTexture"]:SetWidth(50)
-				_G["ShapeshiftButton"..i.."NormalTexture"]:SetHeight(50)
+				_G["ShapeshiftButton"..i]:GetNormalTexture():SetWidth(50)
+				_G["ShapeshiftButton"..i]:GetNormalTexture():SetHeight(50)
 			end
 		end
 	end)
