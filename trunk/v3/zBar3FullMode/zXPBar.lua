@@ -16,7 +16,8 @@ function zXPBar:Load()
 	MainMenuExpBar:SetParent(zXPBar)
 	MainMenuExpBar:ClearAllPoints()
 	MainMenuExpBar:SetPoint("BOTTOM")
-	MainMenuExpBar:SetWidth(512) MainMenuExpBar:SetHeight(XPHeight)
+	MainMenuExpBar:SetWidth(512)
+	MainMenuExpBar:SetHeight(XPHeight)
 
 	-- text
 	MainMenuBarExpText:SetPoint("CENTER",MainMenuExpBar,0,0)
@@ -39,17 +40,22 @@ function zXPBar:Load()
 	ReputationWatchBar:SetParent(zXPBar)
 	ReputationWatchBar:ClearAllPoints()
 	ReputationWatchBar:SetPoint("BOTTOM",MainMenuExpBar,"TOP",0,0)
-	ReputationWatchBar:SetWidth(512) ReputationWatchBar:SetHeight(XPHeight)
+	ReputationWatchBar:SetWidth(512)
+	ReputationWatchBar:SetHeight(XPHeight)
 
 	ReputationWatchStatusBar:SetWidth(512)
 
 	-- text
 	RaiseFrameLevel(ReputationWatchBarOverlayFrame)
 	ReputationWatchStatusBarText:SetFontObject(NumberFontNormalHuge)
-
+	
 	--[[ Textures ]]
+	MainMenuXPBarTextureLeftCap:SetHeight(XPHeight+6)
+	MainMenuXPBarTextureRightCap:SetHeight(XPHeight+6)
+	MainMenuXPBarTextureMid:SetHeight(XPHeight+6)
+	
 	local list = {
-		"MainMenuXPBarTexture",
+		--"MainMenuXPBarTexture",
 		"MainMenuMaxLevelBar",
 		"ReputationWatchBarTexture",
 		"ReputationXPBarTexture",
@@ -70,7 +76,7 @@ function zXPBar:Load()
 	self:Hook()
 end
 
-local function OnEnter()
+local function OnEnter(this)
 	zXPBar:SetAlpha(1)
 	if this == ReputationWatchBar then
 		GameTooltip:SetOwner(this,"ANCHOR_CURSOR")
@@ -99,7 +105,7 @@ function zXPBar:Hook()
 	ReputationWatchBar.ClearAllPoints = NOOP
 	ReputationWatchBar.SetPoint = NOOP
 
-	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
+	hooksecurefunc("ReputationWatchBar_Update", function(self, newLevel)
 		local name, reaction = GetWatchedFactionInfo()
 		if name then
 			if ( not newLevel ) then
@@ -124,15 +130,16 @@ function zXPBar:UpdateButtons()
 	local value = zBar3Data[self:GetName()]
 	if not value.num or value.num < 1 then value.num = 1 end
 	local width = 512 + 256*(value.num-1)
-	MainMenuExpBar:SetWidth(width)
+	--MainMenuExpBar:SetWidth(width)
+	MainMenuExpBar_SetWidth(width)
 	MainMenuBarMaxLevelBar:SetWidth(width)
 	ReputationWatchBar:SetWidth(width)
 	ReputationWatchStatusBar:SetWidth(width)
-
+	
+	
 	for i = 1, 2 do
 		local alpha = 0
 		if i < value.num then alpha = 1 end
-		_G["MainMenuXPBarTexture"..i]:SetAlpha(alpha)
 		_G["MainMenuMaxLevelBar"..i]:SetAlpha(alpha)
 		_G["ReputationWatchBarTexture"..i]:SetAlpha(alpha)
 		_G["ReputationXPBarTexture"..i]:SetAlpha(alpha)

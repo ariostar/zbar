@@ -13,7 +13,7 @@ function zBar3:print(msg, r, g, b)
 end
 
 --[[ Event ]]
-function zBar3:OnEvent()
+function zBar3:OnEvent(event, ...)
 	if event == "PLAYER_LOGIN" then
 		-- self init
 		self:Init()
@@ -33,11 +33,11 @@ function zBar3:OnEvent()
 		self:Hook()
 
 		-- register slash command
-		zBar3:RegisterSlash()
+		self:RegisterSlash()
 		-- welcome message
 		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
 	else
-		self:Update(event)
+		self:UpdateGrids(event)
 	end
 end
 zBar3:SetScript("OnEvent", zBar3.OnEvent)
@@ -146,11 +146,11 @@ function zBar3:InitGridUpdater()
 	-- hooks for grid
 	hooksecurefunc("MultiActionBar_ShowAllGrids",function()
 		zBar3:IncGrid()
-		zBar3:Update()
+		zBar3:UpdateGrids()
 	end)
 	hooksecurefunc("MultiActionBar_HideAllGrids",function()
 		zBar3:DecGrid()
-		zBar3:Update()
+		zBar3:UpdateGrids()
 	end)
 end
 
@@ -169,14 +169,14 @@ function zBar3:DecGrid()
 	end
 end
 
-function zBar3:Update(event)
+function zBar3:UpdateGrids(event, ...)
 	-- event stuff
 	if event == "ACTIONBAR_SHOWGRID" then
-		self:IncGrid()
+		zBar3:IncGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" then
-		self:DecGrid()
+		zBar3:DecGrid()
 	else
-		for i, bar in ipairs(self.gridUpdaters) do
+		for i, bar in ipairs(zBar3.gridUpdaters) do
 			bar:UpdateGrid()
 		end
 	end

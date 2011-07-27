@@ -50,8 +50,8 @@ function zBarOption:CheckReady()
 	-- drag
 	self:EnableMouse(true)
 	self:RegisterForDrag("LeftButton")
-	self:SetScript("OnDragStart",function() this:StartMoving() end)
-	self:SetScript("OnDragStop",function() this:StopMovingOrSizing() end)
+	self:SetScript("OnDragStart",function(this) this:StartMoving() end)
+	self:SetScript("OnDragStop",function(this) this:StopMovingOrSizing() end)
 
 	-- label texts
 	local name, args, label
@@ -89,7 +89,7 @@ function zBarOption:CheckReady()
 			button:SetPoint("LEFT","zBarOptionBar"..self.bars[id-1],"RIGHT",62,0)
 		end
 
-		button:SetScript("OnClick", function()
+		button:SetScript("OnClick", function(this)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			zBarOption:Openfor(this.bar)
 		end)
@@ -123,7 +123,7 @@ function zBarOption:CheckReady()
 		button.tooltipText = zBar3.loc.Tips[value.name]
 		button:SetID(id)
 
-		button:SetScript("OnClick",function()
+		button:SetScript("OnClick",function(this)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			local value = zBarOption.buttons[this:GetID()]
 			local checked = this:GetChecked()
@@ -175,10 +175,10 @@ function zBarOption:CheckReady()
 	zBarOptionSlider3EditBox:SetFocus(true)
 	zBarOptionSlider3EditBox:SetPoint("LEFT",zBarOptionSlider3Text,"RIGHT",6,0)
 	
-	zBarOptionSlider3EditBox:SetScript("OnEnterPressed", function()
+	zBarOptionSlider3EditBox:SetScript("OnEnterPressed", function(this)
 		zBarOptionSlider3:SetValue(this:GetNumber()*0.01)
 	end)
-	zBarOptionSlider3EditBox:SetScript("OnEscapePressed", function()
+	zBarOptionSlider3EditBox:SetScript("OnEscapePressed", function(this)
 		zBarOption:Hide()
 	end)
 
@@ -448,7 +448,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		name="Num",
 		var="num", min=1, max=12, step=1,
 		pos={"TOPRIGHT","zBarOption","TOPRIGHT",-10,-185},
-		setFunc = function()
+		setFunc = function(this)
 			zBar3Data[zBarOption.bar:GetName()].num = this:GetValue()
 			zBarOption.bar:UpdateButtons()
 			zBarOption.bar:UpdateLayouts()
@@ -458,7 +458,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		name="NumPerLine",
 		var="linenum", min=1, max=12, step=1,
 		pos={"TOP","zBarOptionSlider1","BOTTOM",0,-25},
-		setFunc = function()
+		setFunc = function(this)
 			local saves = zBar3Data[zBarOption.bar:GetName()]
 
 			if zBarOption.loading and saves.layout ~= "line" then return end
@@ -485,7 +485,7 @@ zBarOption.sliders = { --[[ Sliders ]]
 		name="Scale",
 		var="scale", min=0.2, max=1.8, step=0.001, factor=100,
 		pos={"TOP","zBarOptionSlider2","BOTTOM",0,-30},
-		setFunc = function()
+		setFunc = function(this)
 			local value = this:GetValue()
 			zBar3Data[zBarOption.bar:GetName()].scale = value
 			zBarOption.bar:SetScale(value)
@@ -500,17 +500,17 @@ zBarOption.sliders = { --[[ Sliders ]]
 		name="Inset",
 		var="inset", min=-10, max=30, step=1,
 		pos={"TOP","zBarOptionSlider3","BOTTOM",0,-25},
-		setFunc = function(self)
+		setFunc = function(this)
 			zBar3Data[zBarOption.bar:GetName()].inset = this:GetValue()
 			zBarOption.bar:UpdateLayouts()
-			self.text:SetText(zBar3.loc.Option.Inset.." |cff00FF00"..self:GetValue().."|r")
+			this.text:SetText(zBar3.loc.Option.Inset.." |cff00FF00"..this:GetValue().."|r")
 		end
 	},
 	[5] = {-- alpha
 		name="Alpha",
 		var="alpha", min=0, max = 1, step=0.1, factor=100,
 		pos={"TOP","zBarOptionSlider4","BOTTOM",0,-25},
-		setFunc = function()
+		setFunc = function(this)
 			zBar3Data[zBarOption.bar:GetName()].alpha = this:GetValue()
 			zBarOption.bar:SetAlpha(this:GetValue())
 		end
