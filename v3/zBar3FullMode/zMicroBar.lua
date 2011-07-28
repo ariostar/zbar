@@ -28,7 +28,8 @@ function zMicroBar:Load()
 	self:GetTab():GetNormalTexture():SetWidth(42)
 	self:GetTab():GetHighlightTexture():SetWidth(42)
 
-	self:Hook()
+	VehicleMenuBar_MoveMicroButtons = zBar3.NOOP
+	--self:Hook()
 end
 
 function zMicroBar:GetChildSizeAdjust(attachPoint)
@@ -65,7 +66,7 @@ function zMicroBar:UnHook()
 end
 
 function zMicroBar:UpdateButtons()
-	self:UnHook()
+	--self:UnHook()
 
 	zBarT.UpdateButtons(self)
 
@@ -81,14 +82,14 @@ function zMicroBar:UpdateButtons()
 	zMicroBar:GetButton(1):ClearAllPoints()
 	zMicroBar:GetButton(1):SetPoint("BOTTOM")
 
-	self:Hook()
+	--self:Hook()
 end
 
 function zMicroBar:UpdateLayouts()
-	self:UnHook()
+	--self:UnHook()
 
 	zBarT.UpdateLayouts(self)
 
-	self:Hook()
+	--self:Hook()
 end
 

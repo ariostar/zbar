@@ -12,6 +12,10 @@ function zBar3:print(msg, r, g, b)
 	DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b)
 end
 
+-- function that does nothing
+zBar3.NOOP = function(...)
+end
+
 --[[ Event ]]
 function zBar3:OnEvent(event, ...)
 	if event == "PLAYER_LOGIN" then
@@ -85,9 +89,6 @@ function zBar3:Init()
 		LoadAddOn("zBar3FullMode")
 	end
 
-	-- function that does nothing
-	self.NOOP = function() end
-
 	-- hidden frame
 	self.hiddenFrame = CreateFrame("Frame")
 	self.hiddenFrame:Hide()
@@ -97,16 +98,6 @@ function zBar3:Init()
 end
 
 function zBar3:Hook()
---[[
-	-- remove that '?' thing
-	for id, name in pairs(self.buttons) do
-		local hotkey = _G[name.."HotKey"]
-		if hotkey and hotkey:GetText() == RANGE_INDICATOR then
-			hotkey:SetText("  ")
-		end
-	end
-	RANGE_INDICATOR = "  "
-]]
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
@@ -135,8 +126,8 @@ function zBar3:Hook()
 end
 
 --[[ Grid Stuff ]]
--- this must after all action button (especially extra buttons) created,
--- cause action button will register events while creation
+-- grid initialization should after all action button (especially extra buttons) created,
+-- because action button will register events while creation
 function zBar3:InitGridUpdater()
 	self.showgrid = MultiBarLeftButton1:GetAttribute("showgrid")
 	-- add events for grid, must after bars initial
@@ -206,9 +197,9 @@ function zBar3:RegisterSlash()
 				local pos = zBar3Data[bar:GetName()].pos or zBar3:GetDefault(bar, "pos")
 				bar:GetTab():ClearAllPoints()
 				if type(pos[2]) == "string" then
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4]+offset/ bar:GetTab():GetScale())
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[2],pos[3],pos[4] + offset/bar:GetTab():GetScale())
 				else
-					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3]+offset/ bar:GetTab():GetScale())
+					bar:GetTab():SetPoint(pos[1],UIParent,pos[1],pos[2],pos[3] + offset/bar:GetTab():GetScale())
 				end
 				zTab:SavePosition(bar:GetTab())
 			else
