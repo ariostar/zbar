@@ -41,8 +41,9 @@ end
 
 --[[ Hooks ]]
 function zMainBar:Hook()
-	BonusActionBarFrame:UnregisterAllEvents()
+	--BonusActionBarFrame:UnregisterAllEvents()
 	BonusActionBarFrame:Hide()
+	BonusActionBarFrame:SetParent(zBar3.hiddenFrame)
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
 	if VehicleMenuBar then
