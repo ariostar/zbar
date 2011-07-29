@@ -12,10 +12,6 @@ function zBar3:print(msg, r, g, b)
 	DEFAULT_CHAT_FRAME:AddMessage(msg, r, g, b)
 end
 
--- function that does nothing
-zBar3.NOOP = function(...)
-end
-
 --[[ Event ]]
 function zBar3:OnEvent(event, ...)
 	if event == "PLAYER_LOGIN" then
