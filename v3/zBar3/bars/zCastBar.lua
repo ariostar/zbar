@@ -7,6 +7,8 @@ function zCastBar:Load()
 	self:SetWidth(34)
 	self:SetHeight(13)
 
+	self:SetAttribute("DisableHoverPop", true)
+
 	-- positon of CastingBarFrame and FramerateLabel
 	CastingBarFrame:SetParent(self)
 	CastingBarFrame:ClearAllPoints()

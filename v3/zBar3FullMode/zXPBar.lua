@@ -22,6 +22,8 @@ function zXPBar:Load()
 	
 	zBar3.buttons['zXPBar1'] = "MainMenuExpBar"
 	
+	self:SetAttribute("DisableHoverPop", true)
+	
 	-- text
 	MainMenuBarExpText:SetPoint("CENTER",MainMenuExpBar,0,0)
 	MainMenuBarExpText:SetFontObject(NumberFontNormalHuge)
@@ -51,14 +53,11 @@ function zXPBar:Hook()
 	self:GetTab():SetScale(1)
 	self:GetTab().SetScale = zBar3.NOOP
 
-	--[[ Override when ReputationWatchBar Updates ]]
-	--MainMenuExpBar.ClearAllPoints = NOOP
-	--MainMenuExpBar.SetPoint = NOOP
-	
+	--[[ Hook for VehicleMenuBar ]]
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
-		zBar3:SafeCallFunc('zXPBar', 'ResetChildren', zXPBar)
-		zBar3:SafeCallFunc('zXPBar', 'UpdateLayouts', zXPBar)
-		zBar3:SafeCallFunc('zXPBar', 'UpdateButtons', zXPBar)
+		zBar3:SafeCallFunc('zXPBar', 'ResetChildren')
+		zBar3:SafeCallFunc('zXPBar', 'UpdateLayouts')
+		zBar3:SafeCallFunc('zXPBar', 'UpdateButtons')
 	end)
 end
 

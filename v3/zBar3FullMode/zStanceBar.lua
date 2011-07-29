@@ -38,16 +38,15 @@ function zStanceBar:UpdateNums()
 		end
 		zBar3Data["zStanceBar"].num = num
 		zBar3Data["zStanceBar"].max = num
-		if not InCombatLockdown() then
-			zStanceBar:UpdateLayouts()
-			zStanceBar:UpdateHotkeys()
-		end
+		
+		zBar3:SafeCallFunc("zStanceBar", "UpdateLayouts")
+		zBar3:SafeCallFunc("zStanceBar", "UpdateHotkeys")
 	end
 end
 
 function zStanceBar:Hook()
 	hooksecurefunc("ShapeshiftBar_Update", function()
-		zBar3:SafeCallFunc('zStanceBar', 'ResetChildren', zStanceBar)
+		zBar3:SafeCallFunc('zStanceBar', 'ResetChildren')
 	end)	
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
@@ -60,7 +59,9 @@ function zStanceBar:Hook()
 			zStanceBar:SetAlpha(zBar3Data["zStanceBar"].alpha)
 		end)
 	end
+	
 	hooksecurefunc("ShapeshiftBar_Update", zStanceBar.UpdateNums)
+	
 	hooksecurefunc("UIParent_ManageFramePositions", function()
 		if 50 ~= _G["ShapeshiftButton1"]:GetNormalTexture():GetWidth() then
 			for i = 1, GetNumShapeshiftForms() do

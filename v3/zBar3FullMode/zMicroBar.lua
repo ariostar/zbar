@@ -9,6 +9,8 @@ function zMicroBar:Load()
 	self:SetClampedToScreen(true)
 	self:SetWidth(29); self:SetHeight(36);
 	
+	self:SetAttribute("DisableHoverPop", true)
+
 	local numBtns = 0
 	for i, btn in ipairs({MainMenuBarArtFrame:GetChildren()}) do
 		local name = btn:GetName()
@@ -41,9 +43,9 @@ end
 
 function zMicroBar:Hook()
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
-		zBar3:SafeCallFunc('zMicroBar', 'ResetChildren', zMicroBar)
-		zBar3:SafeCallFunc('zMicroBar', 'UpdateLayouts', zMicroBar)
-		zBar3:SafeCallFunc('zMicroBar', 'UpdateButtons', zMicroBar)
+		zBar3:SafeCallFunc('zMicroBar', 'ResetChildren')
+		zBar3:SafeCallFunc('zMicroBar', 'UpdateLayouts')
+		zBar3:SafeCallFunc('zMicroBar', 'UpdateButtons')
 	end)
 end
 
