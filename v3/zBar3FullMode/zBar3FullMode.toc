@@ -18,5 +18,3 @@ zStanceBar.lua
 zBagBar.lua
 zMicroBar.lua
 zXPBar.lua
-
-#zVehicleBar.lua
