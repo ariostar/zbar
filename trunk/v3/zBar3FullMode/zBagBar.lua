@@ -10,6 +10,8 @@ function zBagBar:Load()
 	self:SetClampedToScreen(true)
 	self:SetWidth(37); self:SetHeight(37);
 
+	self:SetAttribute("DisableHoverPop", true)
+
 	-- bag packs
 	MainMenuBarBackpackButton:SetParent(self)
 	MainMenuBarBackpackButton:SetWidth(36)

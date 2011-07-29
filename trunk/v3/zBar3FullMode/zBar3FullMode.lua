@@ -10,11 +10,11 @@ function zBar3FullMode:Load()
 	}
 	zBar3.defaults["zMultiR2"] = {
 		saves = {linenum = 1,},
-		pos ={"BOTTOMRIGHT",-47,500},
+		pos ={"RIGHT",-47,180},
 	}
 	zBar3.defaults["zMultiR1"] = {
 		saves = {linenum = 1,},
-		pos ={"BOTTOMRIGHT",-7,500},
+		pos ={"RIGHT",-7,180},
 	}
 	zBar3.defaults["zMultiBR"] = {
 		saves = {linenum = 12, hideTab=true,},

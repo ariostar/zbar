@@ -178,7 +178,7 @@ function zBar3:UpdateGrids(event, ...)
 		zBar3:DecGrid()
 	else
 		for i, bar in ipairs(zBar3.gridUpdaters) do
-			bar:UpdateGrid()
+			self:SafeCallFunc(bar:GetName(), "UpdateGrid")
 		end
 	end
 end
@@ -196,21 +196,33 @@ function zBar3:InitAfterCombat()
 end
 
 function zBar3:RegisterAfterCombatCall(objname, funcname, ...)
-	table.insert(self.AfterCombatCallList, {objname, funcname, {...}})
+	assert(funcname)
+	local uname = ((objname and objname..'.') or '') .. funcname
+	self.AfterCombatCallList[uname] = {objname, funcname, {...}}
+	--table.insert(self.AfterCombatCallList, {objname, funcname, {...}})
+end
+
+local function callFunc(objname, funcname, ...)
+	local obj = objname and _G[objname]
+	if obj then
+		obj[funcname](obj, ...)
+	else
+		_G[funcname](...)
+	end
 end
 
 function zBar3:SafeCallFunc(objname, funcname, ...)
 	if InCombatLockdown() then
 		zBar3:RegisterAfterCombatCall(objname, funcname, ...)
 	else
-		_G[objname][funcname](...)
+		callFunc(objname, funcname, ...)
 	end
 end
 
 function zBar3:CallAfterCombat()
-	local pack = nil
-	for i, pack in ipairs(self.AfterCombatCallList) do
-		_G[pack[1]][pack[2]](unpack(pack[3]))
+	local name, pack
+	for name, pack in pairs(self.AfterCombatCallList) do
+		callFunc(pack[1], pack[2], unpack(pack[3]))
 	end
 	table.wipe(self.AfterCombatCallList)
 end

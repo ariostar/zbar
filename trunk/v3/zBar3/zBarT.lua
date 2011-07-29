@@ -230,13 +230,15 @@ function zBarT:GetTab()
 			control:CallMethod('OnMenu')
 			control:CallMethod('ShowLabel', nil)
 		elseif button == 'LeftButton' then
-			if bar:GetAttribute('collapsed') then
-				bar:Show()
-				bar:SetAttribute('collapsed', nil)
-				bar:UnregisterAutoHide()
-			else
-				bar:Hide()
-				bar:SetAttribute('collapsed', true)
+			if not bar:GetAttribute('DisableHoverPop') then
+				if bar:GetAttribute('collapsed') then
+					bar:Show()
+					bar:SetAttribute('collapsed', nil)
+					bar:UnregisterAutoHide()
+				else
+					bar:Hide()
+					bar:SetAttribute('collapsed', true)
+				end
 			end
 		end
 	]])
