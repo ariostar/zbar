@@ -20,6 +20,8 @@ function zXPBar:Load()
 	MainMenuExpBar_SetWidth(512)
 	MainMenuExpBar:SetHeight(XPHeight)
 	
+	zBar3.buttons['zXPBar1'] = "MainMenuExpBar"
+	
 	-- text
 	MainMenuBarExpText:SetPoint("CENTER",MainMenuExpBar,0,0)
 	MainMenuBarExpText:SetFontObject(NumberFontNormalHuge)
@@ -52,6 +54,12 @@ function zXPBar:Hook()
 	--[[ Override when ReputationWatchBar Updates ]]
 	--MainMenuExpBar.ClearAllPoints = NOOP
 	--MainMenuExpBar.SetPoint = NOOP
+	
+	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
+		zBar3:SafeCallFunc('zXPBar', 'ResetChildren', zXPBar)
+		zBar3:SafeCallFunc('zXPBar', 'UpdateLayouts', zXPBar)
+		zBar3:SafeCallFunc('zXPBar', 'UpdateButtons', zXPBar)
+	end)
 end
 
 function zXPBar:UpdateButtons()
@@ -59,6 +67,12 @@ function zXPBar:UpdateButtons()
 	if not value.num or value.num < 1 then value.num = 1 end
 	local width = 512 + 256*(value.num-1)
 	MainMenuExpBar_SetWidth(width)
+end
+
+function zXPBar:ResetChildren()
+	MainMenuExpBar:SetParent(zXPBar)
+	MainMenuExpBar:ClearAllPoints()
+	MainMenuExpBar:SetPoint("BOTTOM")
 end
 
 function zXPBar:UpdateLayouts()

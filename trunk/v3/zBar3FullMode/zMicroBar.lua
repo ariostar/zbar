@@ -28,8 +28,7 @@ function zMicroBar:Load()
 	self:GetTab():GetNormalTexture():SetWidth(42)
 	self:GetTab():GetHighlightTexture():SetWidth(42)
 
-	VehicleMenuBar_MoveMicroButtons = zBar3.NOOP
-	--self:Hook()
+	self:Hook()
 end
 
 function zMicroBar:GetChildSizeAdjust(attachPoint)
@@ -41,33 +40,14 @@ function zMicroBar:GetChildSizeAdjust(attachPoint)
 end
 
 function zMicroBar:Hook()
-	if self.hooked then return end
-	self.hooked = 1
-	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
-		local button = self:GetButton(i)
-		button.zClearAllPoints = button.ClearAllPoints
-		button.ClearAllPoints = zBar3.NOOP
-		button.zSetPoint = button.SetPoint
-		button.SetPoint = zBar3.NOOP
-		button.zSetParent = button.SetParent
-		button.SetParent = zBar3.NOOP
-	end
-end
-
-function zMicroBar:UnHook()
-	if not self.hooked then return end
-	self.hooked = nil
-	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
-		local button = self:GetButton(i)
-		button.ClearAllPoints = button.zClearAllPoints
-		button.SetPoint = button.zSetPoint
-		button.SetParent = button.zSetParent
-	end
+	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
+		zBar3:SafeCallFunc('zMicroBar', 'ResetChildren', zMicroBar)
+		zBar3:SafeCallFunc('zMicroBar', 'UpdateLayouts', zMicroBar)
+		zBar3:SafeCallFunc('zMicroBar', 'UpdateButtons', zMicroBar)
+	end)
 end
 
 function zMicroBar:UpdateButtons()
-	--self:UnHook()
-
 	zBarT.UpdateButtons(self)
 
 	for i = 1, zBar3.defaults["zMicroBar"].saves.max do
@@ -81,15 +61,12 @@ function zMicroBar:UpdateButtons()
 	end
 	zMicroBar:GetButton(1):ClearAllPoints()
 	zMicroBar:GetButton(1):SetPoint("BOTTOM")
-
-	--self:Hook()
 end
 
-function zMicroBar:UpdateLayouts()
-	--self:UnHook()
-
-	zBarT.UpdateLayouts(self)
-
-	--self:Hook()
+function zMicroBar:ResetChildren()
+	for i = 1, self:GetNumButtons() do
+		self:GetButton(i):SetParent(self)
+		self:GetButton(i):ClearAllPoints()
+		self:GetButton(i):SetPoint("BOTTOM")
+	end
 end
-
