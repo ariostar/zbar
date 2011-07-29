@@ -58,6 +58,15 @@ function zBarT:Reset(resetsaves)
 	self:UpdateAutoPop()
 end
 
+function zBarT:ResetChildren()
+	self:GetButton(1):ClearAllPoints()
+	self:GetButton(1):SetPoint("center")
+	
+	for i = 1, self:GetNumButtons() do
+		self:GetButton(i):SetParent(self)
+	end
+end
+
 function zBarT:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		self:Hide()

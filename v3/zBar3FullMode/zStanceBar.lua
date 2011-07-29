@@ -46,8 +46,9 @@ function zStanceBar:UpdateNums()
 end
 
 function zStanceBar:Hook()
-	ShapeshiftButton1.ClearAllPoints = zBar3.NOOP
-	ShapeshiftButton1.SetPoint = zBar3.NOOP
+	hooksecurefunc("ShapeshiftBar_Update", function()
+		zBar3:SafeCallFunc('zStanceBar', 'ResetChildren', zStanceBar)
+	end)	
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
 		_G["ShapeshiftButton"..i]:HookScript("OnEnter",function()

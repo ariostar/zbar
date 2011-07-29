@@ -35,11 +35,21 @@ function zBar3:OnEvent(event, ...)
 		self:InitGridUpdater()
 		-- hooks
 		self:Hook()
+		
+		-- init AfterCombat Events
+		self:InitAfterCombat()
 
 		-- register slash command
 		self:RegisterSlash()
 		-- welcome message
 		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
+		
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		if InCombatLockdown() then
+			--print("zBar3: InCombatLockdown event = " .. event)
+		else
+			self:CallAfterCombat()
+		end
 	else
 		self:UpdateGrids(event)
 	end
@@ -172,6 +182,40 @@ function zBar3:UpdateGrids(event, ...)
 		end
 	end
 end
+
+
+--[[ CombatLockdown Stuff ]]
+
+-- while InCombatLockdown we can't call TAINT functions
+-- so push them to a stack, so that we can call them after combat
+
+zBar3.AfterCombatCallList = {}
+
+function zBar3:InitAfterCombat()
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+end
+
+function zBar3:RegisterAfterCombatCall(objname, funcname, ...)
+	table.insert(self.AfterCombatCallList, {objname, funcname, {...}})
+end
+
+function zBar3:SafeCallFunc(objname, funcname, ...)
+	if InCombatLockdown() then
+		zBar3:RegisterAfterCombatCall(objname, funcname, ...)
+	else
+		_G[objname][funcname](...)
+	end
+end
+
+function zBar3:CallAfterCombat()
+	local pack = nil
+	for i, pack in ipairs(self.AfterCombatCallList) do
+		_G[pack[1]][pack[2]](unpack(pack[3]))
+	end
+	table.wipe(self.AfterCombatCallList)
+end
+
+--[[ Config ]]
 
 function zBar3:Config(bar)
 	if not zBarOption then

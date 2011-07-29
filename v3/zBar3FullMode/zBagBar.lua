@@ -49,7 +49,6 @@ function zBagBar:Load()
 end
 
 function zBagBar:Hook()
---	MainMenuBarPerformanceBarFrame.SetPoint = zBar3.NOOP
 end
 
 function zBagBar:UpdateButtons()
