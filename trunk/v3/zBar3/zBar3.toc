@@ -29,6 +29,5 @@ locale\en.lua
 bars\zExBars.lua
 
 bars\zCastBar.lua
-bars\zChat.lua
 
 skin\zButtonFacade.lua
