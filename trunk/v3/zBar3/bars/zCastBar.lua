@@ -36,9 +36,14 @@ function zCastBar:Load()
 end
 
 function zCastBar:Hook()
+  UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"] = nil
+  UIPARENT_MANAGED_FRAME_POSITIONS["FramerateLabel"] = nil
+  
+  --[[
 	hooksecurefunc("UIParent_ManageFramePositions", function()
 		zBar3:SafeCallFunc('zCastBar', 'ResetChildren')
 	end)
+	]]
 end
 
 function zCastBar:ResetChildren()
