@@ -51,7 +51,13 @@ end
 
 function zXPBar:Hook()
 	self:GetTab():SetScale(1)
-	self:GetTab().SetScale = zBar3.NOOP
+	self:GetTab().SetScale = function(self, scale)
+	  if scale < 1 then
+	    zBar3.SetScale(self, 1)
+	  else
+	    zBar3.SetScale(self, scale)
+	  end
+	end
 
 	--[[ Hook for VehicleMenuBar ]]
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
