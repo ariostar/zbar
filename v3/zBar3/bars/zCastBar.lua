@@ -8,14 +8,8 @@ function zCastBar:Load()
 	self:SetHeight(13)
 
 	self:SetAttribute("DisableHoverPop", true)
-
-	-- positon of CastingBarFrame and FramerateLabel
-	CastingBarFrame:SetParent(self)
-	CastingBarFrame:ClearAllPoints()
-	CastingBarFrame:SetPoint("TOP",zCastBar,0,-5)
-	FramerateLabel:SetParent(self)
-	FramerateLabel:ClearAllPoints()
-	FramerateLabel:SetPoint("BOTTOM",self:GetLabel(),"TOP")
+	
+	self:ResetChildren()
 
 	-- skin
 	CastingBarFrameBorder:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
@@ -25,32 +19,37 @@ function zCastBar:Load()
 	CastingBarFrameIcon:Show()
 	CastingBarFrameIcon:SetWidth(24)
 	CastingBarFrameIcon:SetHeight(24)
-	CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
 
 	-- text
 	CastingBarFrameText:ClearAllPoints()
-	CastingBarFrameText:SetPoint("CENTER",0,3)
+	CastingBarFrameText:SetPoint("CENTER",0,1)
 
-	-- texture
-	local kids = {CastingBarFrame:GetRegions()}
-	for k, v in pairs(kids) do
-		if not v:GetName() then
-			v:ClearAllPoints()
-			v:SetPoint("TOPLEFT",0,2)
-			v:SetPoint("TOPRIGHT",0,2)
-			v:SetPoint("BOTTOMLEFT",0,2)
-			v:SetPoint("BOTTOMRIGHT",0,2)
-		end
-	end
-
+	-- width and height
+	CastingBarFrameBorder:SetWidth(CastingBarFrameBorder:GetWidth() + 4)
+	CastingBarFrameFlash:SetWidth(CastingBarFrameFlash:GetWidth() + 4)
+	CastingBarFrameBorderShield:SetWidth(CastingBarFrameBorderShield:GetWidth() + 4)
+	CastingBarFrameBorder:SetPoint("TOP", 0, 26)
+	CastingBarFrameFlash:SetPoint("TOP", 0, 26)
+	CastingBarFrameBorderShield:SetPoint("TOP", 0, 26)
+	
 	self:Hook()
 end
 
 function zCastBar:Hook()
-	CastingBarFrame.ClearAllPoints = zBar3.NOOP
-	CastingBarFrame.SetPoint = zBar3.NOOP
-	FramerateLabel.ClearAllPoints = zBar3.NOOP
-	FramerateLabel.SetPoint = zBar3.NOOP
+	hooksecurefunc("UIParent_ManageFramePositions", function()
+		zBar3:SafeCallFunc('zCastBar', 'ResetChildren')
+	end)
+end
+
+function zCastBar:ResetChildren()
+	-- positon of CastingBarFrame and FramerateLabel
+	CastingBarFrame:SetParent(self)
+	CastingBarFrame:ClearAllPoints()
+	CastingBarFrame:SetPoint("TOP",zCastBar,0,-3)
+	FramerateLabel:SetParent(self)
+	FramerateLabel:ClearAllPoints()
+	FramerateLabel:SetPoint("BOTTOM",self:GetLabel(),"TOP")
+	CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-6,0)
 end
 
 function zCastBar:UpdateButtons()
