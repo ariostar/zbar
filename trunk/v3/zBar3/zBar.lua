@@ -174,7 +174,7 @@ function zBar3:UpdateGrids(event, ...)
 		zBar3:DecGrid()
 	else
 		for i, bar in ipairs(zBar3.gridUpdaters) do
-			self:SafeCallFunc(bar:GetName(), "UpdateGrid")
+			self:SafeCallFunc(bar, "UpdateGrid", bar)
 		end
 	end
 end
@@ -182,8 +182,19 @@ end
 
 --[[ CombatLockdown Stuff ]]
 
--- while InCombatLockdown we can't call TAINT functions
--- so push them to a stack, so that we can call them after combat
+--[[
+
+  while InCombatLockdown we can't call TAINT functions
+  so push them to a stack, so that we can call them after combat
+
+  Usage: SafeCallFunc([Object,] functionName, ...)
+  Example:
+    -- call object function
+    SafeCallFunc(theFrame, 'SetWidth', theFrame, 256)
+    -- call global function
+    SafeCallFunc('UseActoin', 120, true, true)
+    
+]]
 
 zBar3.AfterCombatCallList = {}
 
@@ -191,34 +202,53 @@ function zBar3:InitAfterCombat()
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 end
 
-function zBar3:RegisterSafeCallObj(objname, funcname, ...)
-	assert(funcname)
-	local uname = ((objname and objname..'.') or '') .. funcname
-	self.AfterCombatCallList[uname] = {objname, funcname, {...}}
-	--table.insert(self.AfterCombatCallList, {objname, funcname, {...}})
+local function ExtractParams(obj, ...)
+  assert(obj)
+  
+  local pObj, uname, fname, params
+  
+  -- obj is a function name
+  if type(obj) == 'string' then
+    pObj = nil
+    uname = fname = obj
+    params = {...}
+  else
+    -- obj is a object, arg1 is function name
+    local arg1 = select(1, ...)
+    assert(type(arg1) == 'string')
+    pObj = obj
+    fname = arg1
+    uname = '[' .. tostring(obj) .. '].' .. arg1
+    params = {select(2, ...)}
+  end
+  
+  return uname, pObj, fname, params
 end
 
-local function callFunc(objname, funcname, ...)
-	local obj = objname and _G[objname]
-	if obj then
-		obj[funcname](obj, ...)
-	else
-		_G[funcname](...)
-	end
+function zBar3:RegisterSafeCallObj(uname, obj, funcname, ...)
+  self.AfterCombatCallList[uname] = {obj, funcame, {...}}
 end
 
-function zBar3:SafeCallFunc(objname, funcname, ...)
+local function callFunc(obj, funcname, params) 
+  if obj then
+    obj[funcname](unpack(params))
+  else
+    _G[funcname](unpack(params))
+  end
+end
+
+function zBar3:SafeCallFunc(obj, ...)
 	if InCombatLockdown() then
-		zBar3:RegisterSafeCallObj(objname, funcname, ...)
+		zBar3:RegisterSafeCallObj(ExtractParams(obj, ...))
 	else
-		callFunc(objname, funcname, ...)
+		callFunc(select(2, ExtractParams(obj, ...)))
 	end
 end
 
 function zBar3:CallAfterCombat()
 	local name, pack
 	for name, pack in pairs(self.AfterCombatCallList) do
-		callFunc(pack[1], pack[2], unpack(pack[3]))
+		callFunc(pack[1], pack[2], pack[3])
 	end
 	table.wipe(self.AfterCombatCallList)
 end
