@@ -43,9 +43,9 @@ end
 
 function zMicroBar:Hook()
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
-		zBar3:SafeCallFunc('zMicroBar', 'ResetChildren')
-		zBar3:SafeCallFunc('zMicroBar', 'UpdateLayouts')
-		zBar3:SafeCallFunc('zMicroBar', 'UpdateButtons')
+		zBar3:SafeCallFunc(zMicroBar, 'ResetChildren', zMicroBar)
+		zBar3:SafeCallFunc(zMicroBar, 'UpdateLayouts', zMicroBar)
+		zBar3:SafeCallFunc(zMicroBar, 'UpdateButtons', zMicroBar)
 	end)
 end
 
