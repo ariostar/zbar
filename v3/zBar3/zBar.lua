@@ -191,7 +191,7 @@ function zBar3:InitAfterCombat()
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 end
 
-function zBar3:RegisterAfterCombatCall(objname, funcname, ...)
+function zBar3:RegisterSafeCallObj(objname, funcname, ...)
 	assert(funcname)
 	local uname = ((objname and objname..'.') or '') .. funcname
 	self.AfterCombatCallList[uname] = {objname, funcname, {...}}
@@ -209,7 +209,7 @@ end
 
 function zBar3:SafeCallFunc(objname, funcname, ...)
 	if InCombatLockdown() then
-		zBar3:RegisterAfterCombatCall(objname, funcname, ...)
+		zBar3:RegisterSafeCallObj(objname, funcname, ...)
 	else
 		callFunc(objname, funcname, ...)
 	end

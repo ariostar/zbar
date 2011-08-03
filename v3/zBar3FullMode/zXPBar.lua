@@ -39,12 +39,22 @@ function zXPBar:Load()
 		local name = region:GetName()
 		if name then
 			if name:match('^MainMenuXPBarTexture(%w+)') then
-				region:SetHeight(XPHeight + 6)
+				region:SetHeight(XPHeight + 3)
+				local ULx, ULy, LLx, LLy, URx, URy, LRx, LRy = region:GetTexCoord()
+				if name == "MainMenuXPBarTextureLeftCap" then
+				  ULx = ULx + 0.03
+				elseif name == "MainMenuXPBarTextureRightCap" then
+				  URx = URx - 0.03
+				end
+				region:SetTexCoord(ULx, URx, ULy, ULy + (LLy-ULy) * 0.86)
 			elseif name:match('^MainMenuXPBarDiv(%w+)') then
 				region:SetHeight(XPHeight - 8)
 			end
 		end
 	end
+	
+	MainMenuXPBarTextureLeftCap:SetPoint("LEFT", -3, 2)
+	MainMenuXPBarTextureRightCap:SetPoint("RIGHT", 3, 2)
 
 	self:Hook()
 end
