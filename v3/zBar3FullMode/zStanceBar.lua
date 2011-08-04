@@ -39,14 +39,14 @@ function zStanceBar:UpdateNums()
 		zBar3Data["zStanceBar"].num = num
 		zBar3Data["zStanceBar"].max = num
 		
-		zBar3:SafeCallFunc(zStanceBar, "UpdateLayouts", zStanceBar)
-		zBar3:SafeCallFunc(zStanceBar, "UpdateHotkeys", zStanceBar)
+		zBar3:SafeCallFunc(zStanceBar.UpdateLayouts, zStanceBar)
+		zBar3:SafeCallFunc(zStanceBar.UpdateHotkeys, zStanceBar)
 	end
 end
 
 function zStanceBar:Hook()
 	hooksecurefunc("ShapeshiftBar_Update", function()
-		zBar3:SafeCallFunc(zStanceBar, 'ResetChildren', zStanceBar)
+		zBar3:SafeCallFunc(zStanceBar.ResetChildren, zStanceBar)
 	end)	
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do

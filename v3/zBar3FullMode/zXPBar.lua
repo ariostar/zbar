@@ -71,9 +71,9 @@ function zXPBar:Hook()
 
 	--[[ Hook for VehicleMenuBar ]]
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
-		zBar3:SafeCallFunc(zXPBar, 'ResetChildren', zXPBar)
-		zBar3:SafeCallFunc(zXPBar, 'UpdateLayouts', zXPBar)
-		zBar3:SafeCallFunc(zXPBar, 'UpdateButtons', zXPBar)
+		zBar3:SafeCallFunc(zXPBar.ResetChildren, zXPBar)
+		zBar3:SafeCallFunc(zXPBar.UpdateLayouts, zXPBar)
+		zBar3:SafeCallFunc(zXPBar.UpdateButtons, zXPBar)
 	end)
 end
 
