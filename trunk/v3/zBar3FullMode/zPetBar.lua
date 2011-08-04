@@ -21,7 +21,7 @@ function zPetBar:Load()
 	self:GetTab():GetHighlightTexture():SetWidth(50)
 	
 	if GetNumShapeshiftForms() > 0 then
-	  local pos = zBar3.defaults.zPetBar.pos
+	  local pos = zBar3.defaults.zStanceBar.pos
 	  pos[2] = -50
 	  pos[3] = 230
 	end
