@@ -55,6 +55,6 @@ zBar3.defaults = {
 
 	["zCastBar"] = {
 		saves = {num = 2, max = 2, hideTab=true,},
-		pos={"BOTTOM",0,205-24},
+		pos={"BOTTOM",0,210},
 	},
 }

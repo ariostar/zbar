@@ -185,7 +185,7 @@ end
 --[[
 
   while InCombatLockdown we can't call TAINT functions
-  so push them to a stack, so that we can call them after combat
+  so push them to a stack, thus we can call them after combat
 
   Usage: SafeCallFunc([Object,] functionName, ...)
   Example:
@@ -210,7 +210,8 @@ local function ExtractParams(obj, ...)
   -- obj is a function name
   if type(obj) == 'string' then
     pObj = nil
-    uname = fname = obj
+    uname = obj 
+    fname = obj
     params = {...}
   else
     -- obj is a object, arg1 is function name

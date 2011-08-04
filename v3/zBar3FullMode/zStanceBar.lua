@@ -46,7 +46,7 @@ end
 
 function zStanceBar:Hook()
 	hooksecurefunc("ShapeshiftBar_Update", function()
-		zBar3:SafeCallFunc('zStanceBar', 'ResetChildren')
+		zBar3:SafeCallFunc(zStanceBar, 'ResetChildren', zStanceBar)
 	end)	
 
 	for i = 1, NUM_SHAPESHIFT_SLOTS do
