@@ -19,7 +19,8 @@ function zBar3:OnEvent(event, ...)
 		self:Init()
 		-- plugins init
 		for k,v in ipairs(self.plugins) do
-			if v.Load then v:Load() end
+		  assert(v.Load)
+			v:Load()
 		end
 		-- bars init
 		for name, bar in pairs(self.bars) do
@@ -29,9 +30,10 @@ function zBar3:OnEvent(event, ...)
 		zButtonFacade:Load()
 		-- init grid updater
 		self:InitGridUpdater()
-		-- hooks
-		self:Hook()
 		
+		-- Init All Buttons
+		self:InitAllButtons()
+	  
 		-- init AfterCombat Events
 		self:InitAfterCombat()
 
@@ -39,7 +41,7 @@ function zBar3:OnEvent(event, ...)
 		self:RegisterSlash()
 		-- welcome message
 		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
-		
+	
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		if InCombatLockdown() then
 			--print("zBar3: InCombatLockdown event = " .. event)
@@ -74,8 +76,6 @@ function zBar3:AddBar(bar)
 
 	-- inherit functions
 	setmetatable(bar, {__index = zBarT})
-
-	--bar:SetParent(zBarT)
 end
 
 --[[ Addon Init ]]
@@ -103,31 +103,44 @@ function zBar3:Init()
 	self.class = select(2, UnitClass("player"))
 end
 
-function zBar3:Hook()
+local function zBar3Button_OnEnter(self)
+  local bar = self:GetParent()
+  if bar:GetID() <= 10 then
+    if zTab:FreeOnEnter(self) then return end
+    bar:SetAlpha(1)
+    if not zBar3Data.hideTip then
+      ActionButton_SetTooltip(self)
+    end
+  end
+end
+
+local function zBar3Button_OnLeave(self)
+  local bar = self:GetParent()
+  if bar:GetID() <= 10 then
+    bar:SetAlpha(zBar3Data[bar:GetName()].alpha)
+    if not zBar3Data.hideTip then
+      GameTooltip:Hide()
+    end
+  end
+end
+
+function zBar3:InitAllButtons()
 	-- hook scripts for all action buttons
 	local name, bar, button
 	for name, bar in pairs(self.bars) do
-		if bar:GetID() <= 10 then
-			for id = 1, NUM_ACTIONBAR_BUTTONS do
-				button = _G[self.buttons[bar:GetName()..id]]
-				if button then
-					button:SetMovable(true)
-					-- set button scripts
-					button:SetScript("OnEnter",function(self)
-						if zTab:FreeOnEnter(self) then return end
-						self:GetParent():SetAlpha(1)
-						if zBar3Data.hideTip then return end
-						ActionButton_SetTooltip(self)
-					end)
-					button:SetScript("OnLeave",function(self)
-						local bar = self:GetParent()
-						bar:SetAlpha(zBar3Data[bar:GetName()].alpha)
-						if zBar3Data.hideTip then return end
-						GameTooltip:Hide()
-					end)
-				end
-			end
-		end
+    for id = 1, bar:GetNumButtons() do
+      button = _G[self.buttons[bar:GetName()..id]]
+      if button then
+        if bar:GetID() <= 10 then
+          --button:SetMovable(true)
+          -- set button scripts
+          button:SetScript("OnEnter", zBar3Button_OnEnter)
+          button:SetScript("OnLeave", zBar3Button_OnLeave)
+        end
+        button:HookScript("OnEnter", function(self) zTab.OnPopup(self:GetParent():GetTab()) end)
+        button:HookScript("OnLeave", function(self) zTab.OnFadeOut(self:GetParent():GetTab()) end)
+      end
+    end
 	end
 end
 
