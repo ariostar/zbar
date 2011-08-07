@@ -19,9 +19,11 @@ function zPossessBar:Load()
 		button:SetParent(self)
 		button:ClearAllPoints()
 		button:SetPoint("CENTER")
-		_G[button:GetName().."NormalTexture"]:SetWidth(52)
-		_G[button:GetName().."NormalTexture"]:SetHeight(52)
-		_G[button:GetName().."NormalTexture"]:SetPoint("CENTER")
+		
+		local offset = 10
+		button:GetNormalTexture():ClearAllPoints()
+		button:GetNormalTexture():SetPoint("TOPLEFT", -offset, offset)
+		button:GetNormalTexture():SetPoint("BOTTOMRIGHT", offset, -offset)
 		_G[button:GetName().."Cooldown"]:SetAlpha(0)
 	end
 

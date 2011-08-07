@@ -21,11 +21,13 @@ end
 
 function zTab:OnPopup()
   UIFrameFadeRemoveFrame(self)
-  self:SetAlpha(0.6)
+  self:SetAlpha(0.7)
 end
 
 function zTab:OnFadeOut()
-  UIFrameFadeOut(self, 1, 0.6, 0)
+  if not zBar3Data[self.bar:GetName()].hideTab then
+    UIFrameFadeOut(self, 1, 0.7, 0)
+  end
 end
 
 -- drag start

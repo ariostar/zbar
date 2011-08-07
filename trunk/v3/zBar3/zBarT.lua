@@ -59,36 +59,29 @@ function zBarT:Reset(resetsaves)
 end
 
 function zBarT:ResetChildren()
-	self:GetButton(1):ClearAllPoints()
-	self:GetButton(1):SetPoint("center")
-	
 	for i = 1, self:GetNumButtons() do
 		self:GetButton(i):SetParent(self)
 	end
+	
+	self:GetButton(1):ClearAllPoints()
+	self:GetButton(1):SetPoint("center")
 end
 
 function zBarT:UpdateVisibility()
+
 	if zBar3Data[self:GetName()].hide then
 		self:Hide()
-		self:GetTab():Hide()
-		if self:GetID()<15 then
-			self:SetAttribute('collapsed', true)
-		end
 	else
 		self:Show()
-		self:GetTab():Show()
-		self:GetTab():SetAlpha(0)
-		if self:GetID()<15 then
-			self:SetAttribute('collapsed', nil)
-		end
 	end
-	--[[
-	if zBar3Data[self:GetName()].hideTab then
+
+	if zBar3Data[self:GetName()].hideTab
+	or zBar3Data[self:GetName()].hide then
 		self:GetTab():Hide()
 	else
 		self:GetTab():Show()
+		self:GetTab():SetAlpha(0)
 	end
-	]]
 end
 
 function zBarT:UpdateAutoPop()
@@ -178,7 +171,7 @@ function zBarT:GetLabel()
 
 	if not label then
 		label = self:GetTab():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
-		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 0)
+		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 2)
 		label:SetText( zBar3.loc.Labels[self:GetName()] or self:GetName() )
 		--label:Hide()
 	end
@@ -210,7 +203,7 @@ function zBarT:GetTab()
 	tab.bar = self
 	tab:SetWidth(self:GetWidth())
 	tab:SetScale(self:GetScale())
-	tab:SetFrameLevel(self:GetFrameLevel() + 5)
+	tab:SetFrameLevel(self:GetFrameLevel() + 2)
 
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
