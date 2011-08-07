@@ -26,8 +26,12 @@ function zBar3:GetDefault(name, key, subkey)
 	-- common values
 	for k,v in pairs(zBar3.defaults["*"]) do
 		if set[k] then
-			for m,n in pairs(v) do
-				if set[k][m] == nil then set[k][m] = n end
+		  if type(v) == "table" then
+        for m,n in pairs(v) do
+          if set[k][m] == nil then set[k][m] = n end
+        end
+      else
+        set[k] = v
 			end
 		end
 	end
@@ -42,18 +46,45 @@ end
 
 -- zBar3 defaults
 zBar3.defaults = {
-	["*"] = {saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},},
-	["zExBar1"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",36,72},},
-	["zShadow1"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",72,72},},
-	["zExBar2"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",-36,72},},
-	["zShadow2"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",0,72},},
+	["*"] = {
+	  width=36,height=36,
+	  saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},
+	},
+	["zExBar1"] = {id=1,
+	  saves = {hide=true,num=6,linenum=1,},
+	  pos = {"CENTER",36,72},
+	},
+	["zShadow1"] = {id=-1,
+	  saves = {hide=true,num=6,linenum=1, max=6,},
+	  pos = {"CENTER",72,72},
+	},
+	["zExBar2"] = {id=2,
+	  saves = {hide=true,num=6,linenum=1,},
+	  pos = {"CENTER",-36,72},
+	},
+	["zShadow2"] = {id=-2,
+	  saves = {hide=true,num=6,linenum=1, max=6,},
+	  pos = {"CENTER",0,72},
+	},
 
-	["zExBar3"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",108,72},},
-	["zShadow3"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",144,72},},
-	["zExBar4"] = { saves = {hide=true,hideTab=true,num=6,linenum=1,},pos = {"CENTER",-108,72},},
-	["zShadow4"] = { saves = {hide=true,hideTab=true,num=6,linenum=1, max=6,},pos = {"CENTER",-72,72},},
+	["zExBar3"] = {id=3,
+    saves = {hide=true,num=6,linenum=1,},
+    pos = {"CENTER",108,72},
+	},
+	["zShadow3"] = {id=-3,
+    saves = {hide=true,num=6,linenum=1, max=6,},
+    pos = {"CENTER",144,72},
+	},
+	["zExBar4"] = {id=4,
+    saves = {hide=true,num=6,linenum=1,},
+    pos = {"CENTER",-108,72},
+	},
+	["zShadow4"] = {id=-4,
+    saves = {hide=true,num=6,linenum=1, max=6,},
+    pos = {"CENTER",-72,72},
+	},
 
-	["zCastBar"] = {
+	["zCastBar"] = {id=16,width=34,height=13,
 		saves = {num = 2, max = 2, hideTab=true,},
 		pos={"BOTTOM",0,210},
 	},

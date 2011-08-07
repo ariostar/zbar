@@ -68,6 +68,7 @@ function zCastBar:UpdateLayouts()
 	end
 end
 
+-- show texture when zTab:OnDragStart()
 function zCastBar:SetShowTexture(show)
 	if show then
 		CastingBarFrame.fadeOut = nil

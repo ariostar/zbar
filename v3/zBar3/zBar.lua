@@ -105,22 +105,18 @@ end
 
 local function zBar3Button_OnEnter(self)
   local bar = self:GetParent()
-  if bar:GetID() <= 10 then
-    if zTab:FreeOnEnter(self) then return end
-    bar:SetAlpha(1)
-    if not zBar3Data.hideTip then
-      ActionButton_SetTooltip(self)
-    end
+  if zTab:FreeOnEnter(self) then return end
+  bar:SetAlpha(1)
+  if not zBar3Data.hideTip then
+    ActionButton_SetTooltip(self)
   end
 end
 
 local function zBar3Button_OnLeave(self)
   local bar = self:GetParent()
-  if bar:GetID() <= 10 then
-    bar:SetAlpha(zBar3Data[bar:GetName()].alpha)
-    if not zBar3Data.hideTip then
-      GameTooltip:Hide()
-    end
+  bar:SetAlpha(zBar3Data[bar:GetName()].alpha)
+  if not zBar3Data.hideTip then
+    GameTooltip:Hide()
   end
 end
 
@@ -131,8 +127,9 @@ function zBar3:InitAllButtons()
     for id = 1, bar:GetNumButtons() do
       button = _G[self.buttons[bar:GetName()..id]]
       if button then
-        if bar:GetID() <= 10 then
-          --button:SetMovable(true)
+        --if bar:GetID() <= 10 then
+        if bar:GetAttribute("actionpage") then
+          button:SetMovable(true)
           -- set button scripts
           button:SetScript("OnEnter", zBar3Button_OnEnter)
           button:SetScript("OnLeave", zBar3Button_OnLeave)
