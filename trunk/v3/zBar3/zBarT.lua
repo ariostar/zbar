@@ -1,4 +1,4 @@
-local _G = getfenv(0)
+﻿local _G = getfenv(0)
 --[[
 	Functions for Derivates
 --]]
@@ -70,20 +70,25 @@ end
 function zBarT:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		self:Hide()
+		self:GetTab():Hide()
 		if self:GetID()<15 then
 			self:SetAttribute('collapsed', true)
 		end
 	else
 		self:Show()
+		self:GetTab():Show()
+		self:GetTab():SetAlpha(0)
 		if self:GetID()<15 then
 			self:SetAttribute('collapsed', nil)
 		end
 	end
+	--[[
 	if zBar3Data[self:GetName()].hideTab then
 		self:GetTab():Hide()
 	else
 		self:GetTab():Show()
 	end
+	]]
 end
 
 function zBarT:UpdateAutoPop()
@@ -175,7 +180,7 @@ function zBarT:GetLabel()
 		label = self:GetTab():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
 		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 0)
 		label:SetText( zBar3.loc.Labels[self:GetName()] or self:GetName() )
-		label:Hide()
+		--label:Hide()
 	end
 
 	return label
@@ -209,8 +214,8 @@ function zBarT:GetTab()
 
 	tab:RegisterForDrag("LeftButton")
 	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	tab:SetScript("OnDragStart", function(self) zTab:OnDragStart(self) end)
-	tab:SetScript("OnDragStop", function(self) zTab:OnDragStop(self) end)
+	tab:SetScript("OnDragStart", zTab.OnDragStart)
+	tab:SetScript("OnDragStop", zTab.OnDragStop)
 
 	tab:SetFrameRef('bar', self)
 	tab:SetAttribute('label', self:GetLabel())
@@ -223,42 +228,18 @@ function zBarT:GetTab()
 		else UIFrameFadeOut(self.bar:GetLabel(), 1, 1, 0) end
 	end
 	
+	
 	-- collapse and expand
 	tab:SetAttribute("_onclick", [[
 		local bar = self:GetFrameRef('bar')
 		if button == 'RightButton' then
 			control:CallMethod('OnMenu')
-			control:CallMethod('ShowLabel', nil)
 		elseif button == 'LeftButton' then
-			if not bar:GetAttribute('DisableHoverPop') then
-				if bar:GetAttribute('collapsed') then
-					bar:Show()
-					bar:SetAttribute('collapsed', nil)
-					bar:UnregisterAutoHide()
-				else
-					bar:Hide()
-					bar:SetAttribute('collapsed', true)
-				end
-			end
 		end
 	]])
-	tab:SetAttribute("_onenter", [[
-		control:CallMethod('ShowLabel', true)
-		local bar = self:GetFrameRef('bar')
-		if bar:GetAttribute('collapsed') then
-			bar:Show()
-			bar:UnregisterAutoHide()
-			bar:RegisterAutoHide(1)
-			bar:AddToAutoHide(self)
-			local buttons = bar:GetChildList(table.new())
-			for _,btn in pairs(buttons) do
-				bar:AddToAutoHide(btn)
-			end
-		end
-	]])
-	tab:SetAttribute("_onleave", [[
-		control:CallMethod('ShowLabel', false)
-	]])
-
+	
+	tab:SetScript("OnEnter", zTab.OnPopup)
+	tab:SetScript("OnLeave", zTab.OnFadeOut)
+	
 	return tab
 end

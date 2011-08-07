@@ -19,8 +19,17 @@ function zTab:SavePosition(tab)
 	end
 end
 
+function zTab:OnPopup()
+  UIFrameFadeRemoveFrame(self)
+  self:SetAlpha(0.6)
+end
+
+function zTab:OnFadeOut()
+  UIFrameFadeOut(self, 1, 0.6, 0)
+end
+
 -- drag start
-function zTab:OnDragStart(self)
+function zTab:OnDragStart()
 	self:StartMoving()
 
 	if InCombatLockdown() then return end
@@ -37,7 +46,7 @@ function zTab:OnDragStart(self)
 end
 
 -- darg stop
-function zTab:OnDragStop(self)
+function zTab:OnDragStop()
 	self:StopMovingOrSizing()
 
 	zTab:SavePosition(self)
