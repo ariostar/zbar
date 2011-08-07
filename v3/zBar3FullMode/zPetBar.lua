@@ -5,11 +5,6 @@ zBar3:AddPlugin(zPetBar, zMainBar)
 zBar3:AddBar(zPetBar)
 
 function zPetBar:Load()
-	self:SetID(11)
-	self:SetFrameStrata("LOW")
-	self:SetClampedToScreen(true)
-	self:SetWidth(30); self:SetHeight(30);
-
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		_G["PetActionButton"..i]:SetParent(self)
 		zBar3.buttons["zPetBar"..i] = "PetActionButton"..i

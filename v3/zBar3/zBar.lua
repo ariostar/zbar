@@ -24,6 +24,7 @@ function zBar3:OnEvent(event, ...)
 		end
 		-- bars init
 		for name, bar in pairs(self.bars) do
+		  bar:init()
 			bar:Reset()
 		end
 		-- buttonfacade support

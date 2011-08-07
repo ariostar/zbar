@@ -5,12 +5,8 @@ zBar3:AddPlugin(zPossessBar, zMainBar)
 zBar3:AddBar(zPossessBar)
 
 function zPossessBar:Load()
-	self:SetID(20)
-	self:SetFrameStrata("LOW")
-	self:SetClampedToScreen(true)
-	self:SetWidth(30); self:SetHeight(30)
 
-	RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
+  RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
 	
 	-- create and add buttons
 	for i = 1, 2 do

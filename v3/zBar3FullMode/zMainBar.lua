@@ -9,11 +9,6 @@ zBar3:AddBar(zMainBar)
 	functional
 --]]
 function zMainBar:Load()
-	self:SetID(10)
-	self:SetFrameStrata("HIGH")
-	self:SetClampedToScreen(true)
-	self:SetWidth(36) self:SetHeight(36)
-
 	for id=1,NUM_ACTIONBAR_BUTTONS do
 		_G["ActionButton"..id]:SetParent(self)
 		zBar3.buttons["zMainBar"..id] = "ActionButton"..id

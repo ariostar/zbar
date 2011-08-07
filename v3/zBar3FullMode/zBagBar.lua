@@ -5,13 +5,6 @@ zBar3:AddPlugin(zBagBar, zMainBar)
 zBar3:AddBar(zBagBar)
 
 function zBagBar:Load()
-	self:SetID(13)
-	self:SetFrameStrata("LOW")
-	self:SetClampedToScreen(true)
-	self:SetWidth(37); self:SetHeight(37);
-
-	self:SetAttribute("DisableHoverPop", true)
-
 	-- bag packs
 	MainMenuBarBackpackButton:SetParent(self)
 	MainMenuBarBackpackButton:SetWidth(36)

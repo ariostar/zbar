@@ -11,19 +11,14 @@ function zExBars:New(prefix,id,page)
 	local bar = CreateFrame("Frame", prefix..id, UIParent, "SecureHandlerStateTemplate")
 	zBar3:AddBar(bar)
 
-	bar:SetFrameStrata("MEDIUM")
-	bar:SetClampedToScreen(true)
-	bar:SetWidth(36); bar:SetHeight(36);
 	bar:SetAttribute("actionpage", page)
 
 	bar.GetExButton = self.GetExButton
 
 	if prefix == "zShadow" then
-		bar:SetID(-id)
 		bar.isShadow = true
 		rawset(bar, "UpdateButtons", zExBars.UpdateShadowButtons)
 	else
-		bar:SetID(id)
 		bar.isExtra = true
 		rawset(bar, "UpdateButtons", zExBars.UpdateExBarButtons)
 		bar.GetNumButtons = self.GetNumButtons

@@ -6,12 +6,7 @@ zBar3:AddPlugin(zXPBar, zMainBar)
 zBar3:AddBar(zXPBar)
 
 function zXPBar:Load()
-	zXPBar:SetID(15)
 	zXPBar:SetMovable(true)
-	zXPBar:SetClampedToScreen(true)
-	zXPBar:SetFrameStrata("BACKGROUND")
-	zXPBar:SetWidth(34)
-	zXPBar:SetHeight(XPHeight + 2)
 
 	--[[ XP Bar ]]
 	MainMenuExpBar:SetParent(zXPBar)
@@ -21,9 +16,7 @@ function zXPBar:Load()
 	MainMenuExpBar:SetHeight(XPHeight)
 	
 	zBar3.buttons['zXPBar1'] = "MainMenuExpBar"
-	
-	self:SetAttribute("DisableHoverPop", true)
-	
+		
 	-- text
 	MainMenuBarExpText:SetPoint("CENTER",MainMenuExpBar,0,0)
 	MainMenuBarExpText:SetFontObject(NumberFontNormalHuge)
