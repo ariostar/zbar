@@ -4,13 +4,6 @@ zBar3:AddBar(zMicroBar)
 
 
 function zMicroBar:Load()
-	self:SetID(14)
-	self:SetFrameStrata("LOW")
-	self:SetClampedToScreen(true)
-	self:SetWidth(29); self:SetHeight(36);
-	
-	self:SetAttribute("DisableHoverPop", true)
-
 	local numBtns = 0
 	for i, btn in ipairs({MainMenuBarArtFrame:GetChildren()}) do
 		local name = btn:GetName()

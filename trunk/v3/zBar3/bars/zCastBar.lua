@@ -3,12 +3,6 @@ zBar3:AddPlugin(zCastBar)
 zBar3:AddBar(zCastBar)
 
 function zCastBar:Load()
-	self:SetID(16)
-	self:SetWidth(34)
-	self:SetHeight(13)
-
-	self:SetAttribute("DisableHoverPop", true)
-	
 	self:ResetChildren()
 
 	-- skin

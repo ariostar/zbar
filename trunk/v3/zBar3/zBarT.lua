@@ -6,6 +6,19 @@
 -- template for common functions of bars
 zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
 
+function zBatT:Init()
+	local def = zBar3:GetDefault(self, "init")
+	
+  self:SetID(def.id)
+  self:SetWidth(def.width)
+  self:SetHeight(def.height)
+  
+  self:SetClampedToScreen(true)
+  if def.frameStrata then
+    self:SetFrameStrata(def.frameStrata)
+  end
+end
+
 --[[ reset profile, scale, position to DEFAULT for any bar ]]
 function zBarT:Reset(resetsaves)
 	

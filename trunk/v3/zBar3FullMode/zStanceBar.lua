@@ -5,12 +5,8 @@ zBar3:AddPlugin(zStanceBar, zMainBar)
 zBar3:AddBar(zStanceBar)
 
 function zStanceBar:Load()
-	self:SetID(12)
-	self:SetFrameStrata("LOW")
-	self:SetClampedToScreen(true)
-	self:SetWidth(30); self:SetHeight(30)
 
-	for i = 1, NUM_SHAPESHIFT_SLOTS do
+  for i = 1, NUM_SHAPESHIFT_SLOTS do
 		zBar3.buttons["zStanceBar"..i] = "ShapeshiftButton"..i
 		_G["ShapeshiftButton"..i]:SetParent(self)
 		_G["ShapeshiftButton"..i]:GetNormalTexture():SetPoint("CENTER")

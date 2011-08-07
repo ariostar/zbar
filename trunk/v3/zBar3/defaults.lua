@@ -47,44 +47,53 @@ end
 -- zBar3 defaults
 zBar3.defaults = {
 	["*"] = {
-	  width=36,height=36,
+	  init = {width=36,height=36,frameStrata="MEDIUM"},
 	  saves = {num = 12, inset = 0, layout = "line", linenum = 2, alpha = 1,},
 	},
-	["zExBar1"] = {id=1,
+	["zExBar1"] = {
+	  init = {id=1},
 	  saves = {hide=true,num=6,linenum=1,},
 	  pos = {"CENTER",36,72},
 	},
-	["zShadow1"] = {id=-1,
+	["zShadow1"] = {
+	  init = {id=-1},
 	  saves = {hide=true,num=6,linenum=1, max=6,},
 	  pos = {"CENTER",72,72},
 	},
-	["zExBar2"] = {id=2,
+	["zExBar2"] = {
+	  init = {id=2},
 	  saves = {hide=true,num=6,linenum=1,},
 	  pos = {"CENTER",-36,72},
 	},
-	["zShadow2"] = {id=-2,
+	["zShadow2"] = {
+	  init = {id=-2},
 	  saves = {hide=true,num=6,linenum=1, max=6,},
 	  pos = {"CENTER",0,72},
 	},
 
-	["zExBar3"] = {id=3,
+	["zExBar3"] = {
+	  init = {id=3},
     saves = {hide=true,num=6,linenum=1,},
     pos = {"CENTER",108,72},
 	},
-	["zShadow3"] = {id=-3,
+	["zShadow3"] = {
+	  init = {id=-3},
     saves = {hide=true,num=6,linenum=1, max=6,},
     pos = {"CENTER",144,72},
 	},
-	["zExBar4"] = {id=4,
+	["zExBar4"] = {
+	  init = {id=4},
     saves = {hide=true,num=6,linenum=1,},
     pos = {"CENTER",-108,72},
 	},
-	["zShadow4"] = {id=-4,
+	["zShadow4"] = {
+	  init = {id=-4},
     saves = {hide=true,num=6,linenum=1, max=6,},
     pos = {"CENTER",-72,72},
 	},
 
-	["zCastBar"] = {id=16,width=34,height=13,
+	["zCastBar"] = {
+	  init = {id=16,width=34,height=13},
 		saves = {num = 2, max = 2, hideTab=true,},
 		pos={"BOTTOM",0,210},
 	},
