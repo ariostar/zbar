@@ -23,12 +23,12 @@ function zExBars:New(prefix,id,page)
 		rawset(bar, "UpdateButtons", zExBars.UpdateExBarButtons)
 		bar.GetNumButtons = self.GetNumButtons
 		for i = 1, 12 do
-			local button =bar:GetExButton(i)
+			local button = bar:GetExButton(i, id)
 			button:SetID(i)
 			button:SetParent(bar)
 		end
-		bar:GetExButton(1):ClearAllPoints()
-		bar:GetExButton(1):SetPoint("CENTER")
+		bar:GetExButton(1, id):ClearAllPoints()
+		bar:GetExButton(1, id):SetPoint("CENTER")
 	end
 
 	if not zBar3Data[prefix..id] then
@@ -69,8 +69,8 @@ function zExBars:Load()
 	end
 end
 
-function zExBars:GetExButton(i)
-	return _G["zExButton"..i + (self:GetID()-1)*NUM_ACTIONBAR_BUTTONS]
+function zExBars:GetExButton(i, id)
+	return _G["zExButton"..i + (id-1)*NUM_ACTIONBAR_BUTTONS]
 end
 
 function zExBars:GetNumButtons()

@@ -24,7 +24,8 @@ function zBar3FullMode:Load()
 		saves = {linenum = 12, hideTab=true,},
 		pos ={"BOTTOM",-100,132-24},
 	}
-	zBar3.defaults["zMultiBL"] = {id=5,
+	zBar3.defaults["zMultiBL"] = {
+	  init = {id=5},
 		saves = {linenum = 12, hideTab=true,},
 		pos ={"BOTTOM",-100,96-24},
 	}
@@ -57,7 +58,7 @@ function zBar3FullMode:Load()
 		pos = {"BOTTOMRIGHT",-238,70-24/0.68},
 	}
 	zBar3.defaults["zXPBar"] = {
-	  init = {id=15,widht=34,height=22,frameStrata="BACKGROUND"},
+	  init = {id=15,width=34,height=22,frameStrata="BACKGROUND"},
 		saves = {num = 2, max = 3, scale=0.56, hideTab=true},
 		pos = {"BOTTOM",98, 148-28},
 	}

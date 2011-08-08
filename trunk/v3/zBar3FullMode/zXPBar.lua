@@ -53,8 +53,9 @@ function zXPBar:Load()
 end
 
 function zXPBar:Hook()
-	self:GetTab():SetScale(1)
-	self:GetTab().SetScale = function(self, scale)
+  local tab = self:GetTab()
+  tab:SetScale(1)
+	tab.SetScale = function(self, scale)
 	  if scale < 1 then
 	    zBar3.SetScale(self, 1)
 	  else

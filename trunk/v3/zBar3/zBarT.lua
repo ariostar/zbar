@@ -6,7 +6,7 @@
 -- template for common functions of bars
 zBarT = CreateFrame("Frame",nil,UIParent,"SecureHandlerStateTemplate")
 
-function zBatT:Init()
+function zBarT:Init()
 	local def = zBar3:GetDefault(self, "init")
 	
   self:SetID(def.id)
@@ -208,6 +208,10 @@ end
 -- get tab of bar, create if not exist
 function zBarT:GetTab()
 	local id = self:GetID()
+	if id == 0 then
+	  self:Init()
+	  id = self:GetID()
+	end
 	local tab = _G["zTab"..id]
 	if tab then return tab end
 
