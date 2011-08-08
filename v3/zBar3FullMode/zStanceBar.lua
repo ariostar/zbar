@@ -61,8 +61,8 @@ function zStanceBar:Hook()
 	hooksecurefunc("UIParent_ManageFramePositions", function()
 		if 50 ~= _G["ShapeshiftButton1"]:GetNormalTexture():GetWidth() then
 			for i = 1, GetNumShapeshiftForms() do
-				_G["ShapeshiftButton"..i]:GetNormalTexture():SetWidth(50)
-				_G["ShapeshiftButton"..i]:GetNormalTexture():SetHeight(50)
+				_G["ShapeshiftButton"..i]:GetNormalTexture():SetWidth(53)
+				_G["ShapeshiftButton"..i]:GetNormalTexture():SetHeight(53)
 			end
 		end
 	end)

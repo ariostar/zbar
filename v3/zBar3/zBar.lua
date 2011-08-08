@@ -41,7 +41,7 @@ function zBar3:OnEvent(event, ...)
 		-- register slash command
 		self:RegisterSlash()
 		-- welcome message
-		self:print("zBar3 v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",0.0,1.0,0.0)
+		self:print("|cffFF3300zBar3|r v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",1.0,0.9,0.0)
 	
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		if InCombatLockdown() then
