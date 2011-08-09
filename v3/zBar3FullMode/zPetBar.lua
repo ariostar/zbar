@@ -30,14 +30,19 @@ function zPetBar:UpdateVisibility()
 end
 
 function zPetBar:UpdateButtons()
-	zBarT.UpdateButtons(self)
+	zBarT.UpdateButtons(self)	
 	local name = self:GetName()
 	for i = 2, NUM_PET_ACTION_SLOTS do
-		if _G[zBar3.buttons[name..i]]:GetAttribute("statehidden") then
-			_G[zBar3.buttons[name..i]]:SetParent(zBar3.hiddenFrame)
+	  local button = _G[zBar3.buttons[name..i]]
+		if button:GetAttribute("statehidden") then
+			button:SetParent(zBar3.hiddenFrame)
 		else
-			_G[zBar3.buttons[name..i]]:SetParent(self)
-			_G[zBar3.buttons[name..i]]:Show()
+			button:SetParent(self)
+		  if PetActionBarFrame.showgrid > 0 or GetPetActionInfo(i) then
+			  button:Show()
+			else
+			  button:Hide()
+			end
 		end
 	end
 end

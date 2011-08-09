@@ -20,11 +20,13 @@ function zTab:SavePosition(tab)
 end
 
 function zTab:OnPopup()
+  if InCombatLockdown() then return end
   UIFrameFadeRemoveFrame(self)
   self:SetAlpha(0.7)
 end
 
 function zTab:OnFadeOut()
+  if InCombatLockdown() then return end
   if not zBar3Data[self.bar:GetName()].hideTab then
     UIFrameFadeOut(self, 1, 0.7, 0)
   end

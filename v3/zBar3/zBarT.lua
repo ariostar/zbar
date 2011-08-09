@@ -185,8 +185,8 @@ function zBarT:GetLabel()
 	if not label then
 		label = self:GetTab():CreateFontString(self:GetName().."Label", "ARTWORK", "GameFontGreen")
 		label:SetPoint("BOTTOM", self:GetTab(), "TOP", 0, 2)
-		label:SetText( zBar3.loc.Labels[self:GetName()] or self:GetName() )
-		--label:Hide()
+		label:SetText(zBar3.loc.Labels[self:GetName()] or self:GetName())
+		label:Hide()
 	end
 
 	return label
@@ -223,29 +223,18 @@ function zBarT:GetTab()
 	tab:SetFrameLevel(self:GetFrameLevel() + 2)
 
 	tab:RegisterForDrag("LeftButton")
-	tab:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	tab:RegisterForClicks("RightButtonUp")
 	tab:SetScript("OnDragStart", zTab.OnDragStart)
 	tab:SetScript("OnDragStop", zTab.OnDragStop)
 
 	tab:SetFrameRef('bar', self)
-	tab:SetAttribute('label', self:GetLabel())
 	tab.OnMenu = function(self, unit, button)
 		zBar3:Config(self.bar)
 	end
 
-	tab.ShowLabel = function(self, show)
-		if show then UIFrameFadeIn(self.bar:GetLabel(), 0.2, 0, 1)
-		else UIFrameFadeOut(self.bar:GetLabel(), 1, 1, 0) end
-	end
-	
-	
-	-- collapse and expand
+	-- clicks
 	tab:SetAttribute("_onclick", [[
-		local bar = self:GetFrameRef('bar')
-		if button == 'RightButton' then
-			control:CallMethod('OnMenu')
-		elseif button == 'LeftButton' then
-		end
+		control:CallMethod('OnMenu')
 	]])
 	
 	tab:SetScript("OnEnter", zTab.OnPopup)
