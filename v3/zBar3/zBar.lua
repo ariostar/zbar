@@ -41,7 +41,7 @@ function zBar3:OnEvent(event, ...)
 		-- register slash command
 		self:RegisterSlash()
 		-- welcome message
-		self:print("|cffFF3300zBar3|r v"..self.version.." Loaded :: Author - "..self.author.. " :: type /zbar",1.0,0.9,0.0)
+		self:print(format(zBar3.loc.Msg.Loaded, 'ff6600', self.version, self.author, 'ffee00'),.3,.8,1)
 	
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		if InCombatLockdown() then
@@ -240,17 +240,17 @@ end
 --[[ Config ]]
 
 function zBar3:Config(bar)
-	if not zBarOption then
+	if not zBarConfig then
 		local name = 'zBar3Config'
 		local loaded, reason = LoadAddOn(name)
 		if ( not loaded ) then
 			message(format(ADDON_LOAD_FAILED, name, _G["ADDON_"..reason]))
 			return
 		else
-			zBarOption:Load()
+			zBarConfig:Load()
 		end
 	end
-	zBarOption:Openfor(bar)
+	zBarConfig:Openfor(bar)
 end
 
 function zBar3:RegisterSlash()

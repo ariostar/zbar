@@ -11,9 +11,11 @@ if not zBar3.loc then
 		zExBar1 = "Extra1", zShadow1 = "Shadow1", zExBar2 = "Extra2", zShadow2 = "Shadow2",
 		zExBar3 = "Extra3", zShadow3 = "Shadow3", zExBar4 = "Extra4", zShadow4 = "Shadow4",
 	}
+	
+	loc.Msg = {Loaded = "|cff%szBar3|r v%s Loaded :: Author - %s :: type |cff%s/zbar|r"}
 
 	--[[ Bindings ]]--
-	BINDING_HEADER_ZEXBUTTON = "zBar2 - Extra Buttons"
+	BINDING_HEADER_ZEXBUTTON = "zBar3 - Extra Buttons"
 	for i = 1, 48 do
 		setglobal("BINDING_NAME_CLICK zExButton"..i..":LeftButton", "zExButton"..i)
 	end

@@ -67,4 +67,6 @@
 		NumPerLine	= "设置每行按钮的数量\n从而组合出横向、纵向、多行的排列方式",
 		Alpha			= "设置动作条透明度\n鼠标进入时透明度还原",
 	}
+	
+	loc.Msg['DontSetupInCombat'] = "战斗中！请不要设置！"
 end

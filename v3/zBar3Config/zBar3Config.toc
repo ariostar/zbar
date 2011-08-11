@@ -11,4 +11,5 @@ locale\tw.lua
 locale\en.lua
 
 Templates.xml
-zBarOption.lua
+zBarConfig.lua
+zBarConfigData.lua

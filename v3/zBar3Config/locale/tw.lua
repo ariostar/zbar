@@ -67,4 +67,6 @@
 		NumPerLine	= "設置每行按鈕的數量\n從而組合出橫向、縱向、多行的排列方式",
 		Alpha			= "設置動作條透明度\n滑鼠移入時透明度還原",
 	}
+	
+	loc.Msg['DontSetupInCombat'] = "戰鬥中！請不要設置！"
 end

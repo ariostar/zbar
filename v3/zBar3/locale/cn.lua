@@ -10,6 +10,8 @@
 		zExBar3 = "扩展3", zShadow3 = "影射3", zExBar4 = "扩展4", zShadow4 = "影射4",
 	}
 
+	loc.Msg = {Loaded = "|cff%szBar3|r 版本 %s 已加载，作者：%s，命令：|cff%s/zbar|r"}
+
 	--[[ Bindings ]]--
 	BINDING_HEADER_ZEXBUTTON = "炽火动作条绑定"
 	for i = 1, 48 do

@@ -3,13 +3,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	<Script file="Templates.lua"/>
 	<!-- OptionFrame buttons -->
-	<CheckButton name="zBarOptionRadioButtonTemplate" virtual="true">
+	<CheckButton name="zBarConfigRadioButtonTemplate" virtual="true">
 		<Size x="16" y="16"/>
 		<HitRectInsets left="0" right="-50" top="0" bottom="0"/>
 		<Scripts>
-			<OnLoad>zBarOptionTemplate.Load(self, 'radio')</OnLoad>
-			<OnEnter>zBarOptionTemplate.Enter(self)</OnEnter>
-			<OnLeave>zBarOptionTemplate.Leave(self)</OnLeave>
+			<OnLoad>zBarConfigTemplate.Load(self, 'radio')</OnLoad>
+			<OnEnter>zBarConfigTemplate.Enter(self)</OnEnter>
+			<OnLeave>zBarConfigTemplate.Leave(self)</OnLeave>
 		</Scripts>
 		<Layers>
 			<Layer level="ARTWORK">
@@ -28,15 +28,15 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 		</CheckedTexture>
 	</CheckButton>
 
-	<CheckButton name="zBarOptionCheckButtonTemplate" virtual="true">
+	<CheckButton name="zBarConfigCheckButtonTemplate" virtual="true">
 		<Size x="22" y="22"/>
 		<HitRectInsets>
 			<AbsInset left="0" right="-60" top="0" bottom="0"/>
 		</HitRectInsets>
 		<Scripts>
-			<OnLoad>zBarOptionTemplate.Load(self, 'check')</OnLoad>
-			<OnEnter>zBarOptionTemplate.Enter(self)</OnEnter>
-			<OnLeave>zBarOptionTemplate.Leave(self)</OnLeave>
+			<OnLoad>zBarConfigTemplate.Load(self, 'check')</OnLoad>
+			<OnEnter>zBarConfigTemplate.Enter(self)</OnEnter>
+			<OnLeave>zBarConfigTemplate.Leave(self)</OnLeave>
 		</Scripts>
 		<Layers>
 			<Layer level="ARTWORK">
