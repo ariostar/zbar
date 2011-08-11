@@ -67,4 +67,5 @@ if zBar3.loc and zBar3.loc.language == 'en' then
 		Alpha			= "Transparent when mouse leave\nNormal when enter",
 	}
 
+	loc.Msg['DontSetupInCombat'] = "zBar3Option: DO NOT SETUP IN COMBAT !!!"
 end

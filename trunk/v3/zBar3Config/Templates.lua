@@ -1,6 +1,6 @@
-zBarOptionTemplate = {}
+zBarConfigTemplate = {}
 
-function zBarOptionTemplate:Load(typeName)
+function zBarConfigTemplate:Load(typeName)
 	self.typeName = typeName
 	self.text = getglobal(self:GetName().."Text")
 	if (self.text) then
@@ -19,7 +19,7 @@ function zBarOptionTemplate:Load(typeName)
 	end
 end
 
-function zBarOptionTemplate:Enter()
+function zBarConfigTemplate:Enter()
 	if (self.tooltipText ) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 		GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
@@ -33,7 +33,7 @@ function zBarOptionTemplate:Enter()
 	end
 end
 
-function zBarOptionTemplate:Leave()
+function zBarConfigTemplate:Leave()
 	GameTooltip:Hide();
 	self:ResetTextColor()
 end
