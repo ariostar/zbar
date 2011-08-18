@@ -59,8 +59,8 @@ function zBar3FullMode:Load()
 	}
 	zBar3.defaults["zXPBar"] = {
 	  init = {id=15,width=34,height=22,frameStrata="BACKGROUND"},
-		saves = {num = 2, max = 3, scale=0.56, hideTab=true},
-		pos = {"BOTTOM",98, 148-28},
+		saves = {num = 2, max = 3, scale=0.562, hideTab=true},
+		pos = {"BOTTOM",98, 121},
 	}
 
 end
