@@ -35,15 +35,19 @@ end
 
 function zBarT:ResetButtonScales(num)
 	for i = 2, num do
-		_G[zBar3.buttons[self:GetName()..i]]:SetScale(1)
+	  if _G[zBar3.buttons[self:GetName()..i]] then
+	    _G[zBar3.buttons[self:GetName()..i]]:SetScale(1)
+	  end
 	end
 end
 
 -- local func, for points settings
 local function SetButtonPoint(bar,index,point,referIndex,relativePoint,offx,offy)
 	local button = _G[zBar3.buttons[bar:GetName()..index]]
-	button:ClearAllPoints()
-	button:SetPoint(point,zBar3.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	if button then
+    button:ClearAllPoints()
+    button:SetPoint(point,zBar3.buttons[bar:GetName()..referIndex],relativePoint,offx,offy)
+	end
 end
 
 --~ line arrangement
@@ -104,13 +108,16 @@ end
 
 function zBarT:SetFree()
 	local saves = zBar3Data[self:GetName()]
-	local name
+	local name, button
 	for i = 2, saves.num do
 		name = zBar3.buttons[self:GetName()..i]
-		if saves.buttons and saves.buttons[name] then
-			_G[name]:SetScale(saves.buttons[name].scale or 1)
-			if saves.buttons[name].pos then
-				SetButtonPoint(self,i,"CENTER",1,"CENTER",saves.buttons[name].pos[1],saves.buttons[name].pos[2])
+		button = _G[name]
+		if button then
+      if saves.buttons and saves.buttons[name] then
+        button:SetScale(saves.buttons[name].scale or 1)
+        if saves.buttons[name].pos then
+          SetButtonPoint(self,i,"CENTER",1,"CENTER",saves.buttons[name].pos[1],saves.buttons[name].pos[2])
+        end
 			end
 		end
 	end
