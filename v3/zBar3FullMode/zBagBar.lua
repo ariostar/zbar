@@ -45,9 +45,11 @@ function zBagBar:Load()
     defSave.max = 5
     defSave.scale = 0.98
     local save = zBar3Data.zBagBar
-    save.num = 5
-    save.linenum = 5
-    save.max = 5
+    if save then
+      save.max = 5
+      if save.num > 5 then save.num = 5 end
+      if save.linenum > 5 then save.linenum = 5 end
+    end
 	end
 
 	self:GetTab():GetNormalTexture():SetWidth(60)
