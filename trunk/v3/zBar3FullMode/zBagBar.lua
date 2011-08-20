@@ -24,18 +24,31 @@ function zBagBar:Load()
 		_G["CharacterBag"..i.."SlotNormalTexture"]:SetHeight(60)
 	end
 
-	-- keyring and performance bar
-	CreateFrame("Frame","zBagBarButton6",self,"SecureFrameTemplate")
-	zBagBarButton6:SetWidth(36); zBagBarButton6:SetHeight(36);
-	zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar5"],"LEFT")
-	zBar3.buttons["zBagBar6"] = "zBagBarButton6"
-
-	KeyRingButton:SetParent(zBagBarButton6)
-	KeyRingButton:SetFrameLevel(1)
-	KeyRingButton:SetHeight(36)
-	KeyRingButton:ClearAllPoints()
-	KeyRingButton:SetPoint("RIGHT",zBagBarButton6)
-	KeyRingButton:Show()
+	-- there is no keyring button since 4.2
+	if KeyRingButton then
+    -- keyring and performance bar
+    CreateFrame("Frame","zBagBarButton6",self,"SecureFrameTemplate")
+    zBagBarButton6:SetWidth(36); zBagBarButton6:SetHeight(36);
+    zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar5"],"LEFT")
+    zBar3.buttons["zBagBar6"] = "zBagBarButton6"
+    
+    KeyRingButton:SetParent(zBagBarButton6)
+    KeyRingButton:SetFrameLevel(1)
+    KeyRingButton:SetHeight(36)
+    KeyRingButton:ClearAllPoints()
+    KeyRingButton:SetPoint("RIGHT",zBagBarButton6)
+    KeyRingButton:Show()
+  else
+    local defSave = zBar3.defaults.zBagBar.saves
+    defSave.num = 5
+    defSave.linenum = 5
+    defSave.max = 5
+    defSave.scale = 0.98
+    local save = zBar3Data.zBagBar
+    save.num = 5
+    save.linenum = 5
+    save.max = 5
+	end
 
 	self:GetTab():GetNormalTexture():SetWidth(60)
 	self:GetTab():GetHighlightTexture():SetWidth(60)
@@ -49,10 +62,12 @@ end
 function zBagBar:UpdateButtons()
 	zBarT.UpdateButtons(self)
 	if zBar3Data[self:GetName()].num == 1 then
-		zBagBarButton6:Show()
-		zBagBarButton6:SetAttribute("showstates", nil)
-		zBagBarButton6:SetAttribute("statehidden", nil)
-		zBagBarButton6:ClearAllPoints()
-		zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar1"],"LEFT")
+	  if zBagBarButton6 then
+      zBagBarButton6:Show()
+      zBagBarButton6:SetAttribute("showstates", nil)
+      zBagBarButton6:SetAttribute("statehidden", nil)
+      zBagBarButton6:ClearAllPoints()
+      zBagBarButton6:SetPoint("RIGHT",zBar3.buttons["zBagBar1"],"LEFT")
+		end
 	end
 end
