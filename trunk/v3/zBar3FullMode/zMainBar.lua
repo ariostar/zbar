@@ -36,21 +36,18 @@ end
 
 --[[ Hooks ]]
 function zMainBar:Hook()
-	OverrideActionBar:UnregisterAllEvents()
-	OverrideActionBar:Hide()
-	OverrideActionBar:SetParent(zBar3.hiddenFrame)
+	--OverrideActionBar:UnregisterAllEvents()
+	--OverrideActionBar:Hide()
+	--OverrideActionBar:SetParent(zBar3.hiddenFrame)
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
-	if VehicleMenuBar then
-		VehicleMenuBar:SetFrameStrata("HIGH")
-		VehicleMenuBar:SetFrameLevel(zMainBar:GetFrameLevel() + 5)
-	end
-	RegisterStateDriver(OverrideActionBar, "visibility", "[bonusbar:5]show;hide")
+  
+	--RegisterStateDriver(OverrideActionBar, "visibility", "[bonusbar:5]show;hide")
 end
 
 --[[ Page Mapping ]]
 function zMainBar:GetStateCommand()
-	local header = "[bonusbar:5]11;"
+	local header = "[vehicleui]12;"
 
 	if zBar3Data["pageTrigger"] then
 		header = header .. '[mod:SELFCAST]2;[help]2;'
@@ -64,7 +61,7 @@ function zMainBar:GetStateCommand()
 		header = header .. "[bonusbar:1,stealth]10;"
 	end
 
-	for i=1,4 do
+	for i=1,5 do
 		header = header .. format('[bonusbar:%d]%d;', i, i+6)
 	end
 
