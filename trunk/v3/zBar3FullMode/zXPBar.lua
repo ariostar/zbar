@@ -102,12 +102,13 @@ function zXPBar:Hook()
 	end
 
 	--[[ Hook for VehicleMenuBar ]]
+  --[[
 	hooksecurefunc("VehicleMenuBar_MoveMicroButtons", function(skinName)
 		zBar3:SafeCallFunc(zXPBar.ResetChildren, zXPBar)
 		zBar3:SafeCallFunc(zXPBar.UpdateLayouts, zXPBar)
 		zBar3:SafeCallFunc(zXPBar.UpdateButtons, zXPBar)
 	end)
-	
+	]]
 	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
 		local name, reaction = GetWatchedFactionInfo()
 		if name then

@@ -96,7 +96,7 @@ function zBarConfig:CheckReady()
 	end
 
 	-- reset button
-	button = CreateFrame("Button","zBarConfigResetButton",self,"UIPanelButtonTemplate2")
+	button = CreateFrame("Button","zBarConfigResetButton",self,"UIPanelButtonTemplate")
 	button:SetWidth(110); button:SetHeight(20);
 	button:SetPoint("TOPRIGHT","zBarConfig","TOPRIGHT",-20,-140)
 	button:SetText(zBar3.loc.Option.Reset)

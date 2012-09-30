@@ -118,7 +118,7 @@ function zBarT:UpdateButtons()
 	local button
 	local db = zBar3Data[self:GetName()]
 
-	if db.max == 0 then return end
+	--if db.max == 0 then return end
 
 	for i = 1, self:GetNumButtons() do
 		button = self:GetButton(i)

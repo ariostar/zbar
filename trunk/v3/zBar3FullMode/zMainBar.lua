@@ -36,16 +36,16 @@ end
 
 --[[ Hooks ]]
 function zMainBar:Hook()
-	--BonusActionBarFrame:UnregisterAllEvents()
-	BonusActionBarFrame:Hide()
-	BonusActionBarFrame:SetParent(zBar3.hiddenFrame)
+	OverrideActionBar:UnregisterAllEvents()
+	OverrideActionBar:Hide()
+	OverrideActionBar:SetParent(zBar3.hiddenFrame)
 
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
 	if VehicleMenuBar then
 		VehicleMenuBar:SetFrameStrata("HIGH")
 		VehicleMenuBar:SetFrameLevel(zMainBar:GetFrameLevel() + 5)
 	end
-	RegisterStateDriver(BonusActionBarFrame, "visibility", "[bonusbar:5]show;hide")
+	RegisterStateDriver(OverrideActionBar, "visibility", "[bonusbar:5]show;hide")
 end
 
 --[[ Page Mapping ]]
