@@ -33,19 +33,19 @@ function zBar3FullMode:Load()
 	  init = {id=11,width=30,height=30,frameStrata="LOW"},
 		saves = {num = 10, inset = 6, linenum = 10, max = 10, scale = 0.8,
 			hideTab=true,hideHotkey=true, label=true},
-		pos = {"BOTTOM",-100,186},
+		pos = {"BOTTOM",-100,200},
 	}
 	zBar3.defaults["zStanceBar"] = {
 	  init = {id=12,width=30,height=30,frameStrata="LOW"},
 		saves = {num=10, inset = 10, linenum = 10, max = 10, scale = 0.9,
 			hideTab=true,hideHotkey=true, label=true},
-		pos = {"BOTTOM",-30,206},
+		pos = {"BOTTOM",-30,216},
 	}
 	zBar3.defaults["zPossessBar"] = {
-	  init = {id=20,width=30,height=30,frameStrata="LOW"},
+	  init = {id=20,width=30,height=30,frameStrata="HIGH"},
 		saves = {num=2, inset = 10, linenum = 2, max = 2, scale = 0.8,
 			hideTab=true,hideHotkey=true, label=true},
-		pos = {"BOTTOM",330,186},
+		pos = {"BOTTOM",330,200},
 	}
 	zBar3.defaults["zBagBar"] = {
 	  init = {id=13,width=37,height=37,frameStrata="LOW"},

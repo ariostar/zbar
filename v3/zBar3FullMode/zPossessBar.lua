@@ -6,10 +6,8 @@ zBar3:AddBar(zPossessBar)
 
 function zPossessBar:Load()
 
-  RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
-	
 	-- create and add buttons
-	for i = 1, 2 do
+	for i = 1, NUM_POSSESS_SLOTS do
 		local button = _G["PossessButton"..i]
 		zBar3.buttons["zPossessBar"..i] = button:GetName()
 		button:SetParent(self)
@@ -22,7 +20,12 @@ function zPossessBar:Load()
 		button:GetNormalTexture():SetPoint("BOTTOMRIGHT", offset, -offset)
 		_G[button:GetName().."Cooldown"]:SetAlpha(0)
 	end
-
+  
+  RegisterStateDriver(self, "visibility", "[vehicleui]show;hide")
+  
+  --[[ Vehicle ]]
+  OverrideActionBar:SetFrameLevel(self:GetFrameLevel() + 5)
+  RegisterStateDriver(OverrideActionBar, "visibility", "[vehicleui]show;hide")
 end
 
 -- override
@@ -32,7 +35,7 @@ function zPossessBar:UpdateVisibility()
 	if zBar3Data[self:GetName()].hide then
 		UnregisterStateDriver(self, "visibility")
 	else
-		RegisterStateDriver(self, "visibility", "[target=vehicle,exists][bonusbar:5]show;hide")
+		RegisterStateDriver(self, "visibility", "[vehicleui]show;hide")
 	end
 
 	zBarT.UpdateVisibility(self)

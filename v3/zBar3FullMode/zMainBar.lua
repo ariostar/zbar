@@ -36,13 +36,7 @@ end
 
 --[[ Hooks ]]
 function zMainBar:Hook()
-	--OverrideActionBar:UnregisterAllEvents()
-	--OverrideActionBar:Hide()
-	--OverrideActionBar:SetParent(zBar3.hiddenFrame)
-
 	MainMenuBar:SetParent(zBar3.hiddenFrame)
-  
-	--RegisterStateDriver(OverrideActionBar, "visibility", "[bonusbar:5]show;hide")
 end
 
 --[[ Page Mapping ]]
