@@ -1,0 +1,5 @@
+# History #
+
+zBar is an action bar mod for World of Warcraft. The project started at Apr.2006. At that time, zBar only have 4 extra bars which can be move, scale, transparent, many layout, auto pop/hide ... It was only published in China, most people don't know it.
+
+After version 0.28, zBar has an extra addon called zBarEx, which makes Blizzard bars under zBar's control. And the version becomes 1.10, this version was published on curse.com at 20,Nov 2006.
