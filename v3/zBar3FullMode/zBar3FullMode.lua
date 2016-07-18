@@ -49,13 +49,13 @@ function zBar3FullMode:Load()
 	}
 	zBar3.defaults["zBagBar"] = {
 	  init = {id=13,width=37,height=37,frameStrata="LOW"},
-		saves = {num=6, linenum=6, max=6, scale=0.9, hideTab=true, invert=true},
-		pos = {"BOTTOMRIGHT",-3,90-24/0.9},
+		saves = {num=6, linenum=6, max=6, scale=1, hideTab=true, invert=true},
+		pos = {"BOTTOMRIGHT",-3,90-24/1},
 	}
 	zBar3.defaults["zMicroBar"] = {
 	  init = {id=14,width=29,height=36,frameStrata="LOW"},
-		saves = {num=10, linenum=10, max=10, scale=0.68, hideTab=true},
-		pos = {"BOTTOMRIGHT",-238,70-24/0.68},
+		saves = {num=10, linenum=10, max=10, scale=0.75, hideTab=true},
+		pos = {"BOTTOMRIGHT",-258,70-24/0.75},
 	}
 	zBar3.defaults["zXPBar"] = {
 	  init = {id=15,width=34,height=22,frameStrata="BACKGROUND"},

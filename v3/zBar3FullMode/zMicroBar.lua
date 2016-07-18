@@ -1,13 +1,31 @@
+local _G = getfenv(0)
+
 CreateFrame("Frame", "zMicroBar", UIParent, "SecureHandlerStateTemplate")
 zBar3:AddPlugin(zMicroBar, zMainBar)
 zBar3:AddBar(zMicroBar)
 
+local function shouldAddButton(name)
+	local accept
+	if name == 'HelpMicroButton' then
+		accept = not isStoreEnabled
+	elseif name == 'StoreMicroButton' then
+		accept = isStoreEnabled
+	else
+		accept = true
+	end
+	return accept
+end 
 
 function zMicroBar:Load()
+	local isStoreEnabled = C_StorePublic.IsEnabled()
 	local numBtns = 0
-	for i, btn in ipairs({MainMenuBarArtFrame:GetChildren()}) do
+	for _, btn in ipairs({MainMenuBarArtFrame:GetChildren()}) do
 		local name = btn:GetName()
-		if name and name:match('(%w+)MicroButton$') then
+
+		if name 
+				and name:match('(%w+)MicroButton$')
+				and shouldAddButton(name)
+		then
 			numBtns = numBtns + 1
 			zBar3.buttons['zMicroBar'..numBtns] = name
 			
@@ -16,6 +34,7 @@ function zMicroBar:Load()
 			btn:SetPoint("BOTTOM")
 		end
 	end
+
 	zBar3.defaults["zMicroBar"].saves.num = numBtns
 	zBar3.defaults["zMicroBar"].saves.max = numBtns
 	zBar3.defaults["zMicroBar"].saves.linenum = numBtns
@@ -35,11 +54,16 @@ function zMicroBar:GetChildSizeAdjust(attachPoint)
 end
 
 function zMicroBar:Hook()
-	hooksecurefunc("MoveMicroButtons", function(anchor, achorTo, relAnchor, x, y, isStacked)
-    zBar3:SafeCallFunc(zMicroBar.ResetChildren, zMicroBar)
-    zBar3:SafeCallFunc(zMicroBar.UpdateLayouts, zMicroBar)
-    zBar3:SafeCallFunc(zMicroBar.UpdateButtons, zMicroBar)
-	end)
+	hooksecurefunc("UpdateMicroButtonsParent", 
+		function(parent)
+			zBar3:SafeCallFunc(zMicroBar.ResetChildren, zMicroBar)
+		end)
+
+	hooksecurefunc("UpdateMicroButtons", 
+		function()
+			zBar3:SafeCallFunc(zMicroBar.UpdateLayouts, zMicroBar)
+			zBar3:SafeCallFunc(zMicroBar.UpdateButtons, zMicroBar)
+		end)
 end
 
 function zMicroBar:UpdateButtons()
