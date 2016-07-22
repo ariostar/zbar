@@ -1,7 +1,0 @@
-﻿## Interface: 20400
-## Title: zBar2Lite
-## Notes: Switch zBar2 to Lite mode
-## Title-zhCN: zBar2Lite - |cffDD66DD精简模式|r
-## Notes-zhCN: 勾选可以切换到精简模式，只有扩展按钮，不加载其他部分。
-## RequiredDeps: zBar2
-## DefaultState: disabled
