@@ -1,4 +1,4 @@
-﻿## Interface: 60200
+﻿## Interface: 70000
 ## Title: zBar3FullMode
 ## Notes: Switch zBar3 to Full mode with main actionbar replacement.
 ## Title-zhCN: zBar3 |cffDDDD66完整模式|r

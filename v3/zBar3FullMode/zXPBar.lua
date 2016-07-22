@@ -56,35 +56,37 @@ function zXPBar:Load()
 	ReputationWatchBar:SetWidth(512)
 	ReputationWatchBar:SetHeight(XPHeight)
 
-	ReputationWatchStatusBar:SetWidth(512)
-	ReputationWatchStatusBar:ClearAllPoints()
-	ReputationWatchStatusBar:SetPoint("BOTTOM",MainMEnuExpBar,"TOP",0,0)
+	ReputationWatchBar.OverlayFrame:SetWidth(512)
+	ReputationWatchBar.OverlayFrame:ClearAllPoints()
+	ReputationWatchBar.OverlayFrame:SetPoint("BOTTOM",MainMEnuExpBar,"TOP",0,0)
 
 	-- text
-	RaiseFrameLevel(ReputationWatchBarOverlayFrame)
-	ReputationWatchStatusBarText:SetFontObject(NumberFontNormalHuge)
+	RaiseFrameLevel(ReputationWatchBar.OverlayFrame)
+	ReputationWatchBar.OverlayFrame.Text:SetFontObject(NumberFontNormalHuge)
 	
 	--[[ Textures ]]
-	ReputationWatchBarTexture0:SetTexCoord(0.01, 1.0, 0, 0.171875)
-  ReputationWatchBarTexture1:SetTexCoord(0, 1.0, 0.171875, 0.34375)
-  ReputationWatchBarTexture2:SetTexCoord(0, 1.0, 0.34375, 0.515625)
-  ReputationWatchBarTexture3:SetTexCoord(0, 1.0, 0.515625, 0.6875)
+	ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexCoord(0.01, 1.0, 0, 0.171875)
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexCoord(0, 1.0, 0.171875, 0.34375)
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexCoord(0, 1.0, 0.34375, 0.515625)
+  ReputationWatchBar.StatusBar.WatchBarTexture0:SetTexCoord(0, 1.0, 0.515625, 0.6875)
+
+  ReputationWatchBar.StatusBar.XPBarTexture0:SetTexCoord(0.01, 1.0, 0.79296875, 0.83503125)
+  ReputationWatchBar.StatusBar.XPBarTexture1:SetTexCoord(0, 1.0, 0.54296875, 0.58503125)
+  ReputationWatchBar.StatusBar.XPBarTexture2:SetTexCoord(0, 1.0, 0.29296875, 0.33503125)
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetTexCoord(0, 0.99, 0.04296875, 0.08503125)
+
+  ReputationWatchBar.StatusBar.XPBarTexture0:SetPoint('TOPLEFT', -2, 0)
+  ReputationWatchBar.StatusBar.XPBarTexture0:SetPoint('BOTTOMLEFT', -2, 0)
 	
-  ReputationXPBarTexture0:SetTexCoord(0.01, 1.0, 0.79296875, 0.83503125)
-  ReputationXPBarTexture1:SetTexCoord(0, 1.0, 0.54296875, 0.58503125)
-  ReputationXPBarTexture2:SetTexCoord(0, 1.0, 0.29296875, 0.33503125)
-  ReputationXPBarTexture3:SetTexCoord(0, 0.99, 0.04296875, 0.08503125)
-  
-  ReputationXPBarTexture0:SetPoint('TOPLEFT', -2, 0)
-  ReputationXPBarTexture0:SetPoint('BOTTOMLEFT', -2, 0)
   for i = 1, 3 do
-    local texture = _G["ReputationXPBarTexture"..i]
+    local texture = ReputationWatchBar.StatusBar["XPBarTexture"..i]
+		local prev = ReputationWatchBar.StatusBar["XPBarTexture"..i-1]
     texture:ClearAllPoints()
-    texture:SetPoint('TOPLEFT', "ReputationXPBarTexture"..i-1, 'TOPRIGHT')
-    texture:SetPoint('BOTTOMLEFT', "ReputationXPBarTexture"..i-1, 'BOTTOMRIGHT')
+    texture:SetPoint('TOPLEFT', prev, 'TOPRIGHT')
+    texture:SetPoint('BOTTOMLEFT', prev, 'BOTTOMRIGHT')
   end
-  ReputationXPBarTexture3:SetPoint('TOPRIGHT', 2, 0)
-  ReputationXPBarTexture3:SetPoint('BOTTOMRIGHT', 2, 0)
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetPoint('TOPRIGHT', 2, 0)
+  ReputationWatchBar.StatusBar.XPBarTexture3:SetPoint('BOTTOMRIGHT', 2, 0)
 
 	
 	self:Hook()
@@ -109,7 +111,7 @@ function zXPBar:Hook()
 		zBar3:SafeCallFunc(zXPBar.UpdateButtons, zXPBar)
 	end)
 	]]
-	hooksecurefunc("ReputationWatchBar_Update", function(newLevel)
+	hooksecurefunc("MainMenuBar_UpdateExperienceBars", function(newLevel)
 		local name, reaction = GetWatchedFactionInfo()
 		if name then
 			if ( not newLevel ) then
@@ -120,13 +122,13 @@ function zXPBar:Hook()
 				if reaction < 5 then r = 1 end
 				if reaction == 3 then g = 0.5 end
 				if reaction > 3 then g = 1 end
-				ReputationWatchStatusBar:SetStatusBarColor(r, g, b);
-				ReputationWatchStatusBar:SetPoint("BOTTOM", MainMenuExpBar, "TOP", 0, 8)
+				ReputationWatchBar.OverlayFrame:SetStatusBarColor(r, g, b);
+				ReputationWatchBar.OverlayFrame:SetPoint("BOTTOM", MainMenuExpBar, "TOP", 0, 8)
 			else
-				ReputationWatchStatusBar:SetPoint("BOTTOM", MainMenuExpBar, "BOTTOM", 0, 0)
-				ReputationWatchStatusBar:SetHeight(XPHeight)
+				ReputationWatchBar.OverlayFrame:SetPoint("BOTTOM", MainMenuExpBar, "BOTTOM", 0, 0)
+				ReputationWatchBar.OverlayFrame:SetHeight(XPHeight)
 			end
-      ReputationWatchStatusBarText:SetPoint("CENTER", ReputationWatchStatusBar, "CENTER", 0, -1);
+      ReputationWatchBar.OverlayFrame.Text:SetPoint("CENTER", ReputationWatchBar.OverlayFrame, "CENTER", 0, -1);
 		end
 	end)
 
@@ -139,13 +141,13 @@ function zXPBar:UpdateButtons()
 	MainMenuExpBar_SetWidth(width)
 	
 	ReputationWatchBar:SetWidth(width)
-	ReputationWatchStatusBar:SetWidth(width)
+	ReputationWatchBar.OverlayFrame:SetWidth(width)
 	
 	for i = 1, 3 do
 		local alpha = 0
 		if i < value.num+1 then alpha = 1 end
-		_G["ReputationWatchBarTexture"..i]:SetAlpha(alpha)
-		_G["ReputationXPBarTexture"..i]:SetAlpha(alpha)
+		ReputationWatchBar.StatusBar["WatchBarTexture"..i]:SetAlpha(alpha)
+		ReputationWatchBar.StatusBar["XPBarTexture"..i]:SetAlpha(alpha)
 	end
 end
 

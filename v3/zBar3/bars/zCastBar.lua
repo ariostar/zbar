@@ -1,3 +1,5 @@
+local _G = _G
+
 zCastBar = CreateFrame("Frame", "zCastBar", UIParent)
 zBar3:AddPlugin(zCastBar)
 zBar3:AddBar(zCastBar)
@@ -6,25 +8,25 @@ function zCastBar:Load()
 	self:ResetChildren()
 
 	-- skin
-	CastingBarFrameBorder:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
-	CastingBarFrameFlash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small")
+	CastingBarFrame.Border:SetTexture("Interface\\CastingBar\\UI-CastingBar-Border-Small")
+	CastingBarFrame.Flash:SetTexture("Interface\\CastingBar\\UI-CastingBar-Flash-Small")
 
 	-- icon
-	CastingBarFrameIcon:Show()
-	CastingBarFrameIcon:SetWidth(24)
-	CastingBarFrameIcon:SetHeight(24)
+	CastingBarFrame.Icon:Show()
+	CastingBarFrame.Icon:SetWidth(24)
+	CastingBarFrame.Icon:SetHeight(24)
 
 	-- text
-	CastingBarFrameText:ClearAllPoints()
-	CastingBarFrameText:SetPoint("CENTER",0,1)
+	CastingBarFrame.Text:ClearAllPoints()
+	CastingBarFrame.Text:SetPoint("CENTER",0,1)
 
 	-- width and height
-	CastingBarFrameBorder:SetWidth(CastingBarFrameBorder:GetWidth() + 4)
-	CastingBarFrameFlash:SetWidth(CastingBarFrameFlash:GetWidth() + 4)
-	CastingBarFrameBorderShield:SetWidth(CastingBarFrameBorderShield:GetWidth() + 4)
-	CastingBarFrameBorder:SetPoint("TOP", 0, 26)
-	CastingBarFrameFlash:SetPoint("TOP", 0, 26)
-	CastingBarFrameBorderShield:SetPoint("TOP", 0, 26)
+	CastingBarFrame.Border:SetWidth(CastingBarFrame.Border:GetWidth() + 4)
+	CastingBarFrame.Flash:SetWidth(CastingBarFrame.Flash:GetWidth() + 4)
+	CastingBarFrame.BorderShield:SetWidth(CastingBarFrame.BorderShield:GetWidth() + 4)
+	CastingBarFrame.Border:SetPoint("TOP", 0, 26)
+	CastingBarFrame.Flash:SetPoint("TOP", 0, 26)
+	CastingBarFrame.BorderShield:SetPoint("TOP", 0, 26)
 	
 	self:Hook()
 end
@@ -42,23 +44,23 @@ function zCastBar:ResetChildren()
 	FramerateLabel:SetParent(self)
 	FramerateLabel:ClearAllPoints()
 	FramerateLabel:SetPoint("BOTTOM",self:GetLabel(),"TOP")
-	CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-6,0)
+	CastingBarFrame.Icon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-6,0)
 end
 
 function zCastBar:UpdateButtons()
 	if zBar3Data["zCastBar"].num > 1 then
-		CastingBarFrameIcon:Show()
+		CastingBarFrame.Icon:Show()
 	else
-		CastingBarFrameIcon:Hide()
+		CastingBarFrame.Icon:Hide()
 	end
 end
 
 function zCastBar:UpdateLayouts()
-	CastingBarFrameIcon:ClearAllPoints()
+	CastingBarFrame.Icon:ClearAllPoints()
 	if zBar3Data["zCastBar"].invert then
-		CastingBarFrameIcon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
+		CastingBarFrame.Icon:SetPoint("LEFT",CastingBarFrame,"RIGHT",5,2)
 	else
-		CastingBarFrameIcon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
+		CastingBarFrame.Icon:SetPoint("RIGHT",CastingBarFrame,"LEFT",-5,2)
 	end
 end
 
